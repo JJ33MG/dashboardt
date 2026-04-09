@@ -2,592 +2,596 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commercial Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
-  :root {
-    --bg: #0a0c10;
-    --panel: #111318;
-    --border: #1e2230;
-    --accent: #f59e0b;
-    --accent2: #3b82f6;
-    --green: #10b981;
-    --red: #ef4444;
-    --text: #f1f5f9;
-    --muted: #64748b;
-    --card: #161a24;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Barlow', sans-serif;
-    height: 100vh;
-    overflow: hidden;
-    user-select: none;
-  }
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 18px 40px 14px;
-    border-bottom: 1px solid var(--border);
-    background: var(--panel);
-    position: relative;
-    z-index: 10;
-  }
-  .logo {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 900;
-    font-size: 1.5rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  .logo span { color: var(--text); font-weight: 300; }
-  .header-right { display: flex; gap: 32px; align-items: center; }
-  .live-badge {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 0.75rem; letter-spacing: 2px;
-    text-transform: uppercase; color: var(--muted);
-  }
-  .live-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--green); animation: pulse 1.8s infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.8); }
-  }
-  #clock {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.4rem; font-weight: 600;
-    color: var(--text); letter-spacing: 2px;
-  }
-  .nav-dots { display: flex; gap: 8px; align-items: center; }
-  .nav-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--border); transition: all 0.3s; cursor: pointer;
-  }
-  .nav-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
-  .progress-bar {
-    position: fixed; bottom: 0; left: 0; right: 0;
-    height: 3px; background: var(--border); z-index: 100;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    width: 0%;
-  }
-  .slides-wrapper {
-    height: calc(100vh - 68px);
-    position: relative; overflow: hidden;
-  }
-  .slide {
-    position: absolute; inset: 0; padding: 32px 40px;
-    opacity: 0; transform: translateX(60px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-  }
-  .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
-  .slide.exit { opacity: 0; transform: translateX(-60px); }
-  .slide-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; letter-spacing: 4px;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
-  }
-  .slide-heading {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 2.2rem; font-weight: 700;
-    color: var(--text); line-height: 1; margin-bottom: 28px;
-  }
-  .slide-heading span { color: var(--accent); }
-  .recovery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 14px;
-  }
-  .member-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 18px 22px;
-    position: relative; overflow: hidden;
-  }
-  .member-card::before {
-    content: ''; position: absolute;
-    left: 0; top: 0; bottom: 0; width: 3px;
-    background: var(--accent);
-  }
-  .member-card.on-track::before { background: var(--green); }
-  .member-card.at-risk::before  { background: var(--accent); }
-  .member-card.behind::before   { background: var(--red); }
-  .member-header {
-    display: flex; justify-content: space-between;
-    align-items: flex-start; margin-bottom: 12px;
-  }
-  .member-name {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.25rem; font-weight: 700; letter-spacing: 0.5px;
-  }
-  .member-role {
-    font-size: 0.72rem; color: var(--muted);
-    letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;
-  }
-  .status-badge {
-    font-size: 0.65rem; font-weight: 600;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    padding: 3px 10px; border-radius: 20px;
-  }
-  .status-badge.on-track { background: rgba(16,185,129,0.15); color: var(--green); }
-  .status-badge.at-risk  { background: rgba(245,158,11,0.15);  color: var(--accent); }
-  .status-badge.behind   { background: rgba(239,68,68,0.15);   color: var(--red); }
-  .recovery-amounts { display: flex; justify-content: space-between; margin-bottom: 10px; }
-  .amount-label {
-    font-size: 0.65rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;
-  }
-  .amount-value { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; }
-  .amount-value.current { color: var(--text); }
-  .amount-value.target  { color: var(--muted); font-weight: 400; }
-  .recovery-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
-  .recovery-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
-  .on-track .recovery-bar-fill { background: var(--green); }
-  .at-risk  .recovery-bar-fill { background: var(--accent); }
-  .behind   .recovery-bar-fill { background: var(--red); }
-  .pct-label { font-size: 0.7rem; color: var(--muted); text-align: right; margin-top: 4px; }
-  .cases-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 100px); }
-  .cases-left { display: flex; flex-direction: column; gap: 10px; }
-  .case-row {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 14px 20px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .case-rank {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.6rem; font-weight: 900;
-    color: var(--border); width: 32px; text-align: center;
-  }
-  .case-row:nth-child(1) .case-rank { color: var(--accent); }
-  .case-row:nth-child(2) .case-rank { color: var(--muted); }
-  .case-row:nth-child(3) .case-rank { color: #92400e; }
-  .case-info { flex: 1; }
-  .case-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 600; }
-  .case-type { font-size: 0.68rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-  .case-bar-wrap { flex: 2; }
-  .case-bar-bg { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
-  .case-bar-fill {
-    height: 100%; border-radius: 4px;
-    background: linear-gradient(90deg, var(--accent2), var(--accent));
-  }
-  .case-count {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 1.5rem; font-weight: 700; min-width: 50px; text-align: right;
-  }
-  .cases-right {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 12px; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; padding: 24px;
-  }
-  .donut-label {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; letter-spacing: 3px;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
-  }
-  #donutChart { max-width: 240px; max-height: 240px; }
-  .donut-legend { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; width: 100%; }
-  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--muted); }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .budget-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto 1fr;
-    gap: 16px; height: calc(100% - 100px);
-  }
-  .kpi-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 12px; padding: 22px 26px;
-    position: relative; overflow: hidden;
-  }
-  .kpi-card::after {
-    content: ''; position: absolute;
-    bottom: 0; left: 0; right: 0; height: 2px;
-  }
-  .kpi-card.k1::after { background: var(--accent2); }
-  .kpi-card.k2::after { background: var(--accent); }
-  .kpi-card.k3::after { background: var(--green); }
-  .kpi-label { font-size: 0.68rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
-  .kpi-value { font-family: 'Barlow Condensed', sans-serif; font-size: 2.6rem; font-weight: 700; line-height: 1; }
-  .kpi-card.k1 .kpi-value { color: var(--accent2); }
-  .kpi-card.k2 .kpi-value { color: var(--accent); }
-  .kpi-card.k3 .kpi-value { color: var(--green); }
-  .kpi-sub { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
-  .kpi-delta {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 0.72rem; font-weight: 600;
-    padding: 2px 8px; border-radius: 12px; margin-top: 6px;
-  }
-  .kpi-delta.up   { background: rgba(16,185,129,0.15); color: var(--green); }
-  .kpi-delta.down { background: rgba(239,68,68,0.15);  color: var(--red); }
-  .budget-chart-wrap {
-    grid-column: span 2; background: var(--card);
-    border: 1px solid var(--border); border-radius: 12px; padding: 22px 26px;
-  }
-  .chart-title {
-    font-family: 'Barlow Condensed', sans-serif;
-    font-size: 0.7rem; letter-spacing: 3px;
-    text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
-  }
-  #barChart { width: 100%; }
-  .target-breakdown {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 12px; padding: 22px 26px;
-    display: flex; flex-direction: column; gap: 14px;
-  }
-  .target-item { display: flex; flex-direction: column; gap: 5px; }
-  .target-item-header { display: flex; justify-content: space-between; align-items: center; }
-  .target-item-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-  .target-item-value { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; }
-  .target-mini-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-  .target-mini-fill { height: 100%; border-radius: 2px; }
+:root{--bg:#0a0c10;--panel:#111318;--border:#1e2230;--accent:#f59e0b;--accent2:#3b82f6;--green:#10b981;--red:#ef4444;--text:#f1f5f9;--muted:#64748b;--card:#161a24;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;}
+
+/* ══ UPLOAD SCHERM ══ */
+#uploadScreen{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px 20px;overflow-y:auto;}
+#uploadScreen.hidden{display:none;}
+.up-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);}
+.up-logo span{color:var(--text);font-weight:300;}
+.up-subtitle{font-size:.85rem;color:var(--muted);text-align:center;}
+
+/* 3 upload kaarten naast elkaar */
+.upload-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;width:100%;max-width:1000px;}
+.upload-card{flex:1;min-width:280px;max-width:320px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:16px;transition:border-color .3s;}
+.upload-card.loaded{border-color:var(--green);}
+.upload-card.error{border-color:var(--red);}
+
+.card-header{display:flex;align-items:center;gap:12px;}
+.card-icon{font-size:1.8rem;}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;}
+.card-desc{font-size:.78rem;color:var(--muted);line-height:1.5;}
+
+/* Drop zone per kaart */
+.drop-zone{border:2px dashed var(--border);border-radius:10px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .3s;position:relative;}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--accent);background:rgba(245,158,11,.05);}
+.upload-card.loaded .drop-zone{border-color:var(--green);background:rgba(16,185,129,.05);}
+.drop-zone-text{font-size:.8rem;color:var(--muted);margin-bottom:10px;}
+.drop-file-name{font-size:.75rem;color:var(--green);margin-top:6px;display:none;font-weight:600;}
+.drop-btn{display:inline-block;background:var(--panel);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;padding:8px 20px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.drop-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Sheet + kolom kiezer */
+.card-config{display:none;flex-direction:column;gap:10px;}
+.upload-card.loaded .card-config{display:flex;}
+.cfg-label{font-size:.68rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.sheet-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.sheet-pill{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-size:.75rem;cursor:pointer;transition:all .2s;}
+.sheet-pill:hover{border-color:var(--accent);color:var(--accent);}
+.sheet-pill.selected{border-color:var(--accent);background:rgba(245,158,11,.1);color:var(--accent);}
+select.cfg-select{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 10px;font-family:'Barlow',sans-serif;font-size:.8rem;cursor:pointer;}
+select.cfg-select:focus{outline:none;border-color:var(--accent);}
+select.cfg-select option{background:var(--panel);}
+.cfg-row{display:flex;flex-direction:column;}
+
+/* Status berekening toggle */
+.toggle-wrap{display:flex;align-items:center;gap:8px;padding:8px 0;}
+.toggle-wrap label{font-size:.75rem;color:var(--muted);cursor:pointer;}
+.toggle-wrap input{accent-color:var(--accent);cursor:pointer;}
+
+/* Start knop */
+.start-btn{padding:14px 48px;background:var(--accent);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;letter-spacing:3px;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;opacity:.4;pointer-events:none;}
+.start-btn.ready{opacity:1;pointer-events:all;}
+.start-btn.ready:hover{opacity:.85;}
+.start-error{color:var(--red);font-size:.78rem;display:none;text-align:center;}
+
+/* ══ DASHBOARD ══ */
+#dashboard{display:none;}
+#dashboard.visible{display:block;}
+header{display:flex;justify-content:space-between;align-items:center;padding:18px 40px 14px;border-bottom:1px solid var(--border);background:var(--panel);z-index:10;position:relative;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);}
+.logo span{color:var(--text);font-weight:300;}
+.header-right{display:flex;gap:24px;align-items:center;}
+.live-badge{display:flex;align-items:center;gap:8px;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.8s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
+#clock{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:2px;}
+.reload-btn{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;transition:all .2s;}
+.reload-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-dots{display:flex;gap:8px;align-items:center;}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer;}
+.nav-dot.active{background:var(--accent);width:24px;border-radius:4px;}
+.progress-bar{position:fixed;bottom:0;left:0;right:0;height:3px;background:var(--border);z-index:100;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;}
+.slides-wrapper{height:calc(100vh - 68px);position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;padding:32px 40px;opacity:0;transform:translateX(60px);transition:all .6s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
+.slide.exit{opacity:0;transform:translateX(-60px);}
+.slide-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.slide-heading{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:28px;}
+.slide-heading span{color:var(--accent);}
+.recovery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.member-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 22px;position:relative;overflow:hidden;}
+.member-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.member-card.on-track::before{background:var(--green);}
+.member-card.at-risk::before{background:var(--accent);}
+.member-card.behind::before{background:var(--red);}
+.member-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.member-name{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;}
+.member-role{font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.status-badge{font-size:.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+.status-badge.on-track{background:rgba(16,185,129,.15);color:var(--green);}
+.status-badge.at-risk{background:rgba(245,158,11,.15);color:var(--accent);}
+.status-badge.behind{background:rgba(239,68,68,.15);color:var(--red);}
+.recovery-amounts{display:flex;justify-content:space-between;margin-bottom:10px;}
+.amount-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
+.amount-value{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;}
+.amount-value.current{color:var(--text);}
+.amount-value.target{color:var(--muted);font-weight:400;}
+.recovery-bar-bg{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.recovery-bar-fill{height:100%;border-radius:3px;}
+.on-track .recovery-bar-fill{background:var(--green);}
+.at-risk .recovery-bar-fill{background:var(--accent);}
+.behind .recovery-bar-fill{background:var(--red);}
+.pct-label{font-size:.7rem;color:var(--muted);text-align:right;margin-top:4px;}
+.cases-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:calc(100% - 100px);}
+.cases-left{display:flex;flex-direction:column;gap:10px;}
+.case-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:16px;}
+.case-rank{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;color:var(--border);width:32px;text-align:center;}
+.case-row:nth-child(1) .case-rank{color:var(--accent);}
+.case-row:nth-child(2) .case-rank{color:var(--muted);}
+.case-row:nth-child(3) .case-rank{color:#92400e;}
+.case-info{flex:1;}
+.case-name{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:600;}
+.case-type{font-size:.68rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.case-bar-wrap{flex:2;}
+.case-bar-bg{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
+.case-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent2),var(--accent));}
+.case-count{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:700;min-width:50px;text-align:right;}
+.cases-right{background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+.donut-label{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
+.donut-legend{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;width:100%;}
+.legend-item{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--muted);}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.budget-layout{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr;gap:16px;height:calc(100% - 100px);}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 26px;position:relative;overflow:hidden;}
+.kpi-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
+.kpi-card.k1::after{background:var(--accent2);}
+.kpi-card.k2::after{background:var(--accent);}
+.kpi-card.k3::after{background:var(--green);}
+.kpi-label{font-size:.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.kpi-value{font-family:'Barlow Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1;}
+.kpi-card.k1 .kpi-value{color:var(--accent2);}
+.kpi-card.k2 .kpi-value{color:var(--accent);}
+.kpi-card.k3 .kpi-value{color:var(--green);}
+.kpi-sub{font-size:.72rem;color:var(--muted);margin-top:6px;}
+.kpi-delta{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-top:6px;}
+.kpi-delta.up{background:rgba(16,185,129,.15);color:var(--green);}
+.kpi-delta.down{background:rgba(239,68,68,.15);color:var(--red);}
+.budget-chart-wrap{grid-column:span 2;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 26px;}
+.chart-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.target-breakdown{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 26px;display:flex;flex-direction:column;gap:14px;}
+.target-item{display:flex;flex-direction:column;gap:5px;}
+.target-item-header{display:flex;justify-content:space-between;align-items:center;}
+.target-item-label{font-size:.75rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.target-item-value{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;}
+.target-mini-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.target-mini-fill{height:100%;border-radius:2px;}
 </style>
 </head>
 <body>
 
-<script>
-// ════════════════════════════════════
-//  ✏️  PAS HIER JE GEGEVENS AAN
-// ════════════════════════════════════
+<!-- ══════════════════════════
+     UPLOAD SCHERM
+══════════════════════════ -->
+<div id="uploadScreen">
+  <div class="up-logo">Commercial <span>Dashboard</span></div>
+  <div class="up-subtitle">Upload de 3 Excel-bestanden. Daarna wijs je zelf aan welke kolom wat betekent.</div>
 
-const BEDRIJF_NAAM = "Sales Team";   // ← Naam van je team
+  <div class="upload-cards">
 
-const MAAND = "April 2026";          // ← Huidige maand
+    <!-- KAART 1: Commercial Loss -->
+    <div class="upload-card" id="card1">
+      <div class="card-header">
+        <div class="card-icon">📉</div>
+        <div>
+          <div class="card-title">Commercial Loss</div>
+        </div>
+      </div>
+      <div class="card-desc">Het bestand met hoeveel iedereen moet binnenhalen en wat er al gerealiseerd is.</div>
+      <div class="drop-zone" id="dz1">
+        <div class="drop-zone-text">Sleep je bestand hier</div>
+        <div class="drop-btn" id="dbtn1">Bestand kiezen</div>
+        <div class="drop-file-name" id="dfn1"></div>
+        <input type="file" accept=".xlsx,.xls" style="display:none" id="fi1">
+      </div>
 
-// SLIDE 1: Hoeveel heeft iedereen binnengehaald vs target?
-// status: "on-track" / "at-risk" / "behind"
-const TEAMLEDEN = [
-  { naam: "Thomas",  rol: "Senior Advisor",  target: 45000, huidig: 38000, status: "at-risk"  },
-  { naam: "Sophie",  rol: "Account Manager", target: 35000, huidig: 36500, status: "on-track" },
-  { naam: "Daan",    rol: "Senior Advisor",  target: 45000, huidig: 20000, status: "behind"   },
-  { naam: "Laura",   rol: "Junior Advisor",  target: 25000, huidig: 24000, status: "on-track" },
-  { naam: "Kevin",   rol: "Account Manager", target: 35000, huidig: 18000, status: "behind"   },
-  { naam: "Emma",    rol: "Senior Advisor",  target: 45000, huidig: 44000, status: "on-track" },
-  { naam: "Niels",   rol: "Junior Advisor",  target: 25000, huidig: 12000, status: "behind"   },
-  { naam: "Lena",    rol: "Account Manager", target: 35000, huidig: 33000, status: "at-risk"  },
-];
-
-// SLIDE 2: Aantal open cases per teamlid
-const CASES = [
-  { naam: "Sophie", cases: 24, type: "Account Manager" },
-  { naam: "Emma",   cases: 22, type: "Senior Advisor"  },
-  { naam: "Thomas", cases: 19, type: "Senior Advisor"  },
-  { naam: "Laura",  cases: 17, type: "Junior Advisor"  },
-  { naam: "Lena",   cases: 15, type: "Account Manager" },
-  { naam: "Daan",   cases: 12, type: "Senior Advisor"  },
-  { naam: "Kevin",  cases: 10, type: "Account Manager" },
-  { naam: "Niels",  cases: 8,  type: "Junior Advisor"  },
-];
-
-// SLIDE 3: Budget overzicht
-const BUDGET = {
-  maandTarget:  280000,   // ← Maandelijks target totaal team
-  huidigeMaand: 215500,   // ← Wat er tot nu toe binnengehaald is
-  vorigeMaand:  198000,   // ← Resultaat vorige maand
-  jaarTarget:   3360000,  // ← Jaarlijks target
-  jaarTotNu:    820000,   // ← Jaar-to-date resultaat
-
-  // Laatste 6 maanden voor de grafiek
-  maanden: [
-    { naam: "Nov", resultaat: 210000, target: 280000 },
-    { naam: "Dec", resultaat: 175000, target: 280000 },
-    { naam: "Jan", resultaat: 255000, target: 280000 },
-    { naam: "Feb", resultaat: 198000, target: 280000 },
-    { naam: "Mar", resultaat: 198000, target: 280000 },
-    { naam: "Apr", resultaat: 215500, target: 280000 },
-  ],
-
-  // Breakdown per categorie
-  categorieën: [
-    { naam: "New Business", target: 120000, huidig: 82000, kleur: "#3b82f6" },
-    { naam: "Renewals",     target: 100000, huidig: 94000, kleur: "#f59e0b" },
-    { naam: "Upsell",       target: 60000,  huidig: 39500, kleur: "#10b981" },
-  ]
-};
-
-// Seconden per slide
-const SECONDEN_PER_SLIDE = 10;
-
-// ════════════════════════════════════
-//  EINDE — niets hieronder aanpassen
-// ════════════════════════════════════
-</script>
-
-<header>
-  <div class="logo" id="bedrijfNaam">SALES <span>TEAM</span></div>
-  <div class="header-right">
-    <div class="nav-dots" id="navDots"></div>
-    <div class="live-badge"><div class="live-dot"></div> Live</div>
-    <div id="clock">--:--</div>
-  </div>
-</header>
-
-<div class="slides-wrapper">
-  <div class="slide" id="slide-0">
-    <div class="slide-title">Slide 1 van 3 · Commercial Recovery</div>
-    <div class="slide-heading">Recovery <span>Targets</span> — <span id="s1maand"></span></div>
-    <div class="recovery-grid" id="recoveryGrid"></div>
-  </div>
-  <div class="slide" id="slide-1">
-    <div class="slide-title">Slide 2 van 3 · Workload</div>
-    <div class="slide-heading">Cases per <span>Teamlid</span></div>
-    <div class="cases-layout">
-      <div class="cases-left" id="casesLeft"></div>
-      <div class="cases-right">
-        <div class="donut-label">Verdeling Cases</div>
-        <canvas id="donutChart" width="240" height="240"></canvas>
-        <div class="donut-legend" id="donutLegend"></div>
+      <!-- Na upload: tabblad kiezen -->
+      <div class="card-config" id="cfg1">
+        <div>
+          <div class="cfg-label">Welk tabblad?</div>
+          <div class="sheet-pills" id="pills1"></div>
+        </div>
+        <div id="colmap1" style="display:none;display:flex;flex-direction:column;gap:8px;">
+          <div class="cfg-row"><div class="cfg-label">Kolom: Naam teamlid</div><select class="cfg-select" id="c1_naam"></select></div>
+          <div class="cfg-row"><div class="cfg-label">Kolom: Functie / Rol (optioneel)</div><select class="cfg-select" id="c1_rol"></select></div>
+          <div class="cfg-row"><div class="cfg-label">Kolom: Maand Target (bedrag)</div><select class="cfg-select" id="c1_target"></select></div>
+          <div class="cfg-row"><div class="cfg-label">Kolom: Huidig resultaat (bedrag)</div><select class="cfg-select" id="c1_huidig"></select></div>
+          <div class="toggle-wrap">
+            <input type="checkbox" id="autoStatus" checked>
+            <label for="autoStatus">Status automatisch berekenen op basis van %</label>
+          </div>
+          <div id="statusColWrap" style="display:none">
+            <div class="cfg-row"><div class="cfg-label">Kolom: Status (on-track / at-risk / behind)</div><select class="cfg-select" id="c1_status"></select></div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="slide" id="slide-2">
-    <div class="slide-title">Slide 3 van 3 · Financial Overview</div>
-    <div class="slide-heading">Budget <span>Overzicht</span> — <span id="s3maand"></span></div>
-    <div class="budget-layout">
-      <div class="kpi-card k1">
-        <div class="kpi-label">Maand Target</div>
-        <div class="kpi-value" id="kpiTarget"></div>
-        <div class="kpi-sub" id="kpiTargetSub"></div>
+
+    <!-- KAART 2: Cases -->
+    <div class="upload-card" id="card2">
+      <div class="card-header">
+        <div class="card-icon">📋</div>
+        <div>
+          <div class="card-title">Cases</div>
+        </div>
       </div>
-      <div class="kpi-card k2">
-        <div class="kpi-label">Huidig Resultaat</div>
-        <div class="kpi-value" id="kpiHuidig"></div>
-        <div class="kpi-delta" id="kpiDelta"></div>
+      <div class="card-desc">Het bestand met het aantal open cases per teamlid.</div>
+      <div class="drop-zone" id="dz2">
+        <div class="drop-zone-text">Sleep je bestand hier</div>
+        <div class="drop-btn" id="dbtn2">Bestand kiezen</div>
+        <div class="drop-file-name" id="dfn2"></div>
+        <input type="file" accept=".xlsx,.xls" style="display:none" id="fi2">
       </div>
-      <div class="kpi-card k3">
-        <div class="kpi-label">Jaar-to-Date</div>
-        <div class="kpi-value" id="kpiJtd"></div>
-        <div class="kpi-sub" id="kpiJtdSub"></div>
+      <div class="card-config" id="cfg2">
+        <div>
+          <div class="cfg-label">Welk tabblad?</div>
+          <div class="sheet-pills" id="pills2"></div>
+        </div>
+        <div id="colmap2" style="display:none;flex-direction:column;gap:8px;">
+          <div class="cfg-row"><div class="cfg-label">Kolom: Naam teamlid</div><select class="cfg-select" id="c2_naam"></select></div>
+          <div class="cfg-row"><div class="cfg-label">Kolom: Aantal cases</div><select class="cfg-select" id="c2_cases"></select></div>
+          <div class="cfg-row"><div class="cfg-label">Kolom: Functie / Rol (optioneel)</div><select class="cfg-select" id="c2_rol"></select></div>
+        </div>
       </div>
-      <div class="budget-chart-wrap">
-        <div class="chart-title">Maandresultaten vs Target · Laatste 6 maanden</div>
-        <canvas id="barChart" height="160"></canvas>
+    </div>
+
+    <!-- KAART 3: Budget -->
+    <div class="upload-card" id="card3">
+      <div class="card-header">
+        <div class="card-icon">💰</div>
+        <div>
+          <div class="card-title">Budget</div>
+        </div>
       </div>
-      <div class="target-breakdown" id="targetBreakdown">
-        <div class="chart-title">Breakdown per categorie</div>
+      <div class="card-desc">Het bestand met het maandbudget, targets en historische resultaten.</div>
+      <div class="drop-zone" id="dz3">
+        <div class="drop-zone-text">Sleep je bestand hier</div>
+        <div class="drop-btn" id="dbtn3">Bestand kiezen</div>
+        <div class="drop-file-name" id="dfn3"></div>
+        <input type="file" accept=".xlsx,.xls" style="display:none" id="fi3">
       </div>
+      <div class="card-config" id="cfg3">
+        <div>
+          <div class="cfg-label">Welk tabblad?</div>
+          <div class="sheet-pills" id="pills3"></div>
+        </div>
+        <div id="colmap3" style="display:none;flex-direction:column;gap:8px;">
+          <div class="cfg-row"><div class="cfg-label">Kolom: Maand naam</div><select class="cfg-select" id="c3_maand"></select></div>
+          <div class="cfg-row"><div class="cfg-label">Kolom: Resultaat</div><select class="cfg-select" id="c3_res"></select></div>
+          <div class="cfg-row"><div class="cfg-label">Kolom: Target</div><select class="cfg-select" id="c3_tgt"></select></div>
+          <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
+            <div class="cfg-label" style="margin-bottom:8px;">Vul ook in ↓</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="cfg-row"><div class="cfg-label">Naam van de maand (bijv. April 2026)</div><input class="cfg-select" id="c3_maandnaam" placeholder="April 2026" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
+              <div class="cfg-row"><div class="cfg-label">Maand Target (totaal team)</div><input class="cfg-select" id="c3_maandtarget" type="number" placeholder="280000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
+              <div class="cfg-row"><div class="cfg-label">Huidig resultaat deze maand</div><input class="cfg-select" id="c3_huidig" type="number" placeholder="215000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
+              <div class="cfg-row"><div class="cfg-label">Resultaat vorige maand</div><input class="cfg-select" id="c3_vorig" type="number" placeholder="198000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
+              <div class="cfg-row"><div class="cfg-label">Jaarlijks target</div><input class="cfg-select" id="c3_jaartarget" type="number" placeholder="3360000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
+              <div class="cfg-row"><div class="cfg-label">Jaar-to-date resultaat</div><input class="cfg-select" id="c3_jtd" type="number" placeholder="820000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end upload-cards -->
+
+  <div>
+    <div class="start-error" id="startError">Zorg dat alle 3 bestanden zijn geüpload en de kolommen zijn ingesteld.</div>
+    <div style="text-align:center;margin-top:8px;">
+      <button class="start-btn" id="startBtn" onclick="launchDashboard()">🚀 Dashboard starten</button>
     </div>
   </div>
 </div>
 
-<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<!-- ══════════════════════════
+     DASHBOARD
+══════════════════════════ -->
+<div id="dashboard">
+  <header>
+    <div class="logo">COMMERCIAL <span>DASHBOARD</span></div>
+    <div class="header-right">
+      <div class="nav-dots" id="navDots"></div>
+      <div class="live-badge"><div class="live-dot"></div> Live</div>
+      <div id="clock">--:--</div>
+      <div class="reload-btn" id="reloadBtn">↑ Nieuwe bestanden</div>
+    </div>
+  </header>
+  <div class="slides-wrapper">
+    <div class="slide" id="slide-0">
+      <div class="slide-title">Slide 1 van 3 · Commercial Recovery</div>
+      <div class="slide-heading">Recovery <span>Targets</span> — <span id="s1maand"></span></div>
+      <div class="recovery-grid" id="recoveryGrid"></div>
+    </div>
+    <div class="slide" id="slide-1">
+      <div class="slide-title">Slide 2 van 3 · Workload</div>
+      <div class="slide-heading">Cases per <span>Teamlid</span></div>
+      <div class="cases-layout">
+        <div class="cases-left" id="casesLeft"></div>
+        <div class="cases-right">
+          <div class="donut-label">Verdeling Cases</div>
+          <canvas id="donutChart" width="240" height="240"></canvas>
+          <div class="donut-legend" id="donutLegend"></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide" id="slide-2">
+      <div class="slide-title">Slide 3 van 3 · Financial Overview</div>
+      <div class="slide-heading">Budget <span>Overzicht</span> — <span id="s3maand"></span></div>
+      <div class="budget-layout">
+        <div class="kpi-card k1"><div class="kpi-label">Maand Target</div><div class="kpi-value" id="kpiTarget"></div><div class="kpi-sub" id="kpiTargetSub"></div></div>
+        <div class="kpi-card k2"><div class="kpi-label">Huidig Resultaat</div><div class="kpi-value" id="kpiHuidig"></div><div class="kpi-delta" id="kpiDelta"></div></div>
+        <div class="kpi-card k3"><div class="kpi-label">Jaar-to-Date</div><div class="kpi-value" id="kpiJtd"></div><div class="kpi-sub" id="kpiJtdSub"></div></div>
+        <div class="budget-chart-wrap"><div class="chart-title">Maandresultaten vs Target</div><canvas id="barChart" height="160"></canvas></div>
+        <div class="target-breakdown" id="targetBreakdown"><div class="chart-title">Breakdown per categorie</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
 
 <script>
-function updateClock() {
-  const now = new Date();
-  document.getElementById('clock').textContent =
-    String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+const KLEUREN=['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ec4899','#14b8a6','#f97316','#06b6d4'];
+let wbs={1:null,2:null,3:null};
+let selectedSheet={1:null,2:null,3:null};
+let slideInterval=null, currentSlide=0;
+
+function euro(n){return'€'+Number(n).toLocaleString('nl-NL');}
+function updateClock(){const n=new Date();document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
+updateClock();setInterval(updateClock,10000);
+
+// ── Setup upload voor elk van de 3 kaarten ──
+[1,2,3].forEach(i=>{
+  const dz=document.getElementById('dz'+i);
+  const fi=document.getElementById('fi'+i);
+  const btn=document.getElementById('dbtn'+i);
+  btn.addEventListener('click',e=>{e.stopPropagation();fi.click();});
+  fi.addEventListener('change',e=>{if(e.target.files[0])readFile(i,e.target.files[0]);});
+  dz.addEventListener('click',()=>fi.click());
+  dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover');});
+  dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragover');if(e.dataTransfer.files[0])readFile(i,e.dataTransfer.files[0]);});
+});
+
+document.getElementById('autoStatus').addEventListener('change',function(){
+  document.getElementById('statusColWrap').style.display=this.checked?'none':'block';
+});
+
+function readFile(idx,file){
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const wb=XLSX.read(e.target.result,{type:'array'});
+      wbs[idx]=wb;
+      // Bestandsnaam tonen
+      const fnEl=document.getElementById('dfn'+idx);
+      fnEl.textContent='✓ '+file.name;
+      fnEl.style.display='block';
+      document.getElementById('card'+idx).classList.add('loaded');
+      // Tabblad pills opbouwen
+      buildPills(idx,wb);
+      checkAllReady();
+    }catch(err){
+      document.getElementById('card'+idx).classList.add('error');
+    }
+  };
+  reader.readAsArrayBuffer(file);
 }
-updateClock(); setInterval(updateClock, 10000);
 
-function euro(n) { return '€' + n.toLocaleString('nl-NL'); }
-
-const naamDelen = BEDRIJF_NAAM.split(' ');
-document.getElementById('bedrijfNaam').innerHTML = naamDelen.length >= 2
-  ? naamDelen[0] + ' <span>' + naamDelen.slice(1).join(' ') + '</span>'
-  : BEDRIJF_NAAM;
-
-document.getElementById('s1maand').textContent = MAAND;
-const grid = document.getElementById('recoveryGrid');
-TEAMLEDEN.forEach(lid => {
-  const pct = Math.min(100, Math.round((lid.huidig / lid.target) * 100));
-  const card = document.createElement('div');
-  card.className = 'member-card ' + lid.status;
-  const labelMap = { 'on-track': 'Op schema', 'at-risk': 'Aandacht', 'behind': 'Achter' };
-  card.innerHTML = `
-    <div class="member-header">
-      <div>
-        <div class="member-name">${lid.naam}</div>
-        <div class="member-role">${lid.rol}</div>
-      </div>
-      <div class="status-badge ${lid.status}">${labelMap[lid.status]}</div>
-    </div>
-    <div class="recovery-amounts">
-      <div>
-        <div class="amount-label">Binnengehaald</div>
-        <div class="amount-value current">${euro(lid.huidig)}</div>
-      </div>
-      <div style="text-align:right">
-        <div class="amount-label">Maand Target</div>
-        <div class="amount-value target">${euro(lid.target)}</div>
-      </div>
-    </div>
-    <div class="recovery-bar-bg">
-      <div class="recovery-bar-fill" style="width:${pct}%"></div>
-    </div>
-    <div class="pct-label">${pct}% van target</div>`;
-  grid.appendChild(card);
-});
-
-const KLEUREN = ['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ec4899','#14b8a6','#f97316','#06b6d4'];
-const maxCases = CASES[0].cases;
-const casesLeft = document.getElementById('casesLeft');
-CASES.forEach((lid, i) => {
-  const row = document.createElement('div');
-  row.className = 'case-row';
-  row.innerHTML = `
-    <div class="case-rank">${i + 1}</div>
-    <div class="case-info">
-      <div class="case-name">${lid.naam}</div>
-      <div class="case-type">${lid.type}</div>
-    </div>
-    <div class="case-bar-wrap">
-      <div class="case-bar-bg">
-        <div class="case-bar-fill" style="width:${Math.round((lid.cases/maxCases)*100)}%"></div>
-      </div>
-    </div>
-    <div class="case-count">${lid.cases}</div>`;
-  casesLeft.appendChild(row);
-});
-
-function drawDonut() {
-  const canvas = document.getElementById('donutChart');
-  const ctx = canvas.getContext('2d');
-  const total = CASES.reduce((s, c) => s + c.cases, 0);
-  const cx = 120, cy = 120, r = 90, inner = 56;
-  let angle = -Math.PI / 2;
-  CASES.forEach((lid, i) => {
-    const slice = (lid.cases / total) * 2 * Math.PI;
-    ctx.beginPath(); ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, angle, angle + slice);
-    ctx.closePath();
-    ctx.fillStyle = KLEUREN[i % KLEUREN.length];
-    ctx.fill();
-    angle += slice;
-  });
-  ctx.beginPath(); ctx.arc(cx, cy, inner, 0, 2 * Math.PI);
-  ctx.fillStyle = '#161a24'; ctx.fill();
-  ctx.fillStyle = '#f1f5f9';
-  ctx.font = 'bold 28px Barlow Condensed';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillText(total, cx, cy - 8);
-  ctx.font = '11px Barlow'; ctx.fillStyle = '#64748b';
-  ctx.fillText('cases totaal', cx, cy + 14);
-  const legend = document.getElementById('donutLegend');
-  CASES.forEach((lid, i) => {
-    const item = document.createElement('div');
-    item.className = 'legend-item';
-    item.innerHTML = `<div class="legend-dot" style="background:${KLEUREN[i]}"></div>${lid.naam} (${lid.cases})`;
-    legend.appendChild(item);
+function buildPills(idx,wb){
+  const container=document.getElementById('pills'+idx);
+  container.innerHTML='';
+  wb.SheetNames.forEach(name=>{
+    const pill=document.createElement('div');
+    pill.className='sheet-pill';
+    pill.textContent=name;
+    pill.addEventListener('click',()=>{
+      container.querySelectorAll('.sheet-pill').forEach(p=>p.classList.remove('selected'));
+      pill.classList.add('selected');
+      selectedSheet[idx]=name;
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''});
+      fillColumns(idx,rows);
+      // Kolom mapper tonen
+      const cm=document.getElementById('colmap'+idx);
+      if(cm)cm.style.display='flex';
+      checkAllReady();
+    });
+    container.appendChild(pill);
+    // Auto-select als er maar 1 tabblad is
+    if(wb.SheetNames.length===1) pill.click();
   });
 }
-drawDonut();
 
-document.getElementById('s3maand').textContent = MAAND;
-document.getElementById('kpiTarget').textContent = euro(BUDGET.maandTarget);
-document.getElementById('kpiTargetSub').textContent = 'Nog ' + euro(Math.max(0, BUDGET.maandTarget - BUDGET.huidigeMaand)) + ' te gaan';
-document.getElementById('kpiHuidig').textContent = euro(BUDGET.huidigeMaand);
-const diff = BUDGET.huidigeMaand - BUDGET.vorigeMaand;
-const deltaEl = document.getElementById('kpiDelta');
-deltaEl.className = 'kpi-delta ' + (diff >= 0 ? 'up' : 'down');
-deltaEl.textContent = (diff >= 0 ? '▲ +' : '▼ ') + euro(Math.abs(diff)) + ' vs vorige maand';
-const jtdPct = Math.round((BUDGET.jaarTotNu / BUDGET.jaarTarget) * 100);
-document.getElementById('kpiJtd').textContent = euro(BUDGET.jaarTotNu);
-document.getElementById('kpiJtdSub').textContent = jtdPct + '% van jaartarget (' + euro(BUDGET.jaarTarget) + ')';
+function fillColumns(idx,rows){
+  const cols=Object.keys(rows[0]||{});
+  const withNone=['__none',...cols];
 
-function drawBar() {
-  const canvas = document.getElementById('barChart');
-  const ctx = canvas.getContext('2d');
-  const W = canvas.offsetWidth || 600;
-  canvas.width = W;
-  const H = 160, padL = 60, padR = 20, padT = 10, padB = 30;
-  const chartW = W - padL - padR, chartH = H - padT - padB;
-  const maxVal = Math.max(...BUDGET.maanden.map(m => m.target)) * 1.1;
-  ctx.clearRect(0, 0, W, H);
-  ctx.strokeStyle = '#1e2230'; ctx.lineWidth = 1;
-  [0.25, 0.5, 0.75, 1].forEach(f => {
-    const y = padT + chartH * (1 - f);
-    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + chartW, y); ctx.stroke();
-    ctx.fillStyle = '#64748b'; ctx.font = '11px Barlow';
-    ctx.textAlign = 'right';
-    ctx.fillText('€' + Math.round(maxVal * f / 1000) + 'K', padL - 8, y + 4);
-  });
-  const bw = chartW / BUDGET.maanden.length;
-  const barW = bw * 0.45;
-  BUDGET.maanden.forEach((m, i) => {
-    const x = padL + i * bw + bw / 2;
-    const barH = (m.resultaat / maxVal) * chartH;
-    const barY = padT + chartH - barH;
-    ctx.fillStyle = m.resultaat >= m.target ? '#10b981' : (m.resultaat >= m.target * 0.8 ? '#f59e0b' : '#ef4444');
-    ctx.beginPath();
-    ctx.roundRect(x - barW / 2, barY, barW, barH, [4, 4, 0, 0]);
-    ctx.fill();
-    const ty = padT + chartH - (m.target / maxVal) * chartH;
-    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2;
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath(); ctx.moveTo(x - barW/2 - 6, ty); ctx.lineTo(x + barW/2 + 6, ty); ctx.stroke();
-    ctx.setLineDash([]);
-    ctx.fillStyle = '#64748b'; ctx.font = '11px Barlow'; ctx.textAlign = 'center';
-    ctx.fillText(m.naam, x, padT + chartH + 18);
+  function fillSel(id,optCols,autoHints){
+    const sel=document.getElementById(id);
+    if(!sel)return;
+    sel.innerHTML='';
+    optCols.forEach(c=>{
+      const o=document.createElement('option');
+      o.value=c; o.textContent=c==='__none'?'— Niet van toepassing —':c;
+      sel.appendChild(o);
+    });
+    if(autoHints){
+      const lc=cols.map(c=>c.toLowerCase());
+      for(const h of autoHints){
+        const found=lc.findIndex(c=>c.includes(h));
+        if(found>-1){sel.value=cols[found];return;}
+      }
+    }
+  }
+
+  if(idx===1){
+    fillSel('c1_naam',cols,['naam','name','medewerker','persoon','werknemer']);
+    fillSel('c1_rol',withNone,['rol','functie','titel','function','role','job']);
+    fillSel('c1_target',cols,['target','doel','budget','maand','norm']);
+    fillSel('c1_huidig',cols,['huidig','resultaat','actueel','current','actual','binnen','gerealiseerd']);
+    fillSel('c1_status',withNone,['status']);
+  }
+  if(idx===2){
+    fillSel('c2_naam',cols,['naam','name','medewerker']);
+    fillSel('c2_cases',cols,['cases','aantal','count','tickets','dossier','zaken']);
+    fillSel('c2_rol',withNone,['rol','functie','role']);
+  }
+  if(idx===3){
+    fillSel('c3_maand',cols,['maand','month','periode','period','datum','date']);
+    fillSel('c3_res',cols,['resultaat','result','actueel','current','binnen','realisatie']);
+    fillSel('c3_tgt',cols,['target','doel','budget','norm']);
+  }
+}
+
+function checkAllReady(){
+  const allLoaded=wbs[1]&&wbs[2]&&wbs[3];
+  const allSheet=selectedSheet[1]&&selectedSheet[2]&&selectedSheet[3];
+  document.getElementById('startBtn').classList.toggle('ready',!!(allLoaded&&allSheet));
+}
+
+// ── Dashboard starten ──
+function launchDashboard(){
+  // Recovery data lezen
+  const rRows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:''});
+  const auto=document.getElementById('autoStatus').checked;
+  const teamleden=rRows.map(r=>{
+    const t=Number(r[document.getElementById('c1_target').value])||0;
+    const h=Number(r[document.getElementById('c1_huidig').value])||0;
+    const rolCol=document.getElementById('c1_rol').value;
+    let st='behind';
+    if(auto){st=h>=t?'on-track':h>=t*.8?'at-risk':'behind';}
+    else{const sv=(r[document.getElementById('c1_status').value]||'').toLowerCase().replace(' ','-');st=sv||'behind';}
+    return{naam:String(r[document.getElementById('c1_naam').value]||''),rol:rolCol!=='__none'?String(r[rolCol]||''):'',target:t,huidig:h,status:st};
+  }).filter(x=>x.naam);
+
+  // Cases data lezen
+  const cRows=XLSX.utils.sheet_to_json(wbs[2].Sheets[selectedSheet[2]],{defval:''});
+  const rolCol2=document.getElementById('c2_rol').value;
+  const cases=[...cRows.map(r=>({
+    naam:String(r[document.getElementById('c2_naam').value]||''),
+    cases:Number(r[document.getElementById('c2_cases').value])||0,
+    rol:rolCol2!=='__none'?String(r[rolCol2]||''):''
+  })).filter(x=>x.naam)].sort((a,b)=>b.cases-a.cases);
+
+  // Budget data lezen
+  const bRows=XLSX.utils.sheet_to_json(wbs[3].Sheets[selectedSheet[3]],{defval:''});
+  const maanden=bRows.map(r=>({
+    naam:String(r[document.getElementById('c3_maand').value]||''),
+    resultaat:Number(r[document.getElementById('c3_res').value])||0,
+    target:Number(r[document.getElementById('c3_tgt').value])||0
+  })).filter(x=>x.naam);
+
+  const budget={
+    maand:document.getElementById('c3_maandnaam').value||'',
+    mt:Number(document.getElementById('c3_maandtarget').value)||0,
+    hm:Number(document.getElementById('c3_huidig').value)||0,
+    vm:Number(document.getElementById('c3_vorig').value)||0,
+    jt:Number(document.getElementById('c3_jaartarget').value)||0,
+    jtd:Number(document.getElementById('c3_jtd').value)||0
+  };
+
+  buildDashboard(teamleden,cases,budget,maanden);
+  document.getElementById('uploadScreen').classList.add('hidden');
+  document.getElementById('dashboard').style.display='block';
+  document.getElementById('reloadBtn').addEventListener('click',()=>{
+    document.getElementById('uploadScreen').classList.remove('hidden');
+    document.getElementById('dashboard').style.display='none';
+    clearInterval(slideInterval);
   });
 }
-drawBar();
 
-const breakdown = document.getElementById('targetBreakdown');
-BUDGET.categorieën.forEach(cat => {
-  const pct = Math.min(100, Math.round((cat.huidig / cat.target) * 100));
-  const item = document.createElement('div');
-  item.className = 'target-item';
-  item.innerHTML = `
-    <div class="target-item-header">
-      <div class="target-item-label">${cat.naam}</div>
-      <div class="target-item-value" style="color:${cat.kleur}">${euro(cat.huidig)} <span style="color:var(--muted);font-size:0.85rem">/ ${euro(cat.target)}</span></div>
-    </div>
-    <div class="target-mini-bar">
-      <div class="target-mini-fill" style="width:${pct}%;background:${cat.kleur}"></div>
-    </div>`;
-  breakdown.appendChild(item);
-});
+function buildDashboard(teamleden,cases,budget,maanden){
+  document.getElementById('s1maand').textContent=budget.maand;
+  document.getElementById('s3maand').textContent=budget.maand;
 
-const slides = document.querySelectorAll('.slide');
-const dotsEl = document.getElementById('navDots');
-let current = 0;
-let progressInterval = null;
-const DUUR = SECONDEN_PER_SLIDE * 1000;
-slides.forEach((_, i) => {
-  const dot = document.createElement('div');
-  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
-  dot.addEventListener('click', () => {
-    slides[current].classList.remove('active');
-    current = i;
-    slides[current].classList.add('active');
-    document.querySelectorAll('.nav-dot').forEach((d, j) => d.classList.toggle('active', j === i));
-    startProgress();
+  // Slide 1 — Recovery
+  const grid=document.getElementById('recoveryGrid');
+  grid.innerHTML='';
+  teamleden.forEach(lid=>{
+    const pct=lid.target>0?Math.min(100,Math.round((lid.huidig/lid.target)*100)):0;
+    const lm={'on-track':'Op schema','at-risk':'Aandacht','behind':'Achter'};
+    const card=document.createElement('div');
+    card.className='member-card '+lid.status;
+    card.innerHTML=`<div class="member-header"><div><div class="member-name">${lid.naam}</div><div class="member-role">${lid.rol}</div></div><div class="status-badge ${lid.status}">${lm[lid.status]||lid.status}</div></div><div class="recovery-amounts"><div><div class="amount-label">Binnengehaald</div><div class="amount-value current">${euro(lid.huidig)}</div></div><div style="text-align:right"><div class="amount-label">Maand Target</div><div class="amount-value target">${euro(lid.target)}</div></div></div><div class="recovery-bar-bg"><div class="recovery-bar-fill" style="width:${pct}%"></div></div><div class="pct-label">${pct}% van target</div>`;
+    grid.appendChild(card);
   });
-  dotsEl.appendChild(dot);
-});
 
-function next() {
-  slides[current].classList.remove('active');
-  slides[current].classList.add('exit');
-  setTimeout(() => slides[current].classList.remove('exit'), 700);
-  current = (current + 1) % slides.length;
-  slides[current].classList.add('active');
-  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  // Slide 2 — Cases
+  const cl=document.getElementById('casesLeft');
+  cl.innerHTML='';
+  const maxC=cases[0]?.cases||1;
+  cases.forEach((lid,i)=>{
+    const row=document.createElement('div');row.className='case-row';
+    row.innerHTML=`<div class="case-rank">${i+1}</div><div class="case-info"><div class="case-name">${lid.naam}</div><div class="case-type">${lid.rol}</div></div><div class="case-bar-wrap"><div class="case-bar-bg"><div class="case-bar-fill" style="width:${Math.round((lid.cases/maxC)*100)}%"></div></div></div><div class="case-count">${lid.cases}</div>`;
+    cl.appendChild(row);
+  });
+  const dc=document.getElementById('donutChart');const ctx=dc.getContext('2d');ctx.clearRect(0,0,240,240);
+  const total=cases.reduce((s,c)=>s+c.cases,0);let angle=-Math.PI/2;
+  cases.forEach((lid,i)=>{const slice=(lid.cases/total)*2*Math.PI;ctx.beginPath();ctx.moveTo(120,120);ctx.arc(120,120,90,angle,angle+slice);ctx.closePath();ctx.fillStyle=KLEUREN[i%KLEUREN.length];ctx.fill();angle+=slice;});
+  ctx.beginPath();ctx.arc(120,120,56,0,2*Math.PI);ctx.fillStyle='#161a24';ctx.fill();
+  ctx.fillStyle='#f1f5f9';ctx.font='bold 28px Barlow Condensed';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(total,120,112);
+  ctx.font='11px Barlow';ctx.fillStyle='#64748b';ctx.fillText('cases totaal',120,134);
+  const dl=document.getElementById('donutLegend');dl.innerHTML='';
+  cases.forEach((lid,i)=>{const it=document.createElement('div');it.className='legend-item';it.innerHTML=`<div class="legend-dot" style="background:${KLEUREN[i]}"></div>${lid.naam} (${lid.cases})`;dl.appendChild(it);});
+
+  // Slide 3 — Budget
+  document.getElementById('kpiTarget').textContent=euro(budget.mt);
+  document.getElementById('kpiTargetSub').textContent='Nog '+euro(Math.max(0,budget.mt-budget.hm))+' te gaan';
+  document.getElementById('kpiHuidig').textContent=euro(budget.hm);
+  const diff=budget.hm-budget.vm;
+  const de=document.getElementById('kpiDelta');de.className='kpi-delta '+(diff>=0?'up':'down');
+  de.textContent=(diff>=0?'▲ +':'▼ ')+euro(Math.abs(diff))+' vs vorige maand';
+  const jp=budget.jt>0?Math.round((budget.jtd/budget.jt)*100):0;
+  document.getElementById('kpiJtd').textContent=euro(budget.jtd);
+  document.getElementById('kpiJtdSub').textContent=jp+'% van jaartarget ('+euro(budget.jt)+')';
+
+  setTimeout(()=>{
+    const bc=document.getElementById('barChart');const bx=bc.getContext('2d');
+    const W=bc.offsetWidth||600;bc.width=W;
+    const H=160,pL=60,pR=20,pT=10,pB=30,cW=W-pL-pR,cH=H-pT-pB;
+    const maxV=(Math.max(...maanden.map(m=>Math.max(m.target,m.resultaat)),budget.mt)*1.1)||1;
+    bx.clearRect(0,0,W,H);bx.strokeStyle='#1e2230';bx.lineWidth=1;
+    [.25,.5,.75,1].forEach(f=>{const y=pT+cH*(1-f);bx.beginPath();bx.moveTo(pL,y);bx.lineTo(pL+cW,y);bx.stroke();bx.fillStyle='#64748b';bx.font='11px Barlow';bx.textAlign='right';bx.fillText('€'+Math.round(maxV*f/1000)+'K',pL-8,y+4);});
+    const bw=maanden.length>0?cW/maanden.length:cW;
+    maanden.forEach((m,i)=>{
+      const res=m.resultaat,tgt=m.target||budget.mt;
+      const x=pL+i*bw+bw/2,bH2=(res/maxV)*cH,bY=pT+cH-bH2;
+      bx.fillStyle=res>=tgt?'#10b981':res>=tgt*.8?'#f59e0b':'#ef4444';
+      bx.beginPath();bx.roundRect(x-bw*.22,bY,bw*.45,bH2,[4,4,0,0]);bx.fill();
+      const ty=pT+cH-(tgt/maxV)*cH;bx.strokeStyle='#3b82f6';bx.lineWidth=2;bx.setLineDash([4,4]);
+      bx.beginPath();bx.moveTo(x-bw*.28,ty);bx.lineTo(x+bw*.28,ty);bx.stroke();bx.setLineDash([]);
+      bx.fillStyle='#64748b';bx.font='11px Barlow';bx.textAlign='center';bx.fillText(m.naam,x,pT+cH+18);
+    });
+  },100);
+
+  document.getElementById('targetBreakdown').innerHTML='<div class="chart-title">Breakdown per categorie</div>';
+
+  // Slideshow
+  const slides=document.querySelectorAll('.slide');
+  const dotsEl=document.getElementById('navDots');
+  currentSlide=0;clearInterval(slideInterval);dotsEl.innerHTML='';
+  slides.forEach((s,i)=>{
+    s.classList.remove('active','exit');
+    const dot=document.createElement('div');dot.className='nav-dot'+(i===0?' active':'');
+    dot.addEventListener('click',()=>{slides[currentSlide].classList.remove('active');currentSlide=i;slides[currentSlide].classList.add('active');document.querySelectorAll('.nav-dot').forEach((d,j)=>d.classList.toggle('active',j===i));startProgress();});
+    dotsEl.appendChild(dot);
+  });
+  slides[0].classList.add('active');
   startProgress();
 }
 
-function startProgress() {
-  clearInterval(progressInterval);
-  const fill = document.getElementById('progressFill');
-  fill.style.transition = 'none'; fill.style.width = '0%';
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    fill.style.transition = 'width ' + DUUR + 'ms linear';
-    fill.style.width = '100%';
-  }));
-  progressInterval = setInterval(next, DUUR);
+function startProgress(){
+  clearInterval(slideInterval);
+  const fill=document.getElementById('progressFill');
+  fill.style.transition='none';fill.style.width='0%';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{fill.style.transition='width 10000ms linear';fill.style.width='100%';}));
+  slideInterval=setInterval(()=>{
+    const slides=document.querySelectorAll('.slide');
+    slides[currentSlide].classList.remove('active');slides[currentSlide].classList.add('exit');
+    setTimeout(()=>slides[currentSlide].classList.remove('exit'),700);
+    currentSlide=(currentSlide+1)%slides.length;
+    slides[currentSlide].classList.add('active');
+    document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===currentSlide));
+    startProgress();
+  },10000);
 }
-
-slides[0].classList.add('active');
-startProgress();
 </script>
 </body>
 </html>
