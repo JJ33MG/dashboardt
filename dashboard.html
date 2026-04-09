@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commercial Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --panel: #111318;
+    --border: #1e2230;
+    --accent: #f59e0b;
+    --accent2: #3b82f6;
+    --green: #10b981;
+    --red: #ef4444;
+    --text: #f1f5f9;
+    --muted: #64748b;
+    --card: #161a24;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--panel);
+    position: relative;
+    z-index: 10;
+  }
+  .logo {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .logo span { color: var(--text); font-weight: 300; }
+  .header-right { display: flex; gap: 32px; align-items: center; }
+  .live-badge {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.75rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+  #clock {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.4rem; font-weight: 600;
+    color: var(--text); letter-spacing: 2px;
+  }
+  .nav-dots { display: flex; gap: 8px; align-items: center; }
+  .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--border); transition: all 0.3s; cursor: pointer;
+  }
+  .nav-dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+  .progress-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 3px; background: var(--border); z-index: 100;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    width: 0%;
+  }
+  .slides-wrapper {
+    height: calc(100vh - 68px);
+    position: relative; overflow: hidden;
+  }
+  .slide {
+    position: absolute; inset: 0; padding: 32px 40px;
+    opacity: 0; transform: translateX(60px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+  .slide.active { opacity: 1; transform: translateX(0); pointer-events: all; }
+  .slide.exit { opacity: 0; transform: translateX(-60px); }
+  .slide-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+  }
+  .slide-heading {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 2.2rem; font-weight: 700;
+    color: var(--text); line-height: 1; margin-bottom: 28px;
+  }
+  .slide-heading span { color: var(--accent); }
+  .recovery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+  }
+  .member-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 18px 22px;
+    position: relative; overflow: hidden;
+  }
+  .member-card::before {
+    content: ''; position: absolute;
+    left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--accent);
+  }
+  .member-card.on-track::before { background: var(--green); }
+  .member-card.at-risk::before  { background: var(--accent); }
+  .member-card.behind::before   { background: var(--red); }
+  .member-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 12px;
+  }
+  .member-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.25rem; font-weight: 700; letter-spacing: 0.5px;
+  }
+  .member-role {
+    font-size: 0.72rem; color: var(--muted);
+    letter-spacing: 1px; text-transform: uppercase; margin-top: 2px;
+  }
+  .status-badge {
+    font-size: 0.65rem; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .status-badge.on-track { background: rgba(16,185,129,0.15); color: var(--green); }
+  .status-badge.at-risk  { background: rgba(245,158,11,0.15);  color: var(--accent); }
+  .status-badge.behind   { background: rgba(239,68,68,0.15);   color: var(--red); }
+  .recovery-amounts { display: flex; justify-content: space-between; margin-bottom: 10px; }
+  .amount-label {
+    font-size: 0.65rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px;
+  }
+  .amount-value { font-family: 'Barlow Condensed', sans-serif; font-size: 1.3rem; font-weight: 700; }
+  .amount-value.current { color: var(--text); }
+  .amount-value.target  { color: var(--muted); font-weight: 400; }
+  .recovery-bar-bg { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .recovery-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+  .on-track .recovery-bar-fill { background: var(--green); }
+  .at-risk  .recovery-bar-fill { background: var(--accent); }
+  .behind   .recovery-bar-fill { background: var(--red); }
+  .pct-label { font-size: 0.7rem; color: var(--muted); text-align: right; margin-top: 4px; }
+  .cases-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; height: calc(100% - 100px); }
+  .cases-left { display: flex; flex-direction: column; gap: 10px; }
+  .case-row {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 14px 20px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .case-rank {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.6rem; font-weight: 900;
+    color: var(--border); width: 32px; text-align: center;
+  }
+  .case-row:nth-child(1) .case-rank { color: var(--accent); }
+  .case-row:nth-child(2) .case-rank { color: var(--muted); }
+  .case-row:nth-child(3) .case-rank { color: #92400e; }
+  .case-info { flex: 1; }
+  .case-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 600; }
+  .case-type { font-size: 0.68rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .case-bar-wrap { flex: 2; }
+  .case-bar-bg { height: 8px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .case-bar-fill {
+    height: 100%; border-radius: 4px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+  }
+  .case-count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.5rem; font-weight: 700; min-width: 50px; text-align: right;
+  }
+  .cases-right {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .donut-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+  }
+  #donutChart { max-width: 240px; max-height: 240px; }
+  .donut-legend { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; width: 100%; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .budget-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 16px; height: calc(100% - 100px);
+  }
+  .kpi-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 22px 26px;
+    position: relative; overflow: hidden;
+  }
+  .kpi-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 2px;
+  }
+  .kpi-card.k1::after { background: var(--accent2); }
+  .kpi-card.k2::after { background: var(--accent); }
+  .kpi-card.k3::after { background: var(--green); }
+  .kpi-label { font-size: 0.68rem; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .kpi-value { font-family: 'Barlow Condensed', sans-serif; font-size: 2.6rem; font-weight: 700; line-height: 1; }
+  .kpi-card.k1 .kpi-value { color: var(--accent2); }
+  .kpi-card.k2 .kpi-value { color: var(--accent); }
+  .kpi-card.k3 .kpi-value { color: var(--green); }
+  .kpi-sub { font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+  .kpi-delta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 0.72rem; font-weight: 600;
+    padding: 2px 8px; border-radius: 12px; margin-top: 6px;
+  }
+  .kpi-delta.up   { background: rgba(16,185,129,0.15); color: var(--green); }
+  .kpi-delta.down { background: rgba(239,68,68,0.15);  color: var(--red); }
+  .budget-chart-wrap {
+    grid-column: span 2; background: var(--card);
+    border: 1px solid var(--border); border-radius: 12px; padding: 22px 26px;
+  }
+  .chart-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 16px;
+  }
+  #barChart { width: 100%; }
+  .target-breakdown {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 22px 26px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .target-item { display: flex; flex-direction: column; gap: 5px; }
+  .target-item-header { display: flex; justify-content: space-between; align-items: center; }
+  .target-item-label { font-size: 0.75rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .target-item-value { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; }
+  .target-mini-bar { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .target-mini-fill { height: 100%; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<script>
+// ════════════════════════════════════
+//  ✏️  PAS HIER JE GEGEVENS AAN
+// ════════════════════════════════════
+
+const BEDRIJF_NAAM = "Sales Team";   // ← Naam van je team
+
+const MAAND = "April 2026";          // ← Huidige maand
+
+// SLIDE 1: Hoeveel heeft iedereen binnengehaald vs target?
+// status: "on-track" / "at-risk" / "behind"
+const TEAMLEDEN = [
+  { naam: "Thomas",  rol: "Senior Advisor",  target: 45000, huidig: 38000, status: "at-risk"  },
+  { naam: "Sophie",  rol: "Account Manager", target: 35000, huidig: 36500, status: "on-track" },
+  { naam: "Daan",    rol: "Senior Advisor",  target: 45000, huidig: 20000, status: "behind"   },
+  { naam: "Laura",   rol: "Junior Advisor",  target: 25000, huidig: 24000, status: "on-track" },
+  { naam: "Kevin",   rol: "Account Manager", target: 35000, huidig: 18000, status: "behind"   },
+  { naam: "Emma",    rol: "Senior Advisor",  target: 45000, huidig: 44000, status: "on-track" },
+  { naam: "Niels",   rol: "Junior Advisor",  target: 25000, huidig: 12000, status: "behind"   },
+  { naam: "Lena",    rol: "Account Manager", target: 35000, huidig: 33000, status: "at-risk"  },
+];
+
+// SLIDE 2: Aantal open cases per teamlid
+const CASES = [
+  { naam: "Sophie", cases: 24, type: "Account Manager" },
+  { naam: "Emma",   cases: 22, type: "Senior Advisor"  },
+  { naam: "Thomas", cases: 19, type: "Senior Advisor"  },
+  { naam: "Laura",  cases: 17, type: "Junior Advisor"  },
+  { naam: "Lena",   cases: 15, type: "Account Manager" },
+  { naam: "Daan",   cases: 12, type: "Senior Advisor"  },
+  { naam: "Kevin",  cases: 10, type: "Account Manager" },
+  { naam: "Niels",  cases: 8,  type: "Junior Advisor"  },
+];
+
+// SLIDE 3: Budget overzicht
+const BUDGET = {
+  maandTarget:  280000,   // ← Maandelijks target totaal team
+  huidigeMaand: 215500,   // ← Wat er tot nu toe binnengehaald is
+  vorigeMaand:  198000,   // ← Resultaat vorige maand
+  jaarTarget:   3360000,  // ← Jaarlijks target
+  jaarTotNu:    820000,   // ← Jaar-to-date resultaat
+
+  // Laatste 6 maanden voor de grafiek
+  maanden: [
+    { naam: "Nov", resultaat: 210000, target: 280000 },
+    { naam: "Dec", resultaat: 175000, target: 280000 },
+    { naam: "Jan", resultaat: 255000, target: 280000 },
+    { naam: "Feb", resultaat: 198000, target: 280000 },
+    { naam: "Mar", resultaat: 198000, target: 280000 },
+    { naam: "Apr", resultaat: 215500, target: 280000 },
+  ],
+
+  // Breakdown per categorie
+  categorieën: [
+    { naam: "New Business", target: 120000, huidig: 82000, kleur: "#3b82f6" },
+    { naam: "Renewals",     target: 100000, huidig: 94000, kleur: "#f59e0b" },
+    { naam: "Upsell",       target: 60000,  huidig: 39500, kleur: "#10b981" },
+  ]
+};
+
+// Seconden per slide
+const SECONDEN_PER_SLIDE = 10;
+
+// ════════════════════════════════════
+//  EINDE — niets hieronder aanpassen
+// ════════════════════════════════════
+</script>
+
+<header>
+  <div class="logo" id="bedrijfNaam">SALES <span>TEAM</span></div>
+  <div class="header-right">
+    <div class="nav-dots" id="navDots"></div>
+    <div class="live-badge"><div class="live-dot"></div> Live</div>
+    <div id="clock">--:--</div>
+  </div>
+</header>
+
+<div class="slides-wrapper">
+  <div class="slide" id="slide-0">
+    <div class="slide-title">Slide 1 van 3 · Commercial Recovery</div>
+    <div class="slide-heading">Recovery <span>Targets</span> — <span id="s1maand"></span></div>
+    <div class="recovery-grid" id="recoveryGrid"></div>
+  </div>
+  <div class="slide" id="slide-1">
+    <div class="slide-title">Slide 2 van 3 · Workload</div>
+    <div class="slide-heading">Cases per <span>Teamlid</span></div>
+    <div class="cases-layout">
+      <div class="cases-left" id="casesLeft"></div>
+      <div class="cases-right">
+        <div class="donut-label">Verdeling Cases</div>
+        <canvas id="donutChart" width="240" height="240"></canvas>
+        <div class="donut-legend" id="donutLegend"></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide" id="slide-2">
+    <div class="slide-title">Slide 3 van 3 · Financial Overview</div>
+    <div class="slide-heading">Budget <span>Overzicht</span> — <span id="s3maand"></span></div>
+    <div class="budget-layout">
+      <div class="kpi-card k1">
+        <div class="kpi-label">Maand Target</div>
+        <div class="kpi-value" id="kpiTarget"></div>
+        <div class="kpi-sub" id="kpiTargetSub"></div>
+      </div>
+      <div class="kpi-card k2">
+        <div class="kpi-label">Huidig Resultaat</div>
+        <div class="kpi-value" id="kpiHuidig"></div>
+        <div class="kpi-delta" id="kpiDelta"></div>
+      </div>
+      <div class="kpi-card k3">
+        <div class="kpi-label">Jaar-to-Date</div>
+        <div class="kpi-value" id="kpiJtd"></div>
+        <div class="kpi-sub" id="kpiJtdSub"></div>
+      </div>
+      <div class="budget-chart-wrap">
+        <div class="chart-title">Maandresultaten vs Target · Laatste 6 maanden</div>
+        <canvas id="barChart" height="160"></canvas>
+      </div>
+      <div class="target-breakdown" id="targetBreakdown">
+        <div class="chart-title">Breakdown per categorie</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<script>
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+}
+updateClock(); setInterval(updateClock, 10000);
+
+function euro(n) { return '€' + n.toLocaleString('nl-NL'); }
+
+const naamDelen = BEDRIJF_NAAM.split(' ');
+document.getElementById('bedrijfNaam').innerHTML = naamDelen.length >= 2
+  ? naamDelen[0] + ' <span>' + naamDelen.slice(1).join(' ') + '</span>'
+  : BEDRIJF_NAAM;
+
+document.getElementById('s1maand').textContent = MAAND;
+const grid = document.getElementById('recoveryGrid');
+TEAMLEDEN.forEach(lid => {
+  const pct = Math.min(100, Math.round((lid.huidig / lid.target) * 100));
+  const card = document.createElement('div');
+  card.className = 'member-card ' + lid.status;
+  const labelMap = { 'on-track': 'Op schema', 'at-risk': 'Aandacht', 'behind': 'Achter' };
+  card.innerHTML = `
+    <div class="member-header">
+      <div>
+        <div class="member-name">${lid.naam}</div>
+        <div class="member-role">${lid.rol}</div>
+      </div>
+      <div class="status-badge ${lid.status}">${labelMap[lid.status]}</div>
+    </div>
+    <div class="recovery-amounts">
+      <div>
+        <div class="amount-label">Binnengehaald</div>
+        <div class="amount-value current">${euro(lid.huidig)}</div>
+      </div>
+      <div style="text-align:right">
+        <div class="amount-label">Maand Target</div>
+        <div class="amount-value target">${euro(lid.target)}</div>
+      </div>
+    </div>
+    <div class="recovery-bar-bg">
+      <div class="recovery-bar-fill" style="width:${pct}%"></div>
+    </div>
+    <div class="pct-label">${pct}% van target</div>`;
+  grid.appendChild(card);
+});
+
+const KLEUREN = ['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ec4899','#14b8a6','#f97316','#06b6d4'];
+const maxCases = CASES[0].cases;
+const casesLeft = document.getElementById('casesLeft');
+CASES.forEach((lid, i) => {
+  const row = document.createElement('div');
+  row.className = 'case-row';
+  row.innerHTML = `
+    <div class="case-rank">${i + 1}</div>
+    <div class="case-info">
+      <div class="case-name">${lid.naam}</div>
+      <div class="case-type">${lid.type}</div>
+    </div>
+    <div class="case-bar-wrap">
+      <div class="case-bar-bg">
+        <div class="case-bar-fill" style="width:${Math.round((lid.cases/maxCases)*100)}%"></div>
+      </div>
+    </div>
+    <div class="case-count">${lid.cases}</div>`;
+  casesLeft.appendChild(row);
+});
+
+function drawDonut() {
+  const canvas = document.getElementById('donutChart');
+  const ctx = canvas.getContext('2d');
+  const total = CASES.reduce((s, c) => s + c.cases, 0);
+  const cx = 120, cy = 120, r = 90, inner = 56;
+  let angle = -Math.PI / 2;
+  CASES.forEach((lid, i) => {
+    const slice = (lid.cases / total) * 2 * Math.PI;
+    ctx.beginPath(); ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, r, angle, angle + slice);
+    ctx.closePath();
+    ctx.fillStyle = KLEUREN[i % KLEUREN.length];
+    ctx.fill();
+    angle += slice;
+  });
+  ctx.beginPath(); ctx.arc(cx, cy, inner, 0, 2 * Math.PI);
+  ctx.fillStyle = '#161a24'; ctx.fill();
+  ctx.fillStyle = '#f1f5f9';
+  ctx.font = 'bold 28px Barlow Condensed';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(total, cx, cy - 8);
+  ctx.font = '11px Barlow'; ctx.fillStyle = '#64748b';
+  ctx.fillText('cases totaal', cx, cy + 14);
+  const legend = document.getElementById('donutLegend');
+  CASES.forEach((lid, i) => {
+    const item = document.createElement('div');
+    item.className = 'legend-item';
+    item.innerHTML = `<div class="legend-dot" style="background:${KLEUREN[i]}"></div>${lid.naam} (${lid.cases})`;
+    legend.appendChild(item);
+  });
+}
+drawDonut();
+
+document.getElementById('s3maand').textContent = MAAND;
+document.getElementById('kpiTarget').textContent = euro(BUDGET.maandTarget);
+document.getElementById('kpiTargetSub').textContent = 'Nog ' + euro(Math.max(0, BUDGET.maandTarget - BUDGET.huidigeMaand)) + ' te gaan';
+document.getElementById('kpiHuidig').textContent = euro(BUDGET.huidigeMaand);
+const diff = BUDGET.huidigeMaand - BUDGET.vorigeMaand;
+const deltaEl = document.getElementById('kpiDelta');
+deltaEl.className = 'kpi-delta ' + (diff >= 0 ? 'up' : 'down');
+deltaEl.textContent = (diff >= 0 ? '▲ +' : '▼ ') + euro(Math.abs(diff)) + ' vs vorige maand';
+const jtdPct = Math.round((BUDGET.jaarTotNu / BUDGET.jaarTarget) * 100);
+document.getElementById('kpiJtd').textContent = euro(BUDGET.jaarTotNu);
+document.getElementById('kpiJtdSub').textContent = jtdPct + '% van jaartarget (' + euro(BUDGET.jaarTarget) + ')';
+
+function drawBar() {
+  const canvas = document.getElementById('barChart');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 600;
+  canvas.width = W;
+  const H = 160, padL = 60, padR = 20, padT = 10, padB = 30;
+  const chartW = W - padL - padR, chartH = H - padT - padB;
+  const maxVal = Math.max(...BUDGET.maanden.map(m => m.target)) * 1.1;
+  ctx.clearRect(0, 0, W, H);
+  ctx.strokeStyle = '#1e2230'; ctx.lineWidth = 1;
+  [0.25, 0.5, 0.75, 1].forEach(f => {
+    const y = padT + chartH * (1 - f);
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + chartW, y); ctx.stroke();
+    ctx.fillStyle = '#64748b'; ctx.font = '11px Barlow';
+    ctx.textAlign = 'right';
+    ctx.fillText('€' + Math.round(maxVal * f / 1000) + 'K', padL - 8, y + 4);
+  });
+  const bw = chartW / BUDGET.maanden.length;
+  const barW = bw * 0.45;
+  BUDGET.maanden.forEach((m, i) => {
+    const x = padL + i * bw + bw / 2;
+    const barH = (m.resultaat / maxVal) * chartH;
+    const barY = padT + chartH - barH;
+    ctx.fillStyle = m.resultaat >= m.target ? '#10b981' : (m.resultaat >= m.target * 0.8 ? '#f59e0b' : '#ef4444');
+    ctx.beginPath();
+    ctx.roundRect(x - barW / 2, barY, barW, barH, [4, 4, 0, 0]);
+    ctx.fill();
+    const ty = padT + chartH - (m.target / maxVal) * chartH;
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath(); ctx.moveTo(x - barW/2 - 6, ty); ctx.lineTo(x + barW/2 + 6, ty); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#64748b'; ctx.font = '11px Barlow'; ctx.textAlign = 'center';
+    ctx.fillText(m.naam, x, padT + chartH + 18);
+  });
+}
+drawBar();
+
+const breakdown = document.getElementById('targetBreakdown');
+BUDGET.categorieën.forEach(cat => {
+  const pct = Math.min(100, Math.round((cat.huidig / cat.target) * 100));
+  const item = document.createElement('div');
+  item.className = 'target-item';
+  item.innerHTML = `
+    <div class="target-item-header">
+      <div class="target-item-label">${cat.naam}</div>
+      <div class="target-item-value" style="color:${cat.kleur}">${euro(cat.huidig)} <span style="color:var(--muted);font-size:0.85rem">/ ${euro(cat.target)}</span></div>
+    </div>
+    <div class="target-mini-bar">
+      <div class="target-mini-fill" style="width:${pct}%;background:${cat.kleur}"></div>
+    </div>`;
+  breakdown.appendChild(item);
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsEl = document.getElementById('navDots');
+let current = 0;
+let progressInterval = null;
+const DUUR = SECONDEN_PER_SLIDE * 1000;
+slides.forEach((_, i) => {
+  const dot = document.createElement('div');
+  dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+  dot.addEventListener('click', () => {
+    slides[current].classList.remove('active');
+    current = i;
+    slides[current].classList.add('active');
+    document.querySelectorAll('.nav-dot').forEach((d, j) => d.classList.toggle('active', j === i));
+    startProgress();
+  });
+  dotsEl.appendChild(dot);
+});
+
+function next() {
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit');
+  setTimeout(() => slides[current].classList.remove('exit'), 700);
+  current = (current + 1) % slides.length;
+  slides[current].classList.add('active');
+  document.querySelectorAll('.nav-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  startProgress();
+}
+
+function startProgress() {
+  clearInterval(progressInterval);
+  const fill = document.getElementById('progressFill');
+  fill.style.transition = 'none'; fill.style.width = '0%';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    fill.style.transition = 'width ' + DUUR + 'ms linear';
+    fill.style.width = '100%';
+  }));
+  progressInterval = setInterval(next, DUUR);
+}
+
+slides[0].classList.add('active');
+startProgress();
+</script>
+</body>
+</html>
