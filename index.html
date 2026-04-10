@@ -9,52 +9,61 @@
 :root{--bg:#0a0c10;--panel:#111318;--border:#1e2230;--accent:#f59e0b;--accent2:#3b82f6;--green:#10b981;--red:#ef4444;--text:#f1f5f9;--muted:#64748b;--card:#161a24;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;}
-#uploadScreen{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px 20px;overflow-y:auto;}
+#uploadScreen{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 20px;overflow-y:auto;}
 #uploadScreen.hidden{display:none;}
 .up-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);}
 .up-logo span{color:var(--text);font-weight:300;}
-.up-subtitle{font-size:.85rem;color:var(--muted);text-align:center;}
-.upload-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;width:100%;max-width:1000px;}
-.upload-card{flex:1;min-width:280px;max-width:320px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:16px;transition:border-color .3s;}
+.up-subtitle{font-size:.85rem;color:var(--muted);text-align:center;max-width:600px;line-height:1.6;}
+.upload-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;width:100%;max-width:1060px;}
+.upload-card{flex:1;min-width:290px;max-width:330px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;transition:border-color .3s;position:relative;}
 .upload-card.loaded{border-color:var(--green);}
-.upload-card.error{border-color:var(--red);}
+.upload-card.skipped{opacity:.5;}
+.optional-tag{font-size:.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:2px 8px;display:inline-block;margin-bottom:2px;}
 .card-header{display:flex;align-items:center;gap:12px;}
-.card-icon{font-size:1.8rem;}
-.card-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;}
-.card-badge{font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:10px;background:rgba(59,130,246,.15);color:var(--accent2);border:1px solid rgba(59,130,246,.3);margin-top:3px;display:inline-block;}
-.card-desc{font-size:.78rem;color:var(--muted);line-height:1.5;}
-.drop-zone{border:2px dashed var(--border);border-radius:10px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .3s;position:relative;}
+.card-icon{font-size:1.6rem;}
+.card-title{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;}
+.card-badge{font-size:.6rem;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:10px;background:rgba(59,130,246,.15);color:var(--accent2);border:1px solid rgba(59,130,246,.3);display:inline-block;margin-top:2px;}
+.card-badge.sf{background:rgba(16,185,129,.15);color:var(--green);border-color:rgba(16,185,129,.3);}
+.card-desc{font-size:.76rem;color:var(--muted);line-height:1.5;}
+.drop-zone{border:2px dashed var(--border);border-radius:10px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .3s;}
 .drop-zone:hover,.drop-zone.dragover{border-color:var(--accent);background:rgba(245,158,11,.05);}
 .upload-card.loaded .drop-zone{border-color:var(--green);background:rgba(16,185,129,.05);}
-.drop-zone-text{font-size:.8rem;color:var(--muted);margin-bottom:10px;}
-.drop-file-name{font-size:.75rem;color:var(--green);margin-top:6px;display:none;font-weight:600;}
-.drop-btn{display:inline-block;background:var(--panel);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;padding:8px 20px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.drop-zone-text{font-size:.78rem;color:var(--muted);margin-bottom:8px;}
+.drop-file-name{font-size:.73rem;color:var(--green);margin-top:5px;display:none;font-weight:600;}
+.drop-btn{display:inline-block;background:var(--panel);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;padding:7px 18px;border-radius:6px;cursor:pointer;transition:all .2s;}
 .drop-btn:hover{border-color:var(--accent);color:var(--accent);}
-/* Salesforce info blokje */
-.sf-info{background:var(--panel);border:1px solid rgba(59,130,246,.25);border-radius:8px;padding:12px 14px;font-size:.75rem;color:var(--muted);line-height:1.6;}
-.sf-info strong{color:var(--accent2);display:block;margin-bottom:4px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:.7rem;}
-.sf-steps{list-style:none;display:flex;flex-direction:column;gap:3px;}
-.sf-steps li::before{content:'→ ';color:var(--accent2);}
-.card-config{display:none;flex-direction:column;gap:10px;}
+.sf-info{background:var(--panel);border:1px solid rgba(16,185,129,.2);border-radius:8px;padding:9px 12px;font-size:.73rem;color:var(--muted);line-height:1.6;}
+.sf-info strong{color:var(--accent2);display:block;margin-bottom:2px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:.65rem;}
+.card-config{display:none;flex-direction:column;gap:9px;}
 .upload-card.loaded .card-config{display:flex;}
-.cfg-label{font-size:.68rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
-.sheet-pills{display:flex;flex-wrap:wrap;gap:6px;}
-.sheet-pill{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-size:.75rem;cursor:pointer;transition:all .2s;}
+.cfg-label{font-size:.65rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:2px;}
+.sheet-pills{display:flex;flex-wrap:wrap;gap:5px;}
+.sheet-pill{padding:4px 11px;border-radius:20px;border:1px solid var(--border);background:var(--panel);color:var(--muted);font-size:.72rem;cursor:pointer;transition:all .2s;}
 .sheet-pill:hover{border-color:var(--accent);color:var(--accent);}
 .sheet-pill.selected{border-color:var(--accent);background:rgba(245,158,11,.1);color:var(--accent);}
-select.cfg-select{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 10px;font-family:'Barlow',sans-serif;font-size:.8rem;cursor:pointer;}
+select.cfg-select{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:7px 10px;font-family:'Barlow',sans-serif;font-size:.78rem;cursor:pointer;}
 select.cfg-select:focus{outline:none;border-color:var(--accent);}
 select.cfg-select option{background:var(--panel);}
-.cfg-row{display:flex;flex-direction:column;}
-.toggle-wrap{display:flex;align-items:center;gap:8px;padding:8px 0;}
-.toggle-wrap label{font-size:.75rem;color:var(--muted);cursor:pointer;}
-.toggle-wrap input{accent-color:var(--accent);cursor:pointer;}
-.start-btn{padding:14px 48px;background:var(--accent);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;letter-spacing:3px;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;opacity:.4;pointer-events:none;}
-.start-btn.ready{opacity:1;pointer-events:all;}
-.start-btn.ready:hover{opacity:.85;}
-.start-error{color:var(--red);font-size:.78rem;display:none;text-align:center;}
+select.cfg-select.auto-filled{border-color:rgba(16,185,129,.5);}
+.cfg-row{display:flex;flex-direction:column;gap:2px;}
+.auto-tag{font-size:.58rem;color:var(--green);letter-spacing:1px;margin-left:4px;}
+.toggle-wrap{display:flex;align-items:center;gap:7px;padding:3px 0;}
+.toggle-wrap label{font-size:.72rem;color:var(--muted);cursor:pointer;line-height:1.4;}
+.toggle-wrap input{accent-color:var(--accent);cursor:pointer;flex-shrink:0;}
+.kv-input{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:7px 10px;font-family:'Barlow',sans-serif;font-size:.8rem;}
+.kv-input:focus{outline:none;border-color:var(--accent);}
+.kv-label{font-size:.65rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+
+/* Start sectie */
+.start-section{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.ready-status{font-size:.78rem;color:var(--muted);text-align:center;letter-spacing:.5px;}
+.ready-status .ok{color:var(--green);font-weight:600;}
+.start-btn{padding:14px 56px;background:var(--accent);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;transition:all .2s;opacity:.3;pointer-events:none;}
+.start-btn.ready{opacity:1;pointer-events:all;box-shadow:0 0 28px rgba(245,158,11,.35);}
+.start-btn.ready:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(245,158,11,.45);}
+
+/* Dashboard */
 #dashboard{display:none;}
-#dashboard.visible{display:block;}
 header{display:flex;justify-content:space-between;align-items:center;padding:18px 40px 14px;border-bottom:1px solid var(--border);background:var(--panel);z-index:10;position:relative;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);}
 .logo span{color:var(--text);font-weight:300;}
@@ -150,20 +159,20 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 
 <div id="uploadScreen">
   <div class="up-logo">Commercial <span>Dashboard</span></div>
-  <div class="up-subtitle">Upload de bestanden. Daarna wijs je zelf aan welke kolom wat betekent.</div>
+  <div class="up-subtitle">Upload één of meerdere bestanden. Elke sectie is optioneel — het dashboard toont alleen de slides waarvoor je data hebt.</div>
 
   <div class="upload-cards">
 
     <!-- KAART 1: Commercial Loss -->
     <div class="upload-card" id="card1">
-      <div class="card-header">
-        <div class="card-icon">📉</div>
-        <div>
-          <div class="card-title">Commercial Loss</div>
-          <div class="card-badge">Excel .xlsx</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div class="card-header">
+          <div class="card-icon">📉</div>
+          <div><div class="card-title">Commercial Loss</div><div class="card-badge">Excel .xlsx</div></div>
         </div>
+        <span class="optional-tag">Optioneel</span>
       </div>
-      <div class="card-desc">Het bestand met hoeveel iedereen moet binnenhalen en wat er al gerealiseerd is.</div>
+      <div class="card-desc">Hoeveel iedereen moet binnenhalen en wat er al gerealiseerd is.</div>
       <div class="drop-zone" id="dz1">
         <div class="drop-zone-text">Sleep je .xlsx bestand hier</div>
         <div class="drop-btn" id="dbtn1">Bestand kiezen</div>
@@ -171,41 +180,30 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
         <input type="file" accept=".xlsx,.xls" style="display:none" id="fi1">
       </div>
       <div class="card-config" id="cfg1">
-        <div><div class="cfg-label">Welk tabblad?</div><div class="sheet-pills" id="pills1"></div></div>
-        <div id="colmap1" style="display:none;flex-direction:column;gap:8px;">
-          <div class="cfg-row"><div class="cfg-label">Kolom: Naam teamlid</div><select class="cfg-select" id="c1_naam"></select></div>
-          <div class="cfg-row"><div class="cfg-label">Kolom: Functie / Rol (optioneel)</div><select class="cfg-select" id="c1_rol"></select></div>
-          <div class="cfg-row"><div class="cfg-label">Kolom: Maand Target (bedrag)</div><select class="cfg-select" id="c1_target"></select></div>
-          <div class="cfg-row"><div class="cfg-label">Kolom: Huidig resultaat (bedrag)</div><select class="cfg-select" id="c1_huidig"></select></div>
-          <div class="toggle-wrap"><input type="checkbox" id="autoStatus" checked><label for="autoStatus">Status automatisch berekenen op basis van %</label></div>
-          <div id="statusColWrap" style="display:none"><div class="cfg-row"><div class="cfg-label">Kolom: Status</div><select class="cfg-select" id="c1_status"></select></div></div>
-        </div>
+        <div id="pillswrap1" style="display:none"><div class="cfg-label">Tabblad</div><div class="sheet-pills" id="pills1"></div></div>
+        <div class="cfg-row"><div class="cfg-label">Naam teamlid <span class="auto-tag" id="at1_naam"></span></div><select class="cfg-select" id="c1_naam"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Functie / Rol (optioneel) <span class="auto-tag" id="at1_rol"></span></div><select class="cfg-select" id="c1_rol"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Maand Target <span class="auto-tag" id="at1_target"></span></div><select class="cfg-select" id="c1_target"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Huidig resultaat <span class="auto-tag" id="at1_huidig"></span></div><select class="cfg-select" id="c1_huidig"></select></div>
+        <div class="toggle-wrap"><input type="checkbox" id="autoStatus" checked><label for="autoStatus">Status automatisch berekenen (≥100% groen, ≥80% oranje, &lt;80% rood)</label></div>
+        <div id="statusColWrap" style="display:none"><div class="cfg-row"><div class="cfg-label">Status kolom</div><select class="cfg-select" id="c1_status"></select></div></div>
       </div>
     </div>
 
-    <!-- KAART 2: Cases — SALESFORCE CSV -->
+    <!-- KAART 2: Cases -->
     <div class="upload-card" id="card2">
-      <div class="card-header">
-        <div class="card-icon">☁️</div>
-        <div>
-          <div class="card-title">Cases</div>
-          <div class="card-badge" style="background:rgba(16,185,129,.15);color:var(--green);border-color:rgba(16,185,129,.3);">Salesforce CSV</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div class="card-header">
+          <div class="card-icon">☁️</div>
+          <div><div class="card-title">Cases</div><div class="card-badge sf">Salesforce CSV</div></div>
         </div>
+        <span class="optional-tag">Optioneel</span>
       </div>
-      <div class="card-desc">Exporteer een rapport uit Salesforce als CSV en upload het hier.</div>
-
-      <!-- Salesforce uitleg -->
+      <div class="card-desc">Exporteer je rapport uit Salesforce als CSV.</div>
       <div class="sf-info">
-        <strong>📥 Hoe exporteer je uit Salesforce?</strong>
-        <ol class="sf-steps">
-          <li>Ga naar je rapport in Salesforce</li>
-          <li>Klik rechtsboven op de pijl naast "Uitvoeren"</li>
-          <li>Kies <strong>"Exporteren"</strong></li>
-          <li>Kies formaat: <strong>CSV</strong></li>
-          <li>Sla het bestand op en upload het hier</li>
-        </ol>
+        <strong>📥 Exporteren uit Salesforce</strong>
+        Rapport → pijltje naast "Uitvoeren" → Exporteren → CSV → Opslaan
       </div>
-
       <div class="drop-zone" id="dz2">
         <div class="drop-zone-text">Sleep je Salesforce .csv bestand hier</div>
         <div class="drop-btn" id="dbtn2">Bestand kiezen</div>
@@ -213,26 +211,23 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
         <input type="file" accept=".csv,.xlsx,.xls" style="display:none" id="fi2">
       </div>
       <div class="card-config" id="cfg2">
-        <!-- CSV heeft geen tabbladen, dus direct kolommen -->
-        <div id="colmap2" style="display:flex;flex-direction:column;gap:8px;">
-          <div class="cfg-row"><div class="cfg-label">Kolom: Naam teamlid / owner</div><select class="cfg-select" id="c2_naam"></select></div>
-          <div class="cfg-row"><div class="cfg-label">Kolom: Aantal cases (of tel automatisch)</div><select class="cfg-select" id="c2_cases"></select></div>
-          <div class="cfg-row"><div class="cfg-label">Kolom: Functie / Rol (optioneel)</div><select class="cfg-select" id="c2_rol"></select></div>
-          <div class="toggle-wrap"><input type="checkbox" id="autoCount" checked><label for="autoCount">Cases automatisch tellen per persoon (als elke rij 1 case is)</label></div>
-        </div>
+        <div class="cfg-row"><div class="cfg-label">Naam / Owner <span class="auto-tag" id="at2_naam"></span></div><select class="cfg-select" id="c2_naam"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Aantal cases <span class="auto-tag" id="at2_cases"></span></div><select class="cfg-select" id="c2_cases"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Functie / Rol (optioneel) <span class="auto-tag" id="at2_rol"></span></div><select class="cfg-select" id="c2_rol"></select></div>
+        <div class="toggle-wrap"><input type="checkbox" id="autoCount" checked><label for="autoCount">Elke rij = 1 case (automatisch tellen per persoon)</label></div>
       </div>
     </div>
 
     <!-- KAART 3: Budget -->
     <div class="upload-card" id="card3">
-      <div class="card-header">
-        <div class="card-icon">💰</div>
-        <div>
-          <div class="card-title">Budget</div>
-          <div class="card-badge">Excel .xlsx</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div class="card-header">
+          <div class="card-icon">💰</div>
+          <div><div class="card-title">Budget</div><div class="card-badge">Excel .xlsx</div></div>
         </div>
+        <span class="optional-tag">Optioneel</span>
       </div>
-      <div class="card-desc">Het bestand met het maandbudget, targets en historische resultaten.</div>
+      <div class="card-desc">Maandbudget, targets en historische resultaten.</div>
       <div class="drop-zone" id="dz3">
         <div class="drop-zone-text">Sleep je .xlsx bestand hier</div>
         <div class="drop-btn" id="dbtn3">Bestand kiezen</div>
@@ -240,33 +235,27 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
         <input type="file" accept=".xlsx,.xls" style="display:none" id="fi3">
       </div>
       <div class="card-config" id="cfg3">
-        <div><div class="cfg-label">Welk tabblad?</div><div class="sheet-pills" id="pills3"></div></div>
-        <div id="colmap3" style="display:none;flex-direction:column;gap:8px;">
-          <div class="cfg-row"><div class="cfg-label">Kolom: Maand naam</div><select class="cfg-select" id="c3_maand"></select></div>
-          <div class="cfg-row"><div class="cfg-label">Kolom: Resultaat</div><select class="cfg-select" id="c3_res"></select></div>
-          <div class="cfg-row"><div class="cfg-label">Kolom: Target</div><select class="cfg-select" id="c3_tgt"></select></div>
-          <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
-            <div class="cfg-label" style="margin-bottom:8px;">Vul ook in ↓</div>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <div class="cfg-row"><div class="cfg-label">Naam van de maand</div><input class="cfg-select" id="c3_maandnaam" placeholder="April 2026" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
-              <div class="cfg-row"><div class="cfg-label">Maand Target (totaal team)</div><input class="cfg-select" id="c3_maandtarget" type="number" placeholder="280000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
-              <div class="cfg-row"><div class="cfg-label">Huidig resultaat deze maand</div><input class="cfg-select" id="c3_huidig" type="number" placeholder="215000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
-              <div class="cfg-row"><div class="cfg-label">Resultaat vorige maand</div><input class="cfg-select" id="c3_vorig" type="number" placeholder="198000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
-              <div class="cfg-row"><div class="cfg-label">Jaarlijks target</div><input class="cfg-select" id="c3_jaartarget" type="number" placeholder="3360000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
-              <div class="cfg-row"><div class="cfg-label">Jaar-to-date resultaat</div><input class="cfg-select" id="c3_jtd" type="number" placeholder="820000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
-            </div>
-          </div>
+        <div id="pillswrap3" style="display:none"><div class="cfg-label">Tabblad</div><div class="sheet-pills" id="pills3"></div></div>
+        <div class="cfg-row"><div class="cfg-label">Maand kolom <span class="auto-tag" id="at3_maand"></span></div><select class="cfg-select" id="c3_maand"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Resultaat kolom <span class="auto-tag" id="at3_res"></span></div><select class="cfg-select" id="c3_res"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Target kolom <span class="auto-tag" id="at3_tgt"></span></div><select class="cfg-select" id="c3_tgt"></select></div>
+        <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:7px;">
+          <div class="kv-label">Vul ook in ↓</div>
+          <div class="cfg-row"><div class="kv-label">Maandnaam (bijv. April 2026)</div><input class="kv-input" id="c3_maandnaam" placeholder="April 2026"></div>
+          <div class="cfg-row"><div class="kv-label">Maand Target (totaal team)</div><input class="kv-input" id="c3_maandtarget" type="number" placeholder="280000"></div>
+          <div class="cfg-row"><div class="kv-label">Huidig resultaat deze maand</div><input class="kv-input" id="c3_huidig" type="number" placeholder="215000"></div>
+          <div class="cfg-row"><div class="kv-label">Resultaat vorige maand</div><input class="kv-input" id="c3_vorig" type="number" placeholder="198000"></div>
+          <div class="cfg-row"><div class="kv-label">Jaarlijks target</div><input class="kv-input" id="c3_jaartarget" type="number" placeholder="3360000"></div>
+          <div class="cfg-row"><div class="kv-label">Jaar-to-date resultaat</div><input class="kv-input" id="c3_jtd" type="number" placeholder="820000"></div>
         </div>
       </div>
     </div>
 
   </div>
 
-  <div>
-    <div class="start-error" id="startError">Zorg dat alle 3 bestanden zijn geüpload en de kolommen zijn ingesteld.</div>
-    <div style="text-align:center;margin-top:8px;">
-      <button class="start-btn" id="startBtn" onclick="launchDashboard()">🚀 Dashboard starten</button>
-    </div>
+  <div class="start-section">
+    <div class="ready-status" id="readyStatus">Upload minimaal 1 bestand om te starten</div>
+    <button class="start-btn" id="startBtn" onclick="launchDashboard()">🚀 Dashboard starten</button>
   </div>
 </div>
 
@@ -281,36 +270,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
       <div class="reload-btn" id="reloadBtn">↑ Nieuwe bestanden</div>
     </div>
   </header>
-  <div class="slides-wrapper">
-    <div class="slide" id="slide-0">
-      <div class="slide-title">Slide 1 van 3 · Commercial Recovery</div>
-      <div class="slide-heading">Recovery <span>Targets</span> — <span id="s1maand"></span></div>
-      <div class="recovery-grid" id="recoveryGrid"></div>
-    </div>
-    <div class="slide" id="slide-1">
-      <div class="slide-title">Slide 2 van 3 · Workload</div>
-      <div class="slide-heading">Cases per <span>Teamlid</span></div>
-      <div class="cases-layout">
-        <div class="cases-left" id="casesLeft"></div>
-        <div class="cases-right">
-          <div class="donut-label">Verdeling Cases</div>
-          <canvas id="donutChart" width="240" height="240"></canvas>
-          <div class="donut-legend" id="donutLegend"></div>
-        </div>
-      </div>
-    </div>
-    <div class="slide" id="slide-2">
-      <div class="slide-title">Slide 3 van 3 · Financial Overview</div>
-      <div class="slide-heading">Budget <span>Overzicht</span> — <span id="s3maand"></span></div>
-      <div class="budget-layout">
-        <div class="kpi-card k1"><div class="kpi-label">Maand Target</div><div class="kpi-value" id="kpiTarget"></div><div class="kpi-sub" id="kpiTargetSub"></div></div>
-        <div class="kpi-card k2"><div class="kpi-label">Huidig Resultaat</div><div class="kpi-value" id="kpiHuidig"></div><div class="kpi-delta" id="kpiDelta"></div></div>
-        <div class="kpi-card k3"><div class="kpi-label">Jaar-to-Date</div><div class="kpi-value" id="kpiJtd"></div><div class="kpi-sub" id="kpiJtdSub"></div></div>
-        <div class="budget-chart-wrap"><div class="chart-title">Maandresultaten vs Target</div><canvas id="barChart" height="160"></canvas></div>
-        <div class="target-breakdown" id="targetBreakdown"><div class="chart-title">Breakdown per categorie</div></div>
-      </div>
-    </div>
-  </div>
+  <div class="slides-wrapper" id="slidesWrapper"></div>
   <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
 </div>
 
@@ -320,12 +280,53 @@ let wbs={1:null,3:null};
 let csvRows2=null;
 let selectedSheet={1:null,3:null};
 let slideInterval=null,currentSlide=0;
+let activeSlides=[];
 
 function euro(n){return'€'+Number(n).toLocaleString('nl-NL');}
 function updateClock(){const n=new Date();document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
 updateClock();setInterval(updateClock,10000);
 
-// ── Upload kaarten 1 en 3 (Excel) ──
+document.getElementById('autoStatus').addEventListener('change',function(){
+  document.getElementById('statusColWrap').style.display=this.checked?'none':'block';
+});
+
+// ── Knop activeren zodra 1 bestand geladen is ──
+function updateStartBtn(){
+  const anyLoaded=wbs[1]||csvRows2||wbs[3];
+  const btn=document.getElementById('startBtn');
+  const status=document.getElementById('readyStatus');
+  if(anyLoaded){
+    btn.classList.add('ready');
+    const parts=[];
+    if(wbs[1])parts.push('Commercial Loss');
+    if(csvRows2)parts.push('Cases');
+    if(wbs[3])parts.push('Budget');
+    status.innerHTML='<span class="ok">✓ Klaar om te starten</span> — '+parts.join(', ')+' geladen';
+  } else {
+    btn.classList.remove('ready');
+    status.textContent='Upload minimaal 1 bestand om te starten';
+  }
+}
+
+// ── Auto-select helper ──
+function autoSelect(selectId,cols,hints,tagId){
+  const sel=document.getElementById(selectId);
+  if(!sel)return;
+  const lc=cols.map(c=>c.toLowerCase());
+  for(const h of hints){
+    const f=lc.findIndex(c=>c.includes(h));
+    if(f>-1){sel.value=cols[f];sel.classList.add('auto-filled');if(tagId)document.getElementById(tagId).textContent='✓ auto';return;}
+  }
+}
+
+function fillSelect(id,cols,withNone=false){
+  const sel=document.getElementById(id);if(!sel)return;
+  sel.innerHTML='';
+  if(withNone){const o=document.createElement('option');o.value='__none';o.textContent='— Niet van toepassing —';sel.appendChild(o);}
+  cols.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+}
+
+// ── Upload setup ──
 [1,3].forEach(i=>{
   const dz=document.getElementById('dz'+i);
   const fi=document.getElementById('fi'+i);
@@ -336,10 +337,7 @@ updateClock();setInterval(updateClock,10000);
   dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
   dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragover');if(e.dataTransfer.files[0])readExcel(i,e.dataTransfer.files[0]);});
 });
-
-// ── Upload kaart 2 (Salesforce CSV of Excel) ──
-const dz2=document.getElementById('dz2');
-const fi2=document.getElementById('fi2');
+const dz2=document.getElementById('dz2'),fi2=document.getElementById('fi2');
 document.getElementById('dbtn2').addEventListener('click',e=>{e.stopPropagation();fi2.click();});
 fi2.addEventListener('change',e=>{if(e.target.files[0])readCasesFile(e.target.files[0]);});
 dz2.addEventListener('click',()=>fi2.click());
@@ -347,11 +345,6 @@ dz2.addEventListener('dragover',e=>{e.preventDefault();dz2.classList.add('dragov
 dz2.addEventListener('dragleave',()=>dz2.classList.remove('dragover'));
 dz2.addEventListener('drop',e=>{e.preventDefault();dz2.classList.remove('dragover');if(e.dataTransfer.files[0])readCasesFile(e.dataTransfer.files[0]);});
 
-document.getElementById('autoStatus').addEventListener('change',function(){
-  document.getElementById('statusColWrap').style.display=this.checked?'none':'block';
-});
-
-// ── Excel lezen (kaart 1 en 3) ──
 function readExcel(idx,file){
   const reader=new FileReader();
   reader.onload=e=>{
@@ -361,34 +354,76 @@ function readExcel(idx,file){
       document.getElementById('dfn'+idx).textContent='✓ '+file.name;
       document.getElementById('dfn'+idx).style.display='block';
       document.getElementById('card'+idx).classList.add('loaded');
-      buildPills(idx,wb);
-      checkAllReady();
+      const firstSheet=wb.SheetNames[0];
+      selectedSheet[idx]=firstSheet;
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[firstSheet],{defval:''});
+      if(wb.SheetNames.length>1){
+        document.getElementById('pillswrap'+idx).style.display='block';
+        buildPills(idx,wb);
+      }
+      autoFillCols(idx,rows);
+      updateStartBtn();
     }catch(err){document.getElementById('card'+idx).classList.add('error');}
   };
   reader.readAsArrayBuffer(file);
 }
 
-// ── CSV/Excel lezen voor cases (kaart 2) ──
+function buildPills(idx,wb){
+  const container=document.getElementById('pills'+idx);container.innerHTML='';
+  wb.SheetNames.forEach((name,i)=>{
+    const pill=document.createElement('div');pill.className='sheet-pill'+(i===0?' selected':'');pill.textContent=name;
+    pill.addEventListener('click',()=>{
+      container.querySelectorAll('.sheet-pill').forEach(p=>p.classList.remove('selected'));
+      pill.classList.add('selected');selectedSheet[idx]=name;
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''});
+      autoFillCols(idx,rows);
+    });
+    container.appendChild(pill);
+  });
+}
+
+function autoFillCols(idx,rows){
+  const cols=Object.keys(rows[0]||{});
+  if(idx===1){
+    fillSelect('c1_naam',cols);fillSelect('c1_rol',cols,true);fillSelect('c1_target',cols);fillSelect('c1_huidig',cols);fillSelect('c1_status',cols,true);
+    autoSelect('c1_naam',cols,['naam','name','medewerker','persoon','agent','werknemer'],'at1_naam');
+    autoSelect('c1_rol',cols,['rol','functie','title','role','job'],'at1_rol');
+    autoSelect('c1_target',cols,['target','doel','budget','norm','maand'],'at1_target');
+    autoSelect('c1_huidig',cols,['huidig','resultaat','actueel','current','binnen','gerealiseerd'],'at1_huidig');
+  }
+  if(idx===3){
+    fillSelect('c3_maand',cols);fillSelect('c3_res',cols);fillSelect('c3_tgt',cols);
+    autoSelect('c3_maand',cols,['maand','month','periode','datum','date'],'at3_maand');
+    autoSelect('c3_res',cols,['resultaat','result','actueel','binnen','realisatie'],'at3_res');
+    autoSelect('c3_tgt',cols,['target','doel','budget','norm'],'at3_tgt');
+    // Probeer cijfers auto-invullen
+    const last=rows[rows.length-1];
+    const tgtCol=cols.find(c=>['target','doel','budget','norm'].some(h=>c.toLowerCase().includes(h)));
+    const resCol=cols.find(c=>['resultaat','result','actueel','binnen'].some(h=>c.toLowerCase().includes(h)));
+    if(tgtCol&&last[tgtCol])document.getElementById('c3_maandtarget').value=Number(last[tgtCol])||'';
+    if(resCol&&last[resCol])document.getElementById('c3_huidig').value=Number(last[resCol])||'';
+    if(rows.length>=2&&resCol)document.getElementById('c3_vorig').value=Number(rows[rows.length-2][resCol])||'';
+  }
+}
+
 function readCasesFile(file){
   const isCsv=file.name.toLowerCase().endsWith('.csv');
   const reader=new FileReader();
   if(isCsv){
     reader.onload=e=>{
       try{
-        // Salesforce CSV heeft soms BOM aan het begin — die strippen
-        let text=e.target.result.replace(/^\uFEFF/,'');
-        csvRows2=parseCSV(text);
-        if(!csvRows2.length){throw new Error('Leeg');}
-        document.getElementById('dfn2').textContent='✓ '+file.name+' ('+csvRows2.length+' rijen)';
+        const rows=parseCSV(e.target.result.replace(/^\uFEFF/,''));
+        if(!rows.length)throw new Error('Leeg');
+        csvRows2=rows;
+        document.getElementById('dfn2').textContent='✓ '+file.name+' ('+rows.length+' rijen)';
         document.getElementById('dfn2').style.display='block';
         document.getElementById('card2').classList.add('loaded');
-        fillCasesCols(csvRows2);
-        checkAllReady();
+        autoFillCasesCols(rows);
+        updateStartBtn();
       }catch(err){document.getElementById('card2').classList.add('error');}
     };
     reader.readAsText(file,'UTF-8');
   } else {
-    // Excel als fallback
     reader.onload=e=>{
       try{
         const wb=XLSX.read(e.target.result,{type:'array'});
@@ -397,251 +432,179 @@ function readCasesFile(file){
         document.getElementById('dfn2').textContent='✓ '+file.name+' ('+rows.length+' rijen)';
         document.getElementById('dfn2').style.display='block';
         document.getElementById('card2').classList.add('loaded');
-        fillCasesCols(rows);
-        checkAllReady();
+        autoFillCasesCols(rows);
+        updateStartBtn();
       }catch(err){document.getElementById('card2').classList.add('error');}
     };
     reader.readAsArrayBuffer(file);
   }
 }
 
-// ── CSV parser (Salesforce-compatible) ──
+function autoFillCasesCols(rows){
+  const cols=Object.keys(rows[0]||{});
+  fillSelect('c2_naam',cols);fillSelect('c2_cases',cols,true);fillSelect('c2_rol',cols,true);
+  autoSelect('c2_naam',cols,['owner','eigenaar','assigned','medewerker','naam','name','agent','user'],'at2_naam');
+  autoSelect('c2_cases',cols,['count','aantal','cases','total','totaal','number'],'at2_cases');
+  autoSelect('c2_rol',cols,['rol','functie','role','title','profile'],'at2_rol');
+}
+
 function parseCSV(text){
   const lines=text.split(/\r?\n/).filter(l=>l.trim());
   if(lines.length<2)return[];
-  // Quotes-aware split
   function splitLine(line){
     const result=[];let cur='';let inQ=false;
     for(let i=0;i<line.length;i++){
       const c=line[i];
-      if(c==='"'&&!inQ){inQ=true;}
+      if(c==='"'&&!inQ)inQ=true;
       else if(c==='"'&&inQ&&line[i+1]==='"'){cur+='"';i++;}
-      else if(c==='"'&&inQ){inQ=false;}
+      else if(c==='"'&&inQ)inQ=false;
       else if(c===','&&!inQ){result.push(cur.trim());cur='';}
-      else{cur+=c;}
+      else cur+=c;
     }
-    result.push(cur.trim());
-    return result;
+    result.push(cur.trim());return result;
   }
-  // Salesforce CSV heeft soms een extra header rij of lege rijen — skip lege
   const headers=splitLine(lines[0]);
-  const rows=[];
-  for(let i=1;i<lines.length;i++){
-    if(!lines[i].trim())continue;
-    const vals=splitLine(lines[i]);
-    const obj={};
-    headers.forEach((h,j)=>obj[h]=vals[j]||'');
-    rows.push(obj);
-  }
-  return rows;
-}
-
-function fillCasesCols(rows){
-  const cols=Object.keys(rows[0]||{});
-  const withNone=['__none',...cols];
-  function fillSel(id,opts,hints){
-    const sel=document.getElementById(id);if(!sel)return;
-    sel.innerHTML='';
-    opts.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c==='__none'?'— Niet van toepassing —':c;sel.appendChild(o);});
-    if(hints){const lc=cols.map(c=>c.toLowerCase());for(const h of hints){const f=lc.findIndex(c=>c.includes(h));if(f>-1){sel.value=cols[f];return;}}}
-  }
-  // Salesforce typische kolomnamen
-  fillSel('c2_naam',cols,['owner','eigenaar','assigned','medewerker','naam','name','agent','user']);
-  fillSel('c2_cases',withNone,['count','aantal','cases','total','totaal','number']);
-  fillSel('c2_rol',withNone,['rol','functie','role','title','profile']);
-}
-
-// ── Excel pills (tabbladen) ──
-function buildPills(idx,wb){
-  const container=document.getElementById('pills'+idx);
-  container.innerHTML='';
-  wb.SheetNames.forEach(name=>{
-    const pill=document.createElement('div');pill.className='sheet-pill';pill.textContent=name;
-    pill.addEventListener('click',()=>{
-      container.querySelectorAll('.sheet-pill').forEach(p=>p.classList.remove('selected'));
-      pill.classList.add('selected');
-      selectedSheet[idx]=name;
-      const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''});
-      fillExcelCols(idx,rows);
-      document.getElementById('colmap'+idx).style.display='flex';
-      checkAllReady();
-    });
-    container.appendChild(pill);
-    if(wb.SheetNames.length===1)pill.click();
+  return lines.slice(1).filter(l=>l.trim()).map(l=>{
+    const vals=splitLine(l);const obj={};
+    headers.forEach((h,j)=>obj[h]=vals[j]||'');return obj;
   });
-}
-
-function fillExcelCols(idx,rows){
-  const cols=Object.keys(rows[0]||{});
-  const withNone=['__none',...cols];
-  function fillSel(id,opts,hints){
-    const sel=document.getElementById(id);if(!sel)return;
-    sel.innerHTML='';
-    opts.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c==='__none'?'— Niet van toepassing —':c;sel.appendChild(o);});
-    if(hints){const lc=cols.map(c=>c.toLowerCase());for(const h of hints){const f=lc.findIndex(c=>c.includes(h));if(f>-1){sel.value=cols[f];return;}}}
-  }
-  if(idx===1){
-    fillSel('c1_naam',cols,['naam','name','medewerker','persoon']);
-    fillSel('c1_rol',withNone,['rol','functie','title','role']);
-    fillSel('c1_target',cols,['target','doel','budget','norm','maand']);
-    fillSel('c1_huidig',cols,['huidig','resultaat','actueel','current','binnen','gerealiseerd']);
-    fillSel('c1_status',withNone,['status']);
-  }
-  if(idx===3){
-    fillSel('c3_maand',cols,['maand','month','periode','datum','date']);
-    fillSel('c3_res',cols,['resultaat','result','actueel','binnen','realisatie']);
-    fillSel('c3_tgt',cols,['target','doel','budget','norm']);
-  }
-}
-
-function checkAllReady(){
-  const ok1=wbs[1]&&selectedSheet[1];
-  const ok2=csvRows2!==null;
-  const ok3=wbs[3]&&selectedSheet[3];
-  document.getElementById('startBtn').classList.toggle('ready',!!(ok1&&ok2&&ok3));
 }
 
 // ── Dashboard starten ──
 function launchDashboard(){
-  // Recovery
-  const rRows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:''});
-  const auto=document.getElementById('autoStatus').checked;
-  const teamleden=rRows.map(r=>{
-    const t=Number(r[document.getElementById('c1_target').value])||0;
-    const h=Number(r[document.getElementById('c1_huidig').value])||0;
-    const rolCol=document.getElementById('c1_rol').value;
-    let st='behind';
-    if(auto){st=h>=t?'on-track':h>=t*.8?'at-risk':'behind';}
-    else{const sv=(r[document.getElementById('c1_status').value]||'').toLowerCase().replace(' ','-');st=sv||'behind';}
-    return{naam:String(r[document.getElementById('c1_naam').value]||''),rol:rolCol!=='__none'?String(r[rolCol]||''):'',target:t,huidig:h,status:st};
-  }).filter(x=>x.naam);
+  const wrapper=document.getElementById('slidesWrapper');
+  wrapper.innerHTML='';
+  activeSlides=[];
+  let slideIndex=0;
 
-  // Cases — tellen per persoon OF kolom gebruiken
-  const autoCount=document.getElementById('autoCount').checked;
-  const naamCol=document.getElementById('c2_naam').value;
-  const casesCol=document.getElementById('c2_cases').value;
-  const rolCol2=document.getElementById('c2_rol').value;
-  let cases=[];
-  if(autoCount){
-    // Tel rijen per naam (elke rij = 1 case)
-    const counts={};const rollen={};
-    csvRows2.forEach(r=>{
-      const n=String(r[naamCol]||'').trim();
-      if(!n)return;
-      counts[n]=(counts[n]||0)+1;
-      if(rolCol2!=='__none'&&r[rolCol2])rollen[n]=String(r[rolCol2]);
-    });
-    cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c,rol:rollen[naam]||''})).sort((a,b)=>b.cases-a.cases);
-  } else {
-    // Gebruik de cases-kolom direct
-    const seen={};
-    csvRows2.forEach(r=>{
-      const n=String(r[naamCol]||'').trim();
-      if(!n||seen[n])return;
-      seen[n]=true;
-      cases.push({naam:n,cases:Number(r[casesCol])||0,rol:rolCol2!=='__none'?String(r[rolCol2]||''):''});
-    });
-    cases.sort((a,b)=>b.cases-a.cases);
+  // SLIDE 1: Commercial Loss
+  if(wbs[1]&&selectedSheet[1]){
+    const rRows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:''});
+    const auto=document.getElementById('autoStatus').checked;
+    const teamleden=rRows.map(r=>{
+      const t=Number(r[document.getElementById('c1_target').value])||0;
+      const h=Number(r[document.getElementById('c1_huidig').value])||0;
+      const rolCol=document.getElementById('c1_rol').value;
+      let st=auto?(h>=t?'on-track':h>=t*.8?'at-risk':'behind'):((r[document.getElementById('c1_status').value]||'').toLowerCase().replace(' ','-')||'behind');
+      return{naam:String(r[document.getElementById('c1_naam').value]||''),rol:rolCol!=='__none'?String(r[rolCol]||''):'',target:t,huidig:h,status:st};
+    }).filter(x=>x.naam);
+    if(teamleden.length){
+      const slide=createSlide(slideIndex,'Slide · Commercial Recovery','Recovery <span>Targets</span>');
+      const grid=document.createElement('div');grid.className='recovery-grid';
+      teamleden.forEach(lid=>{
+        const pct=lid.target>0?Math.min(100,Math.round((lid.huidig/lid.target)*100)):0;
+        const lm={'on-track':'Op schema','at-risk':'Aandacht','behind':'Achter'};
+        const card=document.createElement('div');card.className='member-card '+lid.status;
+        card.innerHTML=`<div class="member-header"><div><div class="member-name">${lid.naam}</div><div class="member-role">${lid.rol}</div></div><div class="status-badge ${lid.status}">${lm[lid.status]||lid.status}</div></div><div class="recovery-amounts"><div><div class="amount-label">Binnengehaald</div><div class="amount-value current">${euro(lid.huidig)}</div></div><div style="text-align:right"><div class="amount-label">Maand Target</div><div class="amount-value target">${euro(lid.target)}</div></div></div><div class="recovery-bar-bg"><div class="recovery-bar-fill" style="width:${pct}%"></div></div><div class="pct-label">${pct}% van target</div>`;
+        grid.appendChild(card);
+      });
+      slide.appendChild(grid);wrapper.appendChild(slide);
+      activeSlides.push(slide);slideIndex++;
+    }
   }
 
-  // Budget
-  const bRows=XLSX.utils.sheet_to_json(wbs[3].Sheets[selectedSheet[3]],{defval:''});
-  const maanden=bRows.map(r=>({
-    naam:String(r[document.getElementById('c3_maand').value]||''),
-    resultaat:Number(r[document.getElementById('c3_res').value])||0,
-    target:Number(r[document.getElementById('c3_tgt').value])||0
-  })).filter(x=>x.naam);
-  const budget={
-    maand:document.getElementById('c3_maandnaam').value||'',
-    mt:Number(document.getElementById('c3_maandtarget').value)||0,
-    hm:Number(document.getElementById('c3_huidig').value)||0,
-    vm:Number(document.getElementById('c3_vorig').value)||0,
-    jt:Number(document.getElementById('c3_jaartarget').value)||0,
-    jtd:Number(document.getElementById('c3_jtd').value)||0
-  };
+  // SLIDE 2: Cases
+  if(csvRows2){
+    const autoCount=document.getElementById('autoCount').checked;
+    const naamCol=document.getElementById('c2_naam').value;
+    const casesCol=document.getElementById('c2_cases').value;
+    const rolCol2=document.getElementById('c2_rol').value;
+    let cases=[];
+    if(autoCount){
+      const counts={};const rollen={};
+      csvRows2.forEach(r=>{const n=String(r[naamCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;if(rolCol2!=='__none'&&r[rolCol2])rollen[n]=String(r[rolCol2]);});
+      cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c,rol:rollen[naam]||''})).sort((a,b)=>b.cases-a.cases);
+    } else {
+      const seen={};
+      csvRows2.forEach(r=>{const n=String(r[naamCol]||'').trim();if(!n||seen[n])return;seen[n]=true;cases.push({naam:n,cases:Number(r[casesCol])||0,rol:rolCol2!=='__none'?String(r[rolCol2]||''):''});});
+      cases.sort((a,b)=>b.cases-a.cases);
+    }
+    if(cases.length){
+      const slide=createSlide(slideIndex,'Slide · Workload','Cases per <span>Teamlid</span>');
+      const layout=document.createElement('div');layout.className='cases-layout';
+      const cl=document.createElement('div');cl.className='cases-left';
+      const maxC=cases[0].cases||1;
+      cases.forEach((lid,i)=>{
+        const row=document.createElement('div');row.className='case-row';
+        row.innerHTML=`<div class="case-rank">${i+1}</div><div class="case-info"><div class="case-name">${lid.naam}</div><div class="case-type">${lid.rol}</div></div><div class="case-bar-wrap"><div class="case-bar-bg"><div class="case-bar-fill" style="width:${Math.round((lid.cases/maxC)*100)}%"></div></div></div><div class="case-count">${lid.cases}</div>`;
+        cl.appendChild(row);
+      });
+      const cr=document.createElement('div');cr.className='cases-right';
+      const dlabel=document.createElement('div');dlabel.className='donut-label';dlabel.textContent='Verdeling Cases';
+      const canvas=document.createElement('canvas');canvas.width=240;canvas.height=240;
+      const legend=document.createElement('div');legend.className='donut-legend';
+      cr.appendChild(dlabel);cr.appendChild(canvas);cr.appendChild(legend);
+      layout.appendChild(cl);layout.appendChild(cr);slide.appendChild(layout);
+      wrapper.appendChild(slide);activeSlides.push(slide);slideIndex++;
+      // Donut tekenen na render
+      requestAnimationFrame(()=>{
+        const ctx=canvas.getContext('2d');
+        const total=cases.reduce((s,c)=>s+c.cases,0);let angle=-Math.PI/2;
+        cases.forEach((lid,i)=>{const slice=(lid.cases/total)*2*Math.PI;ctx.beginPath();ctx.moveTo(120,120);ctx.arc(120,120,90,angle,angle+slice);ctx.closePath();ctx.fillStyle=KLEUREN[i%KLEUREN.length];ctx.fill();angle+=slice;});
+        ctx.beginPath();ctx.arc(120,120,56,0,2*Math.PI);ctx.fillStyle='#161a24';ctx.fill();
+        ctx.fillStyle='#f1f5f9';ctx.font='bold 28px Barlow Condensed';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(total,120,112);
+        ctx.font='11px Barlow';ctx.fillStyle='#64748b';ctx.fillText('cases totaal',120,134);
+        cases.forEach((lid,i)=>{const it=document.createElement('div');it.className='legend-item';it.innerHTML=`<div class="legend-dot" style="background:${KLEUREN[i]}"></div>${lid.naam} (${lid.cases})`;legend.appendChild(it);});
+      });
+    }
+  }
 
-  buildDashboard(teamleden,cases,budget,maanden);
+  // SLIDE 3: Budget
+  if(wbs[3]&&selectedSheet[3]){
+    const bRows=XLSX.utils.sheet_to_json(wbs[3].Sheets[selectedSheet[3]],{defval:''});
+    const maanden=bRows.map(r=>({naam:String(r[document.getElementById('c3_maand').value]||''),resultaat:Number(r[document.getElementById('c3_res').value])||0,target:Number(r[document.getElementById('c3_tgt').value])||0})).filter(x=>x.naam);
+    const budget={maand:document.getElementById('c3_maandnaam').value||'',mt:Number(document.getElementById('c3_maandtarget').value)||0,hm:Number(document.getElementById('c3_huidig').value)||0,vm:Number(document.getElementById('c3_vorig').value)||0,jt:Number(document.getElementById('c3_jaartarget').value)||0,jtd:Number(document.getElementById('c3_jtd').value)||0};
+    const slide=createSlide(slideIndex,'Slide · Financial Overview','Budget <span>Overzicht</span>'+(budget.maand?' — '+budget.maand:''));
+    const layout=document.createElement('div');layout.className='budget-layout';
+    layout.innerHTML=`<div class="kpi-card k1"><div class="kpi-label">Maand Target</div><div class="kpi-value" style="color:var(--accent2)">${euro(budget.mt)}</div><div class="kpi-sub">Nog ${euro(Math.max(0,budget.mt-budget.hm))} te gaan</div></div><div class="kpi-card k2"><div class="kpi-label">Huidig Resultaat</div><div class="kpi-value" style="color:var(--accent)">${euro(budget.hm)}</div><div class="kpi-delta ${budget.hm>=budget.vm?'up':'down'}">${budget.hm>=budget.vm?'▲ +':'▼ '}${euro(Math.abs(budget.hm-budget.vm))} vs vorige maand</div></div><div class="kpi-card k3"><div class="kpi-label">Jaar-to-Date</div><div class="kpi-value" style="color:var(--green)">${euro(budget.jtd)}</div><div class="kpi-sub">${budget.jt>0?Math.round((budget.jtd/budget.jt)*100):0}% van jaartarget (${euro(budget.jt)})</div></div><div class="budget-chart-wrap"><div class="chart-title">Maandresultaten vs Target</div><canvas id="barChart" height="160"></canvas></div><div class="target-breakdown"><div class="chart-title">Breakdown per categorie</div></div>`;
+    slide.appendChild(layout);wrapper.appendChild(slide);activeSlides.push(slide);
+    setTimeout(()=>{
+      const bc=document.getElementById('barChart');if(!bc)return;
+      const bx=bc.getContext('2d');const W=bc.offsetWidth||600;bc.width=W;
+      const H=160,pL=60,pR=20,pT=10,pB=30,cW=W-pL-pR,cH=H-pT-pB;
+      const maxV=(Math.max(...maanden.map(m=>Math.max(m.target,m.resultaat)),budget.mt)*1.1)||1;
+      bx.clearRect(0,0,W,H);bx.strokeStyle='#1e2230';bx.lineWidth=1;
+      [.25,.5,.75,1].forEach(f=>{const y=pT+cH*(1-f);bx.beginPath();bx.moveTo(pL,y);bx.lineTo(pL+cW,y);bx.stroke();bx.fillStyle='#64748b';bx.font='11px Barlow';bx.textAlign='right';bx.fillText('€'+Math.round(maxV*f/1000)+'K',pL-8,y+4);});
+      const bw=maanden.length>0?cW/maanden.length:cW;
+      maanden.forEach((m,i)=>{
+        const x=pL+i*bw+bw/2,res=m.resultaat,tgt=m.target||budget.mt;
+        const bH2=(res/maxV)*cH,bY=pT+cH-bH2;
+        bx.fillStyle=res>=tgt?'#10b981':res>=tgt*.8?'#f59e0b':'#ef4444';
+        bx.beginPath();bx.roundRect(x-bw*.22,bY,bw*.45,bH2,[4,4,0,0]);bx.fill();
+        const ty=pT+cH-(tgt/maxV)*cH;bx.strokeStyle='#3b82f6';bx.lineWidth=2;bx.setLineDash([4,4]);
+        bx.beginPath();bx.moveTo(x-bw*.28,ty);bx.lineTo(x+bw*.28,ty);bx.stroke();bx.setLineDash([]);
+        bx.fillStyle='#64748b';bx.font='11px Barlow';bx.textAlign='center';bx.fillText(m.naam,x,pT+cH+18);
+      });
+    },200);
+  }
+
+  if(!activeSlides.length)return;
+
+  // Slideshow opzetten
   document.getElementById('uploadScreen').classList.add('hidden');
   document.getElementById('dashboard').style.display='block';
-  document.getElementById('reloadBtn').addEventListener('click',()=>{
+  const dotsEl=document.getElementById('navDots');
+  currentSlide=0;clearInterval(slideInterval);dotsEl.innerHTML='';
+  activeSlides.forEach((s,i)=>{
+    s.classList.remove('active','exit');
+    const dot=document.createElement('div');dot.className='nav-dot'+(i===0?' active':'');
+    dot.addEventListener('click',()=>{activeSlides[currentSlide].classList.remove('active');currentSlide=i;activeSlides[currentSlide].classList.add('active');dotsEl.querySelectorAll('.nav-dot').forEach((d,j)=>d.classList.toggle('active',j===i));startProgress();});
+    dotsEl.appendChild(dot);
+  });
+  activeSlides[0].classList.add('active');
+  startProgress();
+
+  document.getElementById('reloadBtn').onclick=()=>{
     document.getElementById('uploadScreen').classList.remove('hidden');
     document.getElementById('dashboard').style.display='none';
     clearInterval(slideInterval);
-  });
+  };
 }
 
-function buildDashboard(teamleden,cases,budget,maanden){
-  document.getElementById('s1maand').textContent=budget.maand;
-  document.getElementById('s3maand').textContent=budget.maand;
-
-  // Slide 1
-  const grid=document.getElementById('recoveryGrid');grid.innerHTML='';
-  teamleden.forEach(lid=>{
-    const pct=lid.target>0?Math.min(100,Math.round((lid.huidig/lid.target)*100)):0;
-    const lm={'on-track':'Op schema','at-risk':'Aandacht','behind':'Achter'};
-    const card=document.createElement('div');card.className='member-card '+lid.status;
-    card.innerHTML=`<div class="member-header"><div><div class="member-name">${lid.naam}</div><div class="member-role">${lid.rol}</div></div><div class="status-badge ${lid.status}">${lm[lid.status]||lid.status}</div></div><div class="recovery-amounts"><div><div class="amount-label">Binnengehaald</div><div class="amount-value current">${euro(lid.huidig)}</div></div><div style="text-align:right"><div class="amount-label">Maand Target</div><div class="amount-value target">${euro(lid.target)}</div></div></div><div class="recovery-bar-bg"><div class="recovery-bar-fill" style="width:${pct}%"></div></div><div class="pct-label">${pct}% van target</div>`;
-    grid.appendChild(card);
-  });
-
-  // Slide 2
-  const cl=document.getElementById('casesLeft');cl.innerHTML='';
-  const maxC=cases[0]?.cases||1;
-  cases.forEach((lid,i)=>{
-    const row=document.createElement('div');row.className='case-row';
-    row.innerHTML=`<div class="case-rank">${i+1}</div><div class="case-info"><div class="case-name">${lid.naam}</div><div class="case-type">${lid.rol}</div></div><div class="case-bar-wrap"><div class="case-bar-bg"><div class="case-bar-fill" style="width:${Math.round((lid.cases/maxC)*100)}%"></div></div></div><div class="case-count">${lid.cases}</div>`;
-    cl.appendChild(row);
-  });
-  const dc=document.getElementById('donutChart');const ctx=dc.getContext('2d');ctx.clearRect(0,0,240,240);
-  const total=cases.reduce((s,c)=>s+c.cases,0);let angle=-Math.PI/2;
-  cases.forEach((lid,i)=>{const slice=(lid.cases/total)*2*Math.PI;ctx.beginPath();ctx.moveTo(120,120);ctx.arc(120,120,90,angle,angle+slice);ctx.closePath();ctx.fillStyle=KLEUREN[i%KLEUREN.length];ctx.fill();angle+=slice;});
-  ctx.beginPath();ctx.arc(120,120,56,0,2*Math.PI);ctx.fillStyle='#161a24';ctx.fill();
-  ctx.fillStyle='#f1f5f9';ctx.font='bold 28px Barlow Condensed';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(total,120,112);
-  ctx.font='11px Barlow';ctx.fillStyle='#64748b';ctx.fillText('cases totaal',120,134);
-  const dl=document.getElementById('donutLegend');dl.innerHTML='';
-  cases.forEach((lid,i)=>{const it=document.createElement('div');it.className='legend-item';it.innerHTML=`<div class="legend-dot" style="background:${KLEUREN[i]}"></div>${lid.naam} (${lid.cases})`;dl.appendChild(it);});
-
-  // Slide 3
-  document.getElementById('kpiTarget').textContent=euro(budget.mt);
-  document.getElementById('kpiTargetSub').textContent='Nog '+euro(Math.max(0,budget.mt-budget.hm))+' te gaan';
-  document.getElementById('kpiHuidig').textContent=euro(budget.hm);
-  const diff=budget.hm-budget.vm;
-  const de=document.getElementById('kpiDelta');de.className='kpi-delta '+(diff>=0?'up':'down');
-  de.textContent=(diff>=0?'▲ +':'▼ ')+euro(Math.abs(diff))+' vs vorige maand';
-  const jp=budget.jt>0?Math.round((budget.jtd/budget.jt)*100):0;
-  document.getElementById('kpiJtd').textContent=euro(budget.jtd);
-  document.getElementById('kpiJtdSub').textContent=jp+'% van jaartarget ('+euro(budget.jt)+')';
-  setTimeout(()=>{
-    const bc=document.getElementById('barChart');const bx=bc.getContext('2d');
-    const W=bc.offsetWidth||600;bc.width=W;
-    const H=160,pL=60,pR=20,pT=10,pB=30,cW=W-pL-pR,cH=H-pT-pB;
-    const maxV=(Math.max(...maanden.map(m=>Math.max(m.target,m.resultaat)),budget.mt)*1.1)||1;
-    bx.clearRect(0,0,W,H);bx.strokeStyle='#1e2230';bx.lineWidth=1;
-    [.25,.5,.75,1].forEach(f=>{const y=pT+cH*(1-f);bx.beginPath();bx.moveTo(pL,y);bx.lineTo(pL+cW,y);bx.stroke();bx.fillStyle='#64748b';bx.font='11px Barlow';bx.textAlign='right';bx.fillText('€'+Math.round(maxV*f/1000)+'K',pL-8,y+4);});
-    const bw=maanden.length>0?cW/maanden.length:cW;
-    maanden.forEach((m,i)=>{
-      const res=m.resultaat,tgt=m.target||budget.mt;
-      const x=pL+i*bw+bw/2,bH2=(res/maxV)*cH,bY=pT+cH-bH2;
-      bx.fillStyle=res>=tgt?'#10b981':res>=tgt*.8?'#f59e0b':'#ef4444';
-      bx.beginPath();bx.roundRect(x-bw*.22,bY,bw*.45,bH2,[4,4,0,0]);bx.fill();
-      const ty=pT+cH-(tgt/maxV)*cH;bx.strokeStyle='#3b82f6';bx.lineWidth=2;bx.setLineDash([4,4]);
-      bx.beginPath();bx.moveTo(x-bw*.28,ty);bx.lineTo(x+bw*.28,ty);bx.stroke();bx.setLineDash([]);
-      bx.fillStyle='#64748b';bx.font='11px Barlow';bx.textAlign='center';bx.fillText(m.naam,x,pT+cH+18);
-    });
-  },100);
-  document.getElementById('targetBreakdown').innerHTML='<div class="chart-title">Breakdown per categorie</div>';
-
-  // Slideshow
-  const slides=document.querySelectorAll('.slide');
-  const dotsEl=document.getElementById('navDots');
-  currentSlide=0;clearInterval(slideInterval);dotsEl.innerHTML='';
-  slides.forEach((s,i)=>{
-    s.classList.remove('active','exit');
-    const dot=document.createElement('div');dot.className='nav-dot'+(i===0?' active':'');
-    dot.addEventListener('click',()=>{slides[currentSlide].classList.remove('active');currentSlide=i;slides[currentSlide].classList.add('active');document.querySelectorAll('.nav-dot').forEach((d,j)=>d.classList.toggle('active',j===i));startProgress();});
-    dotsEl.appendChild(dot);
-  });
-  slides[0].classList.add('active');startProgress();
+function createSlide(idx,title,heading){
+  const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+idx;
+  slide.innerHTML=`<div class="slide-title">${title}</div><div class="slide-heading">${heading}</div>`;
+  return slide;
 }
 
 function startProgress(){
@@ -650,12 +613,11 @@ function startProgress(){
   fill.style.transition='none';fill.style.width='0%';
   requestAnimationFrame(()=>requestAnimationFrame(()=>{fill.style.transition='width 10000ms linear';fill.style.width='100%';}));
   slideInterval=setInterval(()=>{
-    const slides=document.querySelectorAll('.slide');
-    slides[currentSlide].classList.remove('active');slides[currentSlide].classList.add('exit');
-    setTimeout(()=>slides[currentSlide].classList.remove('exit'),700);
-    currentSlide=(currentSlide+1)%slides.length;
-    slides[currentSlide].classList.add('active');
-    document.querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===currentSlide));
+    activeSlides[currentSlide].classList.remove('active');activeSlides[currentSlide].classList.add('exit');
+    setTimeout(()=>activeSlides[currentSlide].classList.remove('exit'),700);
+    currentSlide=(currentSlide+1)%activeSlides.length;
+    activeSlides[currentSlide].classList.add('active');
+    document.getElementById('navDots').querySelectorAll('.nav-dot').forEach((d,i)=>d.classList.toggle('active',i===currentSlide));
     startProgress();
   },10000);
 }
