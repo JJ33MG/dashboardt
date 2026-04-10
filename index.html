@@ -9,26 +9,20 @@
 :root{--bg:#0a0c10;--panel:#111318;--border:#1e2230;--accent:#f59e0b;--accent2:#3b82f6;--green:#10b981;--red:#ef4444;--text:#f1f5f9;--muted:#64748b;--card:#161a24;}
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;}
-
-/* ══ UPLOAD SCHERM ══ */
 #uploadScreen{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:40px 20px;overflow-y:auto;}
 #uploadScreen.hidden{display:none;}
 .up-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.8rem;letter-spacing:4px;text-transform:uppercase;color:var(--accent);}
 .up-logo span{color:var(--text);font-weight:300;}
 .up-subtitle{font-size:.85rem;color:var(--muted);text-align:center;}
-
-/* 3 upload kaarten naast elkaar */
 .upload-cards{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;width:100%;max-width:1000px;}
 .upload-card{flex:1;min-width:280px;max-width:320px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px 24px;display:flex;flex-direction:column;gap:16px;transition:border-color .3s;}
 .upload-card.loaded{border-color:var(--green);}
 .upload-card.error{border-color:var(--red);}
-
 .card-header{display:flex;align-items:center;gap:12px;}
 .card-icon{font-size:1.8rem;}
 .card-title{font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;}
+.card-badge{font-size:.62rem;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:10px;background:rgba(59,130,246,.15);color:var(--accent2);border:1px solid rgba(59,130,246,.3);margin-top:3px;display:inline-block;}
 .card-desc{font-size:.78rem;color:var(--muted);line-height:1.5;}
-
-/* Drop zone per kaart */
 .drop-zone{border:2px dashed var(--border);border-radius:10px;padding:24px 16px;text-align:center;cursor:pointer;transition:all .3s;position:relative;}
 .drop-zone:hover,.drop-zone.dragover{border-color:var(--accent);background:rgba(245,158,11,.05);}
 .upload-card.loaded .drop-zone{border-color:var(--green);background:rgba(16,185,129,.05);}
@@ -36,8 +30,11 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-
 .drop-file-name{font-size:.75rem;color:var(--green);margin-top:6px;display:none;font-weight:600;}
 .drop-btn{display:inline-block;background:var(--panel);border:1px solid var(--border);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;padding:8px 20px;border-radius:6px;cursor:pointer;transition:all .2s;}
 .drop-btn:hover{border-color:var(--accent);color:var(--accent);}
-
-/* Sheet + kolom kiezer */
+/* Salesforce info blokje */
+.sf-info{background:var(--panel);border:1px solid rgba(59,130,246,.25);border-radius:8px;padding:12px 14px;font-size:.75rem;color:var(--muted);line-height:1.6;}
+.sf-info strong{color:var(--accent2);display:block;margin-bottom:4px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-transform:uppercase;font-size:.7rem;}
+.sf-steps{list-style:none;display:flex;flex-direction:column;gap:3px;}
+.sf-steps li::before{content:'→ ';color:var(--accent2);}
 .card-config{display:none;flex-direction:column;gap:10px;}
 .upload-card.loaded .card-config{display:flex;}
 .cfg-label{font-size:.68rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
@@ -49,19 +46,13 @@ select.cfg-select{width:100%;background:var(--panel);border:1px solid var(--bord
 select.cfg-select:focus{outline:none;border-color:var(--accent);}
 select.cfg-select option{background:var(--panel);}
 .cfg-row{display:flex;flex-direction:column;}
-
-/* Status berekening toggle */
 .toggle-wrap{display:flex;align-items:center;gap:8px;padding:8px 0;}
 .toggle-wrap label{font-size:.75rem;color:var(--muted);cursor:pointer;}
 .toggle-wrap input{accent-color:var(--accent);cursor:pointer;}
-
-/* Start knop */
 .start-btn{padding:14px 48px;background:var(--accent);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;letter-spacing:3px;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;opacity:.4;pointer-events:none;}
 .start-btn.ready{opacity:1;pointer-events:all;}
 .start-btn.ready:hover{opacity:.85;}
 .start-error{color:var(--red);font-size:.78rem;display:none;text-align:center;}
-
-/* ══ DASHBOARD ══ */
 #dashboard{display:none;}
 #dashboard.visible{display:block;}
 header{display:flex;justify-content:space-between;align-items:center;padding:18px 40px 14px;border-bottom:1px solid var(--border);background:var(--panel);z-index:10;position:relative;}
@@ -157,12 +148,9 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 </head>
 <body>
 
-<!-- ══════════════════════════
-     UPLOAD SCHERM
-══════════════════════════ -->
 <div id="uploadScreen">
   <div class="up-logo">Commercial <span>Dashboard</span></div>
-  <div class="up-subtitle">Upload de 3 Excel-bestanden. Daarna wijs je zelf aan welke kolom wat betekent.</div>
+  <div class="up-subtitle">Upload de bestanden. Daarna wijs je zelf aan welke kolom wat betekent.</div>
 
   <div class="upload-cards">
 
@@ -172,62 +160,65 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
         <div class="card-icon">📉</div>
         <div>
           <div class="card-title">Commercial Loss</div>
+          <div class="card-badge">Excel .xlsx</div>
         </div>
       </div>
       <div class="card-desc">Het bestand met hoeveel iedereen moet binnenhalen en wat er al gerealiseerd is.</div>
       <div class="drop-zone" id="dz1">
-        <div class="drop-zone-text">Sleep je bestand hier</div>
+        <div class="drop-zone-text">Sleep je .xlsx bestand hier</div>
         <div class="drop-btn" id="dbtn1">Bestand kiezen</div>
         <div class="drop-file-name" id="dfn1"></div>
         <input type="file" accept=".xlsx,.xls" style="display:none" id="fi1">
       </div>
-
-      <!-- Na upload: tabblad kiezen -->
       <div class="card-config" id="cfg1">
-        <div>
-          <div class="cfg-label">Welk tabblad?</div>
-          <div class="sheet-pills" id="pills1"></div>
-        </div>
-        <div id="colmap1" style="display:none;display:flex;flex-direction:column;gap:8px;">
+        <div><div class="cfg-label">Welk tabblad?</div><div class="sheet-pills" id="pills1"></div></div>
+        <div id="colmap1" style="display:none;flex-direction:column;gap:8px;">
           <div class="cfg-row"><div class="cfg-label">Kolom: Naam teamlid</div><select class="cfg-select" id="c1_naam"></select></div>
           <div class="cfg-row"><div class="cfg-label">Kolom: Functie / Rol (optioneel)</div><select class="cfg-select" id="c1_rol"></select></div>
           <div class="cfg-row"><div class="cfg-label">Kolom: Maand Target (bedrag)</div><select class="cfg-select" id="c1_target"></select></div>
           <div class="cfg-row"><div class="cfg-label">Kolom: Huidig resultaat (bedrag)</div><select class="cfg-select" id="c1_huidig"></select></div>
-          <div class="toggle-wrap">
-            <input type="checkbox" id="autoStatus" checked>
-            <label for="autoStatus">Status automatisch berekenen op basis van %</label>
-          </div>
-          <div id="statusColWrap" style="display:none">
-            <div class="cfg-row"><div class="cfg-label">Kolom: Status (on-track / at-risk / behind)</div><select class="cfg-select" id="c1_status"></select></div>
-          </div>
+          <div class="toggle-wrap"><input type="checkbox" id="autoStatus" checked><label for="autoStatus">Status automatisch berekenen op basis van %</label></div>
+          <div id="statusColWrap" style="display:none"><div class="cfg-row"><div class="cfg-label">Kolom: Status</div><select class="cfg-select" id="c1_status"></select></div></div>
         </div>
       </div>
     </div>
 
-    <!-- KAART 2: Cases -->
+    <!-- KAART 2: Cases — SALESFORCE CSV -->
     <div class="upload-card" id="card2">
       <div class="card-header">
-        <div class="card-icon">📋</div>
+        <div class="card-icon">☁️</div>
         <div>
           <div class="card-title">Cases</div>
+          <div class="card-badge" style="background:rgba(16,185,129,.15);color:var(--green);border-color:rgba(16,185,129,.3);">Salesforce CSV</div>
         </div>
       </div>
-      <div class="card-desc">Het bestand met het aantal open cases per teamlid.</div>
+      <div class="card-desc">Exporteer een rapport uit Salesforce als CSV en upload het hier.</div>
+
+      <!-- Salesforce uitleg -->
+      <div class="sf-info">
+        <strong>📥 Hoe exporteer je uit Salesforce?</strong>
+        <ol class="sf-steps">
+          <li>Ga naar je rapport in Salesforce</li>
+          <li>Klik rechtsboven op de pijl naast "Uitvoeren"</li>
+          <li>Kies <strong>"Exporteren"</strong></li>
+          <li>Kies formaat: <strong>CSV</strong></li>
+          <li>Sla het bestand op en upload het hier</li>
+        </ol>
+      </div>
+
       <div class="drop-zone" id="dz2">
-        <div class="drop-zone-text">Sleep je bestand hier</div>
+        <div class="drop-zone-text">Sleep je Salesforce .csv bestand hier</div>
         <div class="drop-btn" id="dbtn2">Bestand kiezen</div>
         <div class="drop-file-name" id="dfn2"></div>
-        <input type="file" accept=".xlsx,.xls" style="display:none" id="fi2">
+        <input type="file" accept=".csv,.xlsx,.xls" style="display:none" id="fi2">
       </div>
       <div class="card-config" id="cfg2">
-        <div>
-          <div class="cfg-label">Welk tabblad?</div>
-          <div class="sheet-pills" id="pills2"></div>
-        </div>
-        <div id="colmap2" style="display:none;flex-direction:column;gap:8px;">
-          <div class="cfg-row"><div class="cfg-label">Kolom: Naam teamlid</div><select class="cfg-select" id="c2_naam"></select></div>
-          <div class="cfg-row"><div class="cfg-label">Kolom: Aantal cases</div><select class="cfg-select" id="c2_cases"></select></div>
+        <!-- CSV heeft geen tabbladen, dus direct kolommen -->
+        <div id="colmap2" style="display:flex;flex-direction:column;gap:8px;">
+          <div class="cfg-row"><div class="cfg-label">Kolom: Naam teamlid / owner</div><select class="cfg-select" id="c2_naam"></select></div>
+          <div class="cfg-row"><div class="cfg-label">Kolom: Aantal cases (of tel automatisch)</div><select class="cfg-select" id="c2_cases"></select></div>
           <div class="cfg-row"><div class="cfg-label">Kolom: Functie / Rol (optioneel)</div><select class="cfg-select" id="c2_rol"></select></div>
+          <div class="toggle-wrap"><input type="checkbox" id="autoCount" checked><label for="autoCount">Cases automatisch tellen per persoon (als elke rij 1 case is)</label></div>
         </div>
       </div>
     </div>
@@ -238,20 +229,18 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
         <div class="card-icon">💰</div>
         <div>
           <div class="card-title">Budget</div>
+          <div class="card-badge">Excel .xlsx</div>
         </div>
       </div>
       <div class="card-desc">Het bestand met het maandbudget, targets en historische resultaten.</div>
       <div class="drop-zone" id="dz3">
-        <div class="drop-zone-text">Sleep je bestand hier</div>
+        <div class="drop-zone-text">Sleep je .xlsx bestand hier</div>
         <div class="drop-btn" id="dbtn3">Bestand kiezen</div>
         <div class="drop-file-name" id="dfn3"></div>
         <input type="file" accept=".xlsx,.xls" style="display:none" id="fi3">
       </div>
       <div class="card-config" id="cfg3">
-        <div>
-          <div class="cfg-label">Welk tabblad?</div>
-          <div class="sheet-pills" id="pills3"></div>
-        </div>
+        <div><div class="cfg-label">Welk tabblad?</div><div class="sheet-pills" id="pills3"></div></div>
         <div id="colmap3" style="display:none;flex-direction:column;gap:8px;">
           <div class="cfg-row"><div class="cfg-label">Kolom: Maand naam</div><select class="cfg-select" id="c3_maand"></select></div>
           <div class="cfg-row"><div class="cfg-label">Kolom: Resultaat</div><select class="cfg-select" id="c3_res"></select></div>
@@ -259,7 +248,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
           <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
             <div class="cfg-label" style="margin-bottom:8px;">Vul ook in ↓</div>
             <div style="display:flex;flex-direction:column;gap:8px;">
-              <div class="cfg-row"><div class="cfg-label">Naam van de maand (bijv. April 2026)</div><input class="cfg-select" id="c3_maandnaam" placeholder="April 2026" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
+              <div class="cfg-row"><div class="cfg-label">Naam van de maand</div><input class="cfg-select" id="c3_maandnaam" placeholder="April 2026" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
               <div class="cfg-row"><div class="cfg-label">Maand Target (totaal team)</div><input class="cfg-select" id="c3_maandtarget" type="number" placeholder="280000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
               <div class="cfg-row"><div class="cfg-label">Huidig resultaat deze maand</div><input class="cfg-select" id="c3_huidig" type="number" placeholder="215000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
               <div class="cfg-row"><div class="cfg-label">Resultaat vorige maand</div><input class="cfg-select" id="c3_vorig" type="number" placeholder="198000" style="border-radius:8px;padding:8px 10px;font-size:.8rem;font-family:Barlow,sans-serif;background:var(--panel);border:1px solid var(--border);color:var(--text);width:100%;"></div>
@@ -271,7 +260,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
       </div>
     </div>
 
-  </div><!-- end upload-cards -->
+  </div>
 
   <div>
     <div class="start-error" id="startError">Zorg dat alle 3 bestanden zijn geüpload en de kolommen zijn ingesteld.</div>
@@ -281,9 +270,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
   </div>
 </div>
 
-<!-- ══════════════════════════
-     DASHBOARD
-══════════════════════════ -->
+<!-- DASHBOARD -->
 <div id="dashboard">
   <header>
     <div class="logo">COMMERCIAL <span>DASHBOARD</span></div>
@@ -329,126 +316,194 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 
 <script>
 const KLEUREN=['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ec4899','#14b8a6','#f97316','#06b6d4'];
-let wbs={1:null,2:null,3:null};
-let selectedSheet={1:null,2:null,3:null};
-let slideInterval=null, currentSlide=0;
+let wbs={1:null,3:null};
+let csvRows2=null;
+let selectedSheet={1:null,3:null};
+let slideInterval=null,currentSlide=0;
 
 function euro(n){return'€'+Number(n).toLocaleString('nl-NL');}
 function updateClock(){const n=new Date();document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
 updateClock();setInterval(updateClock,10000);
 
-// ── Setup upload voor elk van de 3 kaarten ──
-[1,2,3].forEach(i=>{
+// ── Upload kaarten 1 en 3 (Excel) ──
+[1,3].forEach(i=>{
   const dz=document.getElementById('dz'+i);
   const fi=document.getElementById('fi'+i);
-  const btn=document.getElementById('dbtn'+i);
-  btn.addEventListener('click',e=>{e.stopPropagation();fi.click();});
-  fi.addEventListener('change',e=>{if(e.target.files[0])readFile(i,e.target.files[0]);});
+  document.getElementById('dbtn'+i).addEventListener('click',e=>{e.stopPropagation();fi.click();});
+  fi.addEventListener('change',e=>{if(e.target.files[0])readExcel(i,e.target.files[0]);});
   dz.addEventListener('click',()=>fi.click());
   dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragover');});
   dz.addEventListener('dragleave',()=>dz.classList.remove('dragover'));
-  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragover');if(e.dataTransfer.files[0])readFile(i,e.dataTransfer.files[0]);});
+  dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragover');if(e.dataTransfer.files[0])readExcel(i,e.dataTransfer.files[0]);});
 });
+
+// ── Upload kaart 2 (Salesforce CSV of Excel) ──
+const dz2=document.getElementById('dz2');
+const fi2=document.getElementById('fi2');
+document.getElementById('dbtn2').addEventListener('click',e=>{e.stopPropagation();fi2.click();});
+fi2.addEventListener('change',e=>{if(e.target.files[0])readCasesFile(e.target.files[0]);});
+dz2.addEventListener('click',()=>fi2.click());
+dz2.addEventListener('dragover',e=>{e.preventDefault();dz2.classList.add('dragover');});
+dz2.addEventListener('dragleave',()=>dz2.classList.remove('dragover'));
+dz2.addEventListener('drop',e=>{e.preventDefault();dz2.classList.remove('dragover');if(e.dataTransfer.files[0])readCasesFile(e.dataTransfer.files[0]);});
 
 document.getElementById('autoStatus').addEventListener('change',function(){
   document.getElementById('statusColWrap').style.display=this.checked?'none':'block';
 });
 
-function readFile(idx,file){
+// ── Excel lezen (kaart 1 en 3) ──
+function readExcel(idx,file){
   const reader=new FileReader();
   reader.onload=e=>{
     try{
       const wb=XLSX.read(e.target.result,{type:'array'});
       wbs[idx]=wb;
-      // Bestandsnaam tonen
-      const fnEl=document.getElementById('dfn'+idx);
-      fnEl.textContent='✓ '+file.name;
-      fnEl.style.display='block';
+      document.getElementById('dfn'+idx).textContent='✓ '+file.name;
+      document.getElementById('dfn'+idx).style.display='block';
       document.getElementById('card'+idx).classList.add('loaded');
-      // Tabblad pills opbouwen
       buildPills(idx,wb);
       checkAllReady();
-    }catch(err){
-      document.getElementById('card'+idx).classList.add('error');
-    }
+    }catch(err){document.getElementById('card'+idx).classList.add('error');}
   };
   reader.readAsArrayBuffer(file);
 }
 
+// ── CSV/Excel lezen voor cases (kaart 2) ──
+function readCasesFile(file){
+  const isCsv=file.name.toLowerCase().endsWith('.csv');
+  const reader=new FileReader();
+  if(isCsv){
+    reader.onload=e=>{
+      try{
+        // Salesforce CSV heeft soms BOM aan het begin — die strippen
+        let text=e.target.result.replace(/^\uFEFF/,'');
+        csvRows2=parseCSV(text);
+        if(!csvRows2.length){throw new Error('Leeg');}
+        document.getElementById('dfn2').textContent='✓ '+file.name+' ('+csvRows2.length+' rijen)';
+        document.getElementById('dfn2').style.display='block';
+        document.getElementById('card2').classList.add('loaded');
+        fillCasesCols(csvRows2);
+        checkAllReady();
+      }catch(err){document.getElementById('card2').classList.add('error');}
+    };
+    reader.readAsText(file,'UTF-8');
+  } else {
+    // Excel als fallback
+    reader.onload=e=>{
+      try{
+        const wb=XLSX.read(e.target.result,{type:'array'});
+        const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
+        csvRows2=rows;
+        document.getElementById('dfn2').textContent='✓ '+file.name+' ('+rows.length+' rijen)';
+        document.getElementById('dfn2').style.display='block';
+        document.getElementById('card2').classList.add('loaded');
+        fillCasesCols(rows);
+        checkAllReady();
+      }catch(err){document.getElementById('card2').classList.add('error');}
+    };
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+// ── CSV parser (Salesforce-compatible) ──
+function parseCSV(text){
+  const lines=text.split(/\r?\n/).filter(l=>l.trim());
+  if(lines.length<2)return[];
+  // Quotes-aware split
+  function splitLine(line){
+    const result=[];let cur='';let inQ=false;
+    for(let i=0;i<line.length;i++){
+      const c=line[i];
+      if(c==='"'&&!inQ){inQ=true;}
+      else if(c==='"'&&inQ&&line[i+1]==='"'){cur+='"';i++;}
+      else if(c==='"'&&inQ){inQ=false;}
+      else if(c===','&&!inQ){result.push(cur.trim());cur='';}
+      else{cur+=c;}
+    }
+    result.push(cur.trim());
+    return result;
+  }
+  // Salesforce CSV heeft soms een extra header rij of lege rijen — skip lege
+  const headers=splitLine(lines[0]);
+  const rows=[];
+  for(let i=1;i<lines.length;i++){
+    if(!lines[i].trim())continue;
+    const vals=splitLine(lines[i]);
+    const obj={};
+    headers.forEach((h,j)=>obj[h]=vals[j]||'');
+    rows.push(obj);
+  }
+  return rows;
+}
+
+function fillCasesCols(rows){
+  const cols=Object.keys(rows[0]||{});
+  const withNone=['__none',...cols];
+  function fillSel(id,opts,hints){
+    const sel=document.getElementById(id);if(!sel)return;
+    sel.innerHTML='';
+    opts.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c==='__none'?'— Niet van toepassing —':c;sel.appendChild(o);});
+    if(hints){const lc=cols.map(c=>c.toLowerCase());for(const h of hints){const f=lc.findIndex(c=>c.includes(h));if(f>-1){sel.value=cols[f];return;}}}
+  }
+  // Salesforce typische kolomnamen
+  fillSel('c2_naam',cols,['owner','eigenaar','assigned','medewerker','naam','name','agent','user']);
+  fillSel('c2_cases',withNone,['count','aantal','cases','total','totaal','number']);
+  fillSel('c2_rol',withNone,['rol','functie','role','title','profile']);
+}
+
+// ── Excel pills (tabbladen) ──
 function buildPills(idx,wb){
   const container=document.getElementById('pills'+idx);
   container.innerHTML='';
   wb.SheetNames.forEach(name=>{
-    const pill=document.createElement('div');
-    pill.className='sheet-pill';
-    pill.textContent=name;
+    const pill=document.createElement('div');pill.className='sheet-pill';pill.textContent=name;
     pill.addEventListener('click',()=>{
       container.querySelectorAll('.sheet-pill').forEach(p=>p.classList.remove('selected'));
       pill.classList.add('selected');
       selectedSheet[idx]=name;
       const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''});
-      fillColumns(idx,rows);
-      // Kolom mapper tonen
-      const cm=document.getElementById('colmap'+idx);
-      if(cm)cm.style.display='flex';
+      fillExcelCols(idx,rows);
+      document.getElementById('colmap'+idx).style.display='flex';
       checkAllReady();
     });
     container.appendChild(pill);
-    // Auto-select als er maar 1 tabblad is
-    if(wb.SheetNames.length===1) pill.click();
+    if(wb.SheetNames.length===1)pill.click();
   });
 }
 
-function fillColumns(idx,rows){
+function fillExcelCols(idx,rows){
   const cols=Object.keys(rows[0]||{});
   const withNone=['__none',...cols];
-
-  function fillSel(id,optCols,autoHints){
-    const sel=document.getElementById(id);
-    if(!sel)return;
+  function fillSel(id,opts,hints){
+    const sel=document.getElementById(id);if(!sel)return;
     sel.innerHTML='';
-    optCols.forEach(c=>{
-      const o=document.createElement('option');
-      o.value=c; o.textContent=c==='__none'?'— Niet van toepassing —':c;
-      sel.appendChild(o);
-    });
-    if(autoHints){
-      const lc=cols.map(c=>c.toLowerCase());
-      for(const h of autoHints){
-        const found=lc.findIndex(c=>c.includes(h));
-        if(found>-1){sel.value=cols[found];return;}
-      }
-    }
+    opts.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c==='__none'?'— Niet van toepassing —':c;sel.appendChild(o);});
+    if(hints){const lc=cols.map(c=>c.toLowerCase());for(const h of hints){const f=lc.findIndex(c=>c.includes(h));if(f>-1){sel.value=cols[f];return;}}}
   }
-
   if(idx===1){
-    fillSel('c1_naam',cols,['naam','name','medewerker','persoon','werknemer']);
-    fillSel('c1_rol',withNone,['rol','functie','titel','function','role','job']);
-    fillSel('c1_target',cols,['target','doel','budget','maand','norm']);
-    fillSel('c1_huidig',cols,['huidig','resultaat','actueel','current','actual','binnen','gerealiseerd']);
+    fillSel('c1_naam',cols,['naam','name','medewerker','persoon']);
+    fillSel('c1_rol',withNone,['rol','functie','title','role']);
+    fillSel('c1_target',cols,['target','doel','budget','norm','maand']);
+    fillSel('c1_huidig',cols,['huidig','resultaat','actueel','current','binnen','gerealiseerd']);
     fillSel('c1_status',withNone,['status']);
   }
-  if(idx===2){
-    fillSel('c2_naam',cols,['naam','name','medewerker']);
-    fillSel('c2_cases',cols,['cases','aantal','count','tickets','dossier','zaken']);
-    fillSel('c2_rol',withNone,['rol','functie','role']);
-  }
   if(idx===3){
-    fillSel('c3_maand',cols,['maand','month','periode','period','datum','date']);
-    fillSel('c3_res',cols,['resultaat','result','actueel','current','binnen','realisatie']);
+    fillSel('c3_maand',cols,['maand','month','periode','datum','date']);
+    fillSel('c3_res',cols,['resultaat','result','actueel','binnen','realisatie']);
     fillSel('c3_tgt',cols,['target','doel','budget','norm']);
   }
 }
 
 function checkAllReady(){
-  const allLoaded=wbs[1]&&wbs[2]&&wbs[3];
-  const allSheet=selectedSheet[1]&&selectedSheet[2]&&selectedSheet[3];
-  document.getElementById('startBtn').classList.toggle('ready',!!(allLoaded&&allSheet));
+  const ok1=wbs[1]&&selectedSheet[1];
+  const ok2=csvRows2!==null;
+  const ok3=wbs[3]&&selectedSheet[3];
+  document.getElementById('startBtn').classList.toggle('ready',!!(ok1&&ok2&&ok3));
 }
 
 // ── Dashboard starten ──
 function launchDashboard(){
-  // Recovery data lezen
+  // Recovery
   const rRows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:''});
   const auto=document.getElementById('autoStatus').checked;
   const teamleden=rRows.map(r=>{
@@ -461,23 +516,41 @@ function launchDashboard(){
     return{naam:String(r[document.getElementById('c1_naam').value]||''),rol:rolCol!=='__none'?String(r[rolCol]||''):'',target:t,huidig:h,status:st};
   }).filter(x=>x.naam);
 
-  // Cases data lezen
-  const cRows=XLSX.utils.sheet_to_json(wbs[2].Sheets[selectedSheet[2]],{defval:''});
+  // Cases — tellen per persoon OF kolom gebruiken
+  const autoCount=document.getElementById('autoCount').checked;
+  const naamCol=document.getElementById('c2_naam').value;
+  const casesCol=document.getElementById('c2_cases').value;
   const rolCol2=document.getElementById('c2_rol').value;
-  const cases=[...cRows.map(r=>({
-    naam:String(r[document.getElementById('c2_naam').value]||''),
-    cases:Number(r[document.getElementById('c2_cases').value])||0,
-    rol:rolCol2!=='__none'?String(r[rolCol2]||''):''
-  })).filter(x=>x.naam)].sort((a,b)=>b.cases-a.cases);
+  let cases=[];
+  if(autoCount){
+    // Tel rijen per naam (elke rij = 1 case)
+    const counts={};const rollen={};
+    csvRows2.forEach(r=>{
+      const n=String(r[naamCol]||'').trim();
+      if(!n)return;
+      counts[n]=(counts[n]||0)+1;
+      if(rolCol2!=='__none'&&r[rolCol2])rollen[n]=String(r[rolCol2]);
+    });
+    cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c,rol:rollen[naam]||''})).sort((a,b)=>b.cases-a.cases);
+  } else {
+    // Gebruik de cases-kolom direct
+    const seen={};
+    csvRows2.forEach(r=>{
+      const n=String(r[naamCol]||'').trim();
+      if(!n||seen[n])return;
+      seen[n]=true;
+      cases.push({naam:n,cases:Number(r[casesCol])||0,rol:rolCol2!=='__none'?String(r[rolCol2]||''):''});
+    });
+    cases.sort((a,b)=>b.cases-a.cases);
+  }
 
-  // Budget data lezen
+  // Budget
   const bRows=XLSX.utils.sheet_to_json(wbs[3].Sheets[selectedSheet[3]],{defval:''});
   const maanden=bRows.map(r=>({
     naam:String(r[document.getElementById('c3_maand').value]||''),
     resultaat:Number(r[document.getElementById('c3_res').value])||0,
     target:Number(r[document.getElementById('c3_tgt').value])||0
   })).filter(x=>x.naam);
-
   const budget={
     maand:document.getElementById('c3_maandnaam').value||'',
     mt:Number(document.getElementById('c3_maandtarget').value)||0,
@@ -501,21 +574,18 @@ function buildDashboard(teamleden,cases,budget,maanden){
   document.getElementById('s1maand').textContent=budget.maand;
   document.getElementById('s3maand').textContent=budget.maand;
 
-  // Slide 1 — Recovery
-  const grid=document.getElementById('recoveryGrid');
-  grid.innerHTML='';
+  // Slide 1
+  const grid=document.getElementById('recoveryGrid');grid.innerHTML='';
   teamleden.forEach(lid=>{
     const pct=lid.target>0?Math.min(100,Math.round((lid.huidig/lid.target)*100)):0;
     const lm={'on-track':'Op schema','at-risk':'Aandacht','behind':'Achter'};
-    const card=document.createElement('div');
-    card.className='member-card '+lid.status;
+    const card=document.createElement('div');card.className='member-card '+lid.status;
     card.innerHTML=`<div class="member-header"><div><div class="member-name">${lid.naam}</div><div class="member-role">${lid.rol}</div></div><div class="status-badge ${lid.status}">${lm[lid.status]||lid.status}</div></div><div class="recovery-amounts"><div><div class="amount-label">Binnengehaald</div><div class="amount-value current">${euro(lid.huidig)}</div></div><div style="text-align:right"><div class="amount-label">Maand Target</div><div class="amount-value target">${euro(lid.target)}</div></div></div><div class="recovery-bar-bg"><div class="recovery-bar-fill" style="width:${pct}%"></div></div><div class="pct-label">${pct}% van target</div>`;
     grid.appendChild(card);
   });
 
-  // Slide 2 — Cases
-  const cl=document.getElementById('casesLeft');
-  cl.innerHTML='';
+  // Slide 2
+  const cl=document.getElementById('casesLeft');cl.innerHTML='';
   const maxC=cases[0]?.cases||1;
   cases.forEach((lid,i)=>{
     const row=document.createElement('div');row.className='case-row';
@@ -531,7 +601,7 @@ function buildDashboard(teamleden,cases,budget,maanden){
   const dl=document.getElementById('donutLegend');dl.innerHTML='';
   cases.forEach((lid,i)=>{const it=document.createElement('div');it.className='legend-item';it.innerHTML=`<div class="legend-dot" style="background:${KLEUREN[i]}"></div>${lid.naam} (${lid.cases})`;dl.appendChild(it);});
 
-  // Slide 3 — Budget
+  // Slide 3
   document.getElementById('kpiTarget').textContent=euro(budget.mt);
   document.getElementById('kpiTargetSub').textContent='Nog '+euro(Math.max(0,budget.mt-budget.hm))+' te gaan';
   document.getElementById('kpiHuidig').textContent=euro(budget.hm);
@@ -541,7 +611,6 @@ function buildDashboard(teamleden,cases,budget,maanden){
   const jp=budget.jt>0?Math.round((budget.jtd/budget.jt)*100):0;
   document.getElementById('kpiJtd').textContent=euro(budget.jtd);
   document.getElementById('kpiJtdSub').textContent=jp+'% van jaartarget ('+euro(budget.jt)+')';
-
   setTimeout(()=>{
     const bc=document.getElementById('barChart');const bx=bc.getContext('2d');
     const W=bc.offsetWidth||600;bc.width=W;
@@ -560,7 +629,6 @@ function buildDashboard(teamleden,cases,budget,maanden){
       bx.fillStyle='#64748b';bx.font='11px Barlow';bx.textAlign='center';bx.fillText(m.naam,x,pT+cH+18);
     });
   },100);
-
   document.getElementById('targetBreakdown').innerHTML='<div class="chart-title">Breakdown per categorie</div>';
 
   // Slideshow
@@ -573,8 +641,7 @@ function buildDashboard(teamleden,cases,budget,maanden){
     dot.addEventListener('click',()=>{slides[currentSlide].classList.remove('active');currentSlide=i;slides[currentSlide].classList.add('active');document.querySelectorAll('.nav-dot').forEach((d,j)=>d.classList.toggle('active',j===i));startProgress();});
     dotsEl.appendChild(dot);
   });
-  slides[0].classList.add('active');
-  startProgress();
+  slides[0].classList.add('active');startProgress();
 }
 
 function startProgress(){
