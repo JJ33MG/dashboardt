@@ -17,8 +17,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-
 .upload-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;width:100%;max-width:1060px;}
 .upload-card{flex:1;min-width:290px;max-width:330px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;transition:border-color .3s;position:relative;}
 .upload-card.loaded{border-color:var(--green);}
-.upload-card.skipped{opacity:.5;}
-.optional-tag{font-size:.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:2px 8px;display:inline-block;margin-bottom:2px;}
+.optional-tag{font-size:.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:2px 8px;display:inline-block;}
 .card-header{display:flex;align-items:center;gap:12px;}
 .card-icon{font-size:1.6rem;}
 .card-title{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;}
@@ -53,16 +52,14 @@ select.cfg-select.auto-filled{border-color:rgba(16,185,129,.5);}
 .kv-input{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:7px 10px;font-family:'Barlow',sans-serif;font-size:.8rem;}
 .kv-input:focus{outline:none;border-color:var(--accent);}
 .kv-label{font-size:.65rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
-
-/* Start sectie */
 .start-section{display:flex;flex-direction:column;align-items:center;gap:10px;}
-.ready-status{font-size:.78rem;color:var(--muted);text-align:center;letter-spacing:.5px;}
+.ready-status{font-size:.78rem;color:var(--muted);text-align:center;}
 .ready-status .ok{color:var(--green);font-weight:600;}
 .start-btn{padding:14px 56px;background:var(--accent);color:#000;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.1rem;letter-spacing:3px;text-transform:uppercase;border:none;border-radius:10px;cursor:pointer;transition:all .2s;opacity:.3;pointer-events:none;}
 .start-btn.ready{opacity:1;pointer-events:all;box-shadow:0 0 28px rgba(245,158,11,.35);}
-.start-btn.ready:hover{transform:translateY(-1px);box-shadow:0 0 36px rgba(245,158,11,.45);}
+.start-btn.ready:hover{transform:translateY(-1px);}
 
-/* Dashboard */
+/* DASHBOARD */
 #dashboard{display:none;}
 header{display:flex;justify-content:space-between;align-items:center;padding:18px 40px 14px;border-bottom:1px solid var(--border);background:var(--panel);z-index:10;position:relative;}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);}
@@ -80,36 +77,64 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 .progress-bar{position:fixed;bottom:0;left:0;right:0;height:3px;background:var(--border);z-index:100;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;}
 .slides-wrapper{height:calc(100vh - 68px);position:relative;overflow:hidden;}
-.slide{position:absolute;inset:0;padding:32px 40px;opacity:0;transform:translateX(60px);transition:all .6s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+.slide{position:absolute;inset:0;padding:28px 40px;opacity:0;transform:translateX(60px);transition:all .6s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow-y:auto;}
 .slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
 .slide.exit{opacity:0;transform:translateX(-60px);}
-.slide-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
-.slide-heading{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:28px;}
+.slide-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.slide-heading{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:22px;}
 .slide-heading span{color:var(--accent);}
-.recovery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
-.member-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 22px;position:relative;overflow:hidden;}
-.member-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
-.member-card.on-track::before{background:var(--green);}
-.member-card.at-risk::before{background:var(--accent);}
-.member-card.behind::before{background:var(--red);}
-.member-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
-.member-name{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;}
-.member-role{font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
-.status-badge{font-size:.65rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
-.status-badge.on-track{background:rgba(16,185,129,.15);color:var(--green);}
-.status-badge.at-risk{background:rgba(245,158,11,.15);color:var(--accent);}
-.status-badge.behind{background:rgba(239,68,68,.15);color:var(--red);}
-.recovery-amounts{display:flex;justify-content:space-between;margin-bottom:10px;}
-.amount-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
-.amount-value{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;}
-.amount-value.current{color:var(--text);}
-.amount-value.target{color:var(--muted);font-weight:400;}
-.recovery-bar-bg{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
-.recovery-bar-fill{height:100%;border-radius:3px;}
-.on-track .recovery-bar-fill{background:var(--green);}
-.at-risk .recovery-bar-fill{background:var(--accent);}
-.behind .recovery-bar-fill{background:var(--red);}
-.pct-label{font-size:.7rem;color:var(--muted);text-align:right;margin-top:4px;}
+
+/* ══ COLLECTOR GRID ══ */
+.collector-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;}
+
+.collector-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden;}
+.collector-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;}
+.collector-card.good::before{background:var(--green);}
+.collector-card.warn::before{background:var(--accent);}
+.collector-card.bad::before{background:var(--red);}
+
+/* Top row: naam + badge */
+.cc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.cc-name{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;letter-spacing:.5px;}
+.cc-badge{font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;}
+.cc-badge.good{background:rgba(16,185,129,.15);color:var(--green);}
+.cc-badge.warn{background:rgba(245,158,11,.15);color:var(--accent);}
+.cc-badge.bad{background:rgba(239,68,68,.15);color:var(--red);}
+
+/* Stat rijen */
+.cc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;}
+.cc-stat{display:flex;flex-direction:column;gap:3px;}
+.cc-stat-label{font-size:.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+.cc-stat-value{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;line-height:1;}
+.cc-stat-value.portfolio{color:var(--text);}
+.cc-stat-value.recovered{color:var(--green);}
+.cc-stat-value.remaining{color:var(--red);}
+.cc-stat-value.remaining.done{color:var(--green);}
+.cc-stat-sub{font-size:.62rem;color:var(--muted);}
+
+/* Progress sectie */
+.cc-progress-wrap{display:flex;flex-direction:column;gap:5px;}
+.cc-progress-labels{display:flex;justify-content:space-between;align-items:center;}
+.cc-progress-left{font-size:.65rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.cc-progress-pct{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;}
+.cc-bar-bg{height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.cc-bar-fill{height:100%;border-radius:4px;transition:width 1.2s ease;}
+.good .cc-bar-fill{background:var(--green);}
+.warn .cc-bar-fill{background:var(--accent);}
+.bad .cc-bar-fill{background:var(--red);}
+
+/* Minimum target label */
+.cc-target-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+.cc-target-label{font-size:.62rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.cc-target-val{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;color:var(--accent2);}
+
+/* Teamtotaal balk bovenaan */
+.team-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.ts-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;}
+.ts-label{font-size:.62rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.ts-value{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;line-height:1;}
+
+/* Cases slide */
 .cases-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:calc(100% - 100px);}
 .cases-left{display:flex;flex-direction:column;gap:10px;}
 .case-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:16px;}
@@ -129,6 +154,8 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 .donut-legend{margin-top:16px;display:grid;grid-template-columns:1fr 1fr;gap:6px 20px;width:100%;}
 .legend-item{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--muted);}
 .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* Budget slide */
 .budget-layout{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr;gap:16px;height:calc(100% - 100px);}
 .kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 26px;position:relative;overflow:hidden;}
 .kpi-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
@@ -159,7 +186,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 
 <div id="uploadScreen">
   <div class="up-logo">Commercial <span>Dashboard</span></div>
-  <div class="up-subtitle">Upload één of meerdere bestanden. Elke sectie is optioneel — het dashboard toont alleen de slides waarvoor je data hebt.</div>
+  <div class="up-subtitle">Upload één of meerdere bestanden. Elke sectie is optioneel.</div>
 
   <div class="upload-cards">
 
@@ -172,7 +199,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
         </div>
         <span class="optional-tag">Optioneel</span>
       </div>
-      <div class="card-desc">Hoeveel iedereen moet binnenhalen en wat er al gerealiseerd is.</div>
+      <div class="card-desc">Recovery overzicht per collector.</div>
       <div class="drop-zone" id="dz1">
         <div class="drop-zone-text">Sleep je .xlsx bestand hier</div>
         <div class="drop-btn" id="dbtn1">Bestand kiezen</div>
@@ -181,12 +208,11 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
       </div>
       <div class="card-config" id="cfg1">
         <div id="pillswrap1" style="display:none"><div class="cfg-label">Tabblad</div><div class="sheet-pills" id="pills1"></div></div>
-        <div class="cfg-row"><div class="cfg-label">Naam teamlid <span class="auto-tag" id="at1_naam"></span></div><select class="cfg-select" id="c1_naam"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Functie / Rol (optioneel) <span class="auto-tag" id="at1_rol"></span></div><select class="cfg-select" id="c1_rol"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Maand Target <span class="auto-tag" id="at1_target"></span></div><select class="cfg-select" id="c1_target"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Huidig resultaat <span class="auto-tag" id="at1_huidig"></span></div><select class="cfg-select" id="c1_huidig"></select></div>
-        <div class="toggle-wrap"><input type="checkbox" id="autoStatus" checked><label for="autoStatus">Status automatisch berekenen (≥100% groen, ≥80% oranje, &lt;80% rood)</label></div>
-        <div id="statusColWrap" style="display:none"><div class="cfg-row"><div class="cfg-label">Status kolom</div><select class="cfg-select" id="c1_status"></select></div></div>
+        <div class="cfg-row"><div class="cfg-label">Kolom: Naam collector <span class="auto-tag" id="at1_naam"></span></div><select class="cfg-select" id="c1_naam"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Kolom: Portfolio begin maand <span class="auto-tag" id="at1_portfolio"></span></div><select class="cfg-select" id="c1_portfolio"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Kolom: Al gerecupereerd (total recovery) <span class="auto-tag" id="at1_recovery"></span></div><select class="cfg-select" id="c1_recovery"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Kolom: New Hit deze maand (minimum target) <span class="auto-tag" id="at1_newhit"></span></div><select class="cfg-select" id="c1_newhit"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Kolom: Recovery % (optioneel) <span class="auto-tag" id="at1_pct"></span></div><select class="cfg-select" id="c1_pct"></select></div>
       </div>
     </div>
 
@@ -241,7 +267,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
         <div class="cfg-row"><div class="cfg-label">Target kolom <span class="auto-tag" id="at3_tgt"></span></div><select class="cfg-select" id="c3_tgt"></select></div>
         <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:7px;">
           <div class="kv-label">Vul ook in ↓</div>
-          <div class="cfg-row"><div class="kv-label">Maandnaam (bijv. April 2026)</div><input class="kv-input" id="c3_maandnaam" placeholder="April 2026"></div>
+          <div class="cfg-row"><div class="kv-label">Maandnaam</div><input class="kv-input" id="c3_maandnaam" placeholder="April 2026"></div>
           <div class="cfg-row"><div class="kv-label">Maand Target (totaal team)</div><input class="kv-input" id="c3_maandtarget" type="number" placeholder="280000"></div>
           <div class="cfg-row"><div class="kv-label">Huidig resultaat deze maand</div><input class="kv-input" id="c3_huidig" type="number" placeholder="215000"></div>
           <div class="cfg-row"><div class="kv-label">Resultaat vorige maand</div><input class="kv-input" id="c3_vorig" type="number" placeholder="198000"></div>
@@ -282,15 +308,16 @@ let selectedSheet={1:null,3:null};
 let slideInterval=null,currentSlide=0;
 let activeSlides=[];
 
-function euro(n){return'€'+Number(n).toLocaleString('nl-NL');}
+function euro(n){
+  const num=Number(n)||0;
+  if(Math.abs(num)>=1000000)return'€'+( num/1000000).toFixed(1)+'M';
+  if(Math.abs(num)>=1000)return'€'+(num/1000).toFixed(1)+'K';
+  return'€'+num.toLocaleString('nl-NL');
+}
+function euroFull(n){return'€'+Number(n).toLocaleString('nl-NL');}
 function updateClock(){const n=new Date();document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
 updateClock();setInterval(updateClock,10000);
 
-document.getElementById('autoStatus').addEventListener('change',function(){
-  document.getElementById('statusColWrap').style.display=this.checked?'none':'block';
-});
-
-// ── Knop activeren zodra 1 bestand geladen is ──
 function updateStartBtn(){
   const anyLoaded=wbs[1]||csvRows2||wbs[3];
   const btn=document.getElementById('startBtn');
@@ -301,17 +328,15 @@ function updateStartBtn(){
     if(wbs[1])parts.push('Commercial Loss');
     if(csvRows2)parts.push('Cases');
     if(wbs[3])parts.push('Budget');
-    status.innerHTML='<span class="ok">✓ Klaar om te starten</span> — '+parts.join(', ')+' geladen';
+    status.innerHTML='<span class="ok">✓ Klaar!</span> — '+parts.join(' + ')+' geladen. Pas kolommen aan indien nodig.';
   } else {
     btn.classList.remove('ready');
     status.textContent='Upload minimaal 1 bestand om te starten';
   }
 }
 
-// ── Auto-select helper ──
-function autoSelect(selectId,cols,hints,tagId){
-  const sel=document.getElementById(selectId);
-  if(!sel)return;
+function autoSelect(id,cols,hints,tagId){
+  const sel=document.getElementById(id);if(!sel)return;
   const lc=cols.map(c=>c.toLowerCase());
   for(const h of hints){
     const f=lc.findIndex(c=>c.includes(h));
@@ -326,10 +351,9 @@ function fillSelect(id,cols,withNone=false){
   cols.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
 }
 
-// ── Upload setup ──
+// Upload setup
 [1,3].forEach(i=>{
-  const dz=document.getElementById('dz'+i);
-  const fi=document.getElementById('fi'+i);
+  const dz=document.getElementById('dz'+i),fi=document.getElementById('fi'+i);
   document.getElementById('dbtn'+i).addEventListener('click',e=>{e.stopPropagation();fi.click();});
   fi.addEventListener('change',e=>{if(e.target.files[0])readExcel(i,e.target.files[0]);});
   dz.addEventListener('click',()=>fi.click());
@@ -354,13 +378,10 @@ function readExcel(idx,file){
       document.getElementById('dfn'+idx).textContent='✓ '+file.name;
       document.getElementById('dfn'+idx).style.display='block';
       document.getElementById('card'+idx).classList.add('loaded');
-      const firstSheet=wb.SheetNames[0];
-      selectedSheet[idx]=firstSheet;
-      const rows=XLSX.utils.sheet_to_json(wb.Sheets[firstSheet],{defval:''});
-      if(wb.SheetNames.length>1){
-        document.getElementById('pillswrap'+idx).style.display='block';
-        buildPills(idx,wb);
-      }
+      const first=wb.SheetNames[0];
+      selectedSheet[idx]=first;
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[first],{defval:''});
+      if(wb.SheetNames.length>1){document.getElementById('pillswrap'+idx).style.display='block';buildPills(idx,wb);}
       autoFillCols(idx,rows);
       updateStartBtn();
     }catch(err){document.getElementById('card'+idx).classList.add('error');}
@@ -369,40 +390,37 @@ function readExcel(idx,file){
 }
 
 function buildPills(idx,wb){
-  const container=document.getElementById('pills'+idx);container.innerHTML='';
+  const cont=document.getElementById('pills'+idx);cont.innerHTML='';
   wb.SheetNames.forEach((name,i)=>{
     const pill=document.createElement('div');pill.className='sheet-pill'+(i===0?' selected':'');pill.textContent=name;
     pill.addEventListener('click',()=>{
-      container.querySelectorAll('.sheet-pill').forEach(p=>p.classList.remove('selected'));
+      cont.querySelectorAll('.sheet-pill').forEach(p=>p.classList.remove('selected'));
       pill.classList.add('selected');selectedSheet[idx]=name;
-      const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''});
-      autoFillCols(idx,rows);
+      autoFillCols(idx,XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''}));
     });
-    container.appendChild(pill);
+    cont.appendChild(pill);
   });
 }
 
 function autoFillCols(idx,rows){
   const cols=Object.keys(rows[0]||{});
   if(idx===1){
-    fillSelect('c1_naam',cols);fillSelect('c1_rol',cols,true);fillSelect('c1_target',cols);fillSelect('c1_huidig',cols);fillSelect('c1_status',cols,true);
-    autoSelect('c1_naam',cols,['naam','name','medewerker','persoon','agent','werknemer'],'at1_naam');
-    autoSelect('c1_rol',cols,['rol','functie','title','role','job'],'at1_rol');
-    autoSelect('c1_target',cols,['target','doel','budget','norm','maand'],'at1_target');
-    autoSelect('c1_huidig',cols,['huidig','resultaat','actueel','current','binnen','gerealiseerd'],'at1_huidig');
+    fillSelect('c1_naam',cols);
+    fillSelect('c1_portfolio',cols);
+    fillSelect('c1_recovery',cols);
+    fillSelect('c1_newhit',cols);
+    fillSelect('c1_pct',cols,true);
+    autoSelect('c1_naam',cols,['naam','name','collector','medewerker','agent'],'at1_naam');
+    autoSelect('c1_portfolio',cols,['portfolio','start','begin','openstaand','te recov','totaal','balance'],'at1_portfolio');
+    autoSelect('c1_recovery',cols,['total recov','al recov','gerealiseerd','recovered','realisatie','betaald'],'at1_recovery');
+    autoSelect('c1_newhit',cols,['new hit','nieuw','april','target','minimum','hit'],'at1_newhit');
+    autoSelect('c1_pct',cols,['%','percent','pct','rate','ratio'],'at1_pct');
   }
   if(idx===3){
     fillSelect('c3_maand',cols);fillSelect('c3_res',cols);fillSelect('c3_tgt',cols);
-    autoSelect('c3_maand',cols,['maand','month','periode','datum','date'],'at3_maand');
+    autoSelect('c3_maand',cols,['maand','month','periode','datum'],'at3_maand');
     autoSelect('c3_res',cols,['resultaat','result','actueel','binnen','realisatie'],'at3_res');
     autoSelect('c3_tgt',cols,['target','doel','budget','norm'],'at3_tgt');
-    // Probeer cijfers auto-invullen
-    const last=rows[rows.length-1];
-    const tgtCol=cols.find(c=>['target','doel','budget','norm'].some(h=>c.toLowerCase().includes(h)));
-    const resCol=cols.find(c=>['resultaat','result','actueel','binnen'].some(h=>c.toLowerCase().includes(h)));
-    if(tgtCol&&last[tgtCol])document.getElementById('c3_maandtarget').value=Number(last[tgtCol])||'';
-    if(resCol&&last[resCol])document.getElementById('c3_huidig').value=Number(last[resCol])||'';
-    if(rows.length>=2&&resCol)document.getElementById('c3_vorig').value=Number(rows[rows.length-2][resCol])||'';
   }
 }
 
@@ -418,8 +436,7 @@ function readCasesFile(file){
         document.getElementById('dfn2').textContent='✓ '+file.name+' ('+rows.length+' rijen)';
         document.getElementById('dfn2').style.display='block';
         document.getElementById('card2').classList.add('loaded');
-        autoFillCasesCols(rows);
-        updateStartBtn();
+        autoFillCasesCols(rows);updateStartBtn();
       }catch(err){document.getElementById('card2').classList.add('error');}
     };
     reader.readAsText(file,'UTF-8');
@@ -429,11 +446,10 @@ function readCasesFile(file){
         const wb=XLSX.read(e.target.result,{type:'array'});
         const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
         csvRows2=rows;
-        document.getElementById('dfn2').textContent='✓ '+file.name+' ('+rows.length+' rijen)';
+        document.getElementById('dfn2').textContent='✓ '+file.name;
         document.getElementById('dfn2').style.display='block';
         document.getElementById('card2').classList.add('loaded');
-        autoFillCasesCols(rows);
-        updateStartBtn();
+        autoFillCasesCols(rows);updateStartBtn();
       }catch(err){document.getElementById('card2').classList.add('error');}
     };
     reader.readAsArrayBuffer(file);
@@ -443,7 +459,7 @@ function readCasesFile(file){
 function autoFillCasesCols(rows){
   const cols=Object.keys(rows[0]||{});
   fillSelect('c2_naam',cols);fillSelect('c2_cases',cols,true);fillSelect('c2_rol',cols,true);
-  autoSelect('c2_naam',cols,['owner','eigenaar','assigned','medewerker','naam','name','agent','user'],'at2_naam');
+  autoSelect('c2_naam',cols,['owner','eigenaar','medewerker','naam','name','agent','user'],'at2_naam');
   autoSelect('c2_cases',cols,['count','aantal','cases','total','totaal','number'],'at2_cases');
   autoSelect('c2_rol',cols,['rol','functie','role','title','profile'],'at2_rol');
 }
@@ -470,57 +486,122 @@ function parseCSV(text){
   });
 }
 
-// ── Dashboard starten ──
+// ── Dashboard bouwen ──
 function launchDashboard(){
   const wrapper=document.getElementById('slidesWrapper');
-  wrapper.innerHTML='';
-  activeSlides=[];
-  let slideIndex=0;
+  wrapper.innerHTML='';activeSlides=[];
+  let si=0;
 
   // SLIDE 1: Commercial Loss
   if(wbs[1]&&selectedSheet[1]){
-    const rRows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:''});
-    const auto=document.getElementById('autoStatus').checked;
-    const teamleden=rRows.map(r=>{
-      const t=Number(r[document.getElementById('c1_target').value])||0;
-      const h=Number(r[document.getElementById('c1_huidig').value])||0;
-      const rolCol=document.getElementById('c1_rol').value;
-      let st=auto?(h>=t?'on-track':h>=t*.8?'at-risk':'behind'):((r[document.getElementById('c1_status').value]||'').toLowerCase().replace(' ','-')||'behind');
-      return{naam:String(r[document.getElementById('c1_naam').value]||''),rol:rolCol!=='__none'?String(r[rolCol]||''):'',target:t,huidig:h,status:st};
-    }).filter(x=>x.naam);
-    if(teamleden.length){
-      const slide=createSlide(slideIndex,'Slide · Commercial Recovery','Recovery <span>Targets</span>');
-      const grid=document.createElement('div');grid.className='recovery-grid';
-      teamleden.forEach(lid=>{
-        const pct=lid.target>0?Math.min(100,Math.round((lid.huidig/lid.target)*100)):0;
-        const lm={'on-track':'Op schema','at-risk':'Aandacht','behind':'Achter'};
-        const card=document.createElement('div');card.className='member-card '+lid.status;
-        card.innerHTML=`<div class="member-header"><div><div class="member-name">${lid.naam}</div><div class="member-role">${lid.rol}</div></div><div class="status-badge ${lid.status}">${lm[lid.status]||lid.status}</div></div><div class="recovery-amounts"><div><div class="amount-label">Binnengehaald</div><div class="amount-value current">${euro(lid.huidig)}</div></div><div style="text-align:right"><div class="amount-label">Maand Target</div><div class="amount-value target">${euro(lid.target)}</div></div></div><div class="recovery-bar-bg"><div class="recovery-bar-fill" style="width:${pct}%"></div></div><div class="pct-label">${pct}% van target</div>`;
+    const rows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:''});
+    const nCol=document.getElementById('c1_naam').value;
+    const pCol=document.getElementById('c1_portfolio').value;
+    const rCol=document.getElementById('c1_recovery').value;
+    const hCol=document.getElementById('c1_newhit').value;
+    const pctCol=document.getElementById('c1_pct').value;
+
+    const collectors=rows.map(r=>{
+      const naam=String(r[nCol]||'').trim();
+      if(!naam)return null;
+      const portfolio=Number(String(r[pCol]||'').replace(/[^0-9.-]/g,''))||0;
+      const recovered=Number(String(r[rCol]||'').replace(/[^0-9.-]/g,''))||0;
+      const newHit=Number(String(r[hCol]||'').replace(/[^0-9.-]/g,''))||0;
+      const pctRaw=pctCol!=='__none'?Number(String(r[pctCol]||'').replace(/[^0-9.-]/g,''))||null:null;
+      // Nog te recupereren = max(0, newHit - recovered)
+      const stillNeeded=Math.max(0,newHit-recovered);
+      // Status: als recovered >= newHit → goed; >= 80% van newHit → waarschuwing; anders slecht
+      const pctOfTarget=newHit>0?(recovered/newHit)*100:100;
+      const status=pctOfTarget>=100?'good':pctOfTarget>=80?'warn':'bad';
+      const pctDisplay=pctRaw!==null?pctRaw:(newHit>0?Math.round(pctOfTarget):0);
+      return{naam,portfolio,recovered,newHit,stillNeeded,status,pct:pctDisplay};
+    }).filter(Boolean);
+
+    if(collectors.length){
+      // Team totalen
+      const totPortfolio=collectors.reduce((s,c)=>s+c.portfolio,0);
+      const totRecovered=collectors.reduce((s,c)=>s+c.recovered,0);
+      const totNewHit=collectors.reduce((s,c)=>s+c.newHit,0);
+      const totStill=collectors.reduce((s,c)=>s+c.stillNeeded,0);
+
+      const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+si;
+      slide.innerHTML=`<div class="slide-title">Commercial Recovery</div><div class="slide-heading">Recovery <span>Overzicht</span></div>`;
+
+      // Team summary
+      const summary=document.createElement('div');summary.className='team-summary';
+      const teamPct=totNewHit>0?Math.round((totRecovered/totNewHit)*100):0;
+      summary.innerHTML=`
+        <div class="ts-card"><div class="ts-label">Portfolio team</div><div class="ts-value" style="color:var(--text)">${euro(totPortfolio)}</div></div>
+        <div class="ts-card"><div class="ts-label">Al gerecupereerd</div><div class="ts-value" style="color:var(--green)">${euro(totRecovered)}</div></div>
+        <div class="ts-card"><div class="ts-label">Min. target (New Hit)</div><div class="ts-value" style="color:var(--accent2)">${euro(totNewHit)}</div></div>
+        <div class="ts-card"><div class="ts-label">Nog te recupereren</div><div class="ts-value" style="color:${totStill===0?'var(--green)':'var(--red)'}">${totStill===0?'✓ Gehaald':euro(totStill)}</div></div>`;
+      slide.appendChild(summary);
+
+      // Collector cards
+      const grid=document.createElement('div');grid.className='collector-grid';
+      collectors.forEach(c=>{
+        const pctBar=Math.min(100,Math.round(c.newHit>0?(c.recovered/c.newHit)*100:100));
+        const badgeLabels={good:'In Recovery',warn:'Bijna',bad:'Achter'};
+        const card=document.createElement('div');card.className='collector-card '+c.status;
+        card.innerHTML=`
+          <div class="cc-top">
+            <div class="cc-name">${c.naam}</div>
+            <div class="cc-badge ${c.status}">${badgeLabels[c.status]}</div>
+          </div>
+          <div class="cc-stats">
+            <div class="cc-stat">
+              <div class="cc-stat-label">Portfolio begin</div>
+              <div class="cc-stat-value portfolio">${euro(c.portfolio)}</div>
+              <div class="cc-stat-sub">start maand</div>
+            </div>
+            <div class="cc-stat">
+              <div class="cc-stat-label">Al gerecupereerd</div>
+              <div class="cc-stat-value recovered">${euro(c.recovered)}</div>
+              <div class="cc-stat-sub">${c.pct}% van portfolio</div>
+            </div>
+            <div class="cc-stat">
+              <div class="cc-stat-label">Nog nodig</div>
+              <div class="cc-stat-value remaining ${c.stillNeeded===0?'done':''}">${c.stillNeeded===0?'✓ Gehaald':euro(c.stillNeeded)}</div>
+              <div class="cc-stat-sub">voor recovery</div>
+            </div>
+          </div>
+          <div class="cc-progress-wrap">
+            <div class="cc-progress-labels">
+              <div class="cc-progress-left">Voortgang vs New Hit</div>
+              <div class="cc-progress-pct" style="color:${c.status==='good'?'var(--green)':c.status==='warn'?'var(--accent)':'var(--red)'}">${pctBar}%</div>
+            </div>
+            <div class="cc-bar-bg"><div class="cc-bar-fill" style="width:${pctBar}%"></div></div>
+          </div>
+          <div class="cc-target-row">
+            <div class="cc-target-label">New Hit (minimum target)</div>
+            <div class="cc-target-val">${euro(c.newHit)}</div>
+          </div>`;
         grid.appendChild(card);
       });
-      slide.appendChild(grid);wrapper.appendChild(slide);
-      activeSlides.push(slide);slideIndex++;
+      slide.appendChild(grid);
+      wrapper.appendChild(slide);activeSlides.push(slide);si++;
     }
   }
 
   // SLIDE 2: Cases
   if(csvRows2){
     const autoCount=document.getElementById('autoCount').checked;
-    const naamCol=document.getElementById('c2_naam').value;
-    const casesCol=document.getElementById('c2_cases').value;
-    const rolCol2=document.getElementById('c2_rol').value;
+    const nCol=document.getElementById('c2_naam').value;
+    const cCol=document.getElementById('c2_cases').value;
+    const rCol=document.getElementById('c2_rol').value;
     let cases=[];
     if(autoCount){
       const counts={};const rollen={};
-      csvRows2.forEach(r=>{const n=String(r[naamCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;if(rolCol2!=='__none'&&r[rolCol2])rollen[n]=String(r[rolCol2]);});
+      csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;if(rCol!=='__none'&&r[rCol])rollen[n]=String(r[rCol]);});
       cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c,rol:rollen[naam]||''})).sort((a,b)=>b.cases-a.cases);
     } else {
       const seen={};
-      csvRows2.forEach(r=>{const n=String(r[naamCol]||'').trim();if(!n||seen[n])return;seen[n]=true;cases.push({naam:n,cases:Number(r[casesCol])||0,rol:rolCol2!=='__none'?String(r[rolCol2]||''):''});});
+      csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n||seen[n])return;seen[n]=true;cases.push({naam:n,cases:Number(r[cCol])||0,rol:rCol!=='__none'?String(r[rCol]||''):''});});
       cases.sort((a,b)=>b.cases-a.cases);
     }
     if(cases.length){
-      const slide=createSlide(slideIndex,'Slide · Workload','Cases per <span>Teamlid</span>');
+      const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+si;
+      slide.innerHTML=`<div class="slide-title">Workload</div><div class="slide-heading">Cases per <span>Teamlid</span></div>`;
       const layout=document.createElement('div');layout.className='cases-layout';
       const cl=document.createElement('div');cl.className='cases-left';
       const maxC=cases[0].cases||1;
@@ -530,17 +611,16 @@ function launchDashboard(){
         cl.appendChild(row);
       });
       const cr=document.createElement('div');cr.className='cases-right';
-      const dlabel=document.createElement('div');dlabel.className='donut-label';dlabel.textContent='Verdeling Cases';
       const canvas=document.createElement('canvas');canvas.width=240;canvas.height=240;
       const legend=document.createElement('div');legend.className='donut-legend';
-      cr.appendChild(dlabel);cr.appendChild(canvas);cr.appendChild(legend);
-      layout.appendChild(cl);layout.appendChild(cr);slide.appendChild(layout);
-      wrapper.appendChild(slide);activeSlides.push(slide);slideIndex++;
-      // Donut tekenen na render
+      cr.innerHTML='<div class="donut-label">Verdeling Cases</div>';
+      cr.appendChild(canvas);cr.appendChild(legend);
+      layout.appendChild(cl);layout.appendChild(cr);
+      slide.appendChild(layout);wrapper.appendChild(slide);activeSlides.push(slide);si++;
       requestAnimationFrame(()=>{
         const ctx=canvas.getContext('2d');
         const total=cases.reduce((s,c)=>s+c.cases,0);let angle=-Math.PI/2;
-        cases.forEach((lid,i)=>{const slice=(lid.cases/total)*2*Math.PI;ctx.beginPath();ctx.moveTo(120,120);ctx.arc(120,120,90,angle,angle+slice);ctx.closePath();ctx.fillStyle=KLEUREN[i%KLEUREN.length];ctx.fill();angle+=slice;});
+        cases.forEach((lid,i)=>{const sl=(lid.cases/total)*2*Math.PI;ctx.beginPath();ctx.moveTo(120,120);ctx.arc(120,120,90,angle,angle+sl);ctx.closePath();ctx.fillStyle=KLEUREN[i%KLEUREN.length];ctx.fill();angle+=sl;});
         ctx.beginPath();ctx.arc(120,120,56,0,2*Math.PI);ctx.fillStyle='#161a24';ctx.fill();
         ctx.fillStyle='#f1f5f9';ctx.font='bold 28px Barlow Condensed';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(total,120,112);
         ctx.font='11px Barlow';ctx.fillStyle='#64748b';ctx.fillText('cases totaal',120,134);
@@ -554,9 +634,10 @@ function launchDashboard(){
     const bRows=XLSX.utils.sheet_to_json(wbs[3].Sheets[selectedSheet[3]],{defval:''});
     const maanden=bRows.map(r=>({naam:String(r[document.getElementById('c3_maand').value]||''),resultaat:Number(r[document.getElementById('c3_res').value])||0,target:Number(r[document.getElementById('c3_tgt').value])||0})).filter(x=>x.naam);
     const budget={maand:document.getElementById('c3_maandnaam').value||'',mt:Number(document.getElementById('c3_maandtarget').value)||0,hm:Number(document.getElementById('c3_huidig').value)||0,vm:Number(document.getElementById('c3_vorig').value)||0,jt:Number(document.getElementById('c3_jaartarget').value)||0,jtd:Number(document.getElementById('c3_jtd').value)||0};
-    const slide=createSlide(slideIndex,'Slide · Financial Overview','Budget <span>Overzicht</span>'+(budget.maand?' — '+budget.maand:''));
+    const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+si;
+    slide.innerHTML=`<div class="slide-title">Financial Overview</div><div class="slide-heading">Budget <span>Overzicht</span>${budget.maand?' — '+budget.maand:''}</div>`;
     const layout=document.createElement('div');layout.className='budget-layout';
-    layout.innerHTML=`<div class="kpi-card k1"><div class="kpi-label">Maand Target</div><div class="kpi-value" style="color:var(--accent2)">${euro(budget.mt)}</div><div class="kpi-sub">Nog ${euro(Math.max(0,budget.mt-budget.hm))} te gaan</div></div><div class="kpi-card k2"><div class="kpi-label">Huidig Resultaat</div><div class="kpi-value" style="color:var(--accent)">${euro(budget.hm)}</div><div class="kpi-delta ${budget.hm>=budget.vm?'up':'down'}">${budget.hm>=budget.vm?'▲ +':'▼ '}${euro(Math.abs(budget.hm-budget.vm))} vs vorige maand</div></div><div class="kpi-card k3"><div class="kpi-label">Jaar-to-Date</div><div class="kpi-value" style="color:var(--green)">${euro(budget.jtd)}</div><div class="kpi-sub">${budget.jt>0?Math.round((budget.jtd/budget.jt)*100):0}% van jaartarget (${euro(budget.jt)})</div></div><div class="budget-chart-wrap"><div class="chart-title">Maandresultaten vs Target</div><canvas id="barChart" height="160"></canvas></div><div class="target-breakdown"><div class="chart-title">Breakdown per categorie</div></div>`;
+    layout.innerHTML=`<div class="kpi-card k1"><div class="kpi-label">Maand Target</div><div class="kpi-value" style="color:var(--accent2)">${euroFull(budget.mt)}</div><div class="kpi-sub">Nog ${euroFull(Math.max(0,budget.mt-budget.hm))} te gaan</div></div><div class="kpi-card k2"><div class="kpi-label">Huidig Resultaat</div><div class="kpi-value" style="color:var(--accent)">${euroFull(budget.hm)}</div><div class="kpi-delta ${budget.hm>=budget.vm?'up':'down'}">${budget.hm>=budget.vm?'▲ +':'▼ '}${euroFull(Math.abs(budget.hm-budget.vm))} vs vorige maand</div></div><div class="kpi-card k3"><div class="kpi-label">Jaar-to-Date</div><div class="kpi-value" style="color:var(--green)">${euroFull(budget.jtd)}</div><div class="kpi-sub">${budget.jt>0?Math.round((budget.jtd/budget.jt)*100):0}% van jaartarget (${euroFull(budget.jt)})</div></div><div class="budget-chart-wrap"><div class="chart-title">Maandresultaten vs Target</div><canvas id="barChart" height="160"></canvas></div><div class="target-breakdown"><div class="chart-title">Breakdown per categorie</div></div>`;
     slide.appendChild(layout);wrapper.appendChild(slide);activeSlides.push(slide);
     setTimeout(()=>{
       const bc=document.getElementById('barChart');if(!bc)return;
@@ -580,7 +661,6 @@ function launchDashboard(){
 
   if(!activeSlides.length)return;
 
-  // Slideshow opzetten
   document.getElementById('uploadScreen').classList.add('hidden');
   document.getElementById('dashboard').style.display='block';
   const dotsEl=document.getElementById('navDots');
@@ -591,20 +671,8 @@ function launchDashboard(){
     dot.addEventListener('click',()=>{activeSlides[currentSlide].classList.remove('active');currentSlide=i;activeSlides[currentSlide].classList.add('active');dotsEl.querySelectorAll('.nav-dot').forEach((d,j)=>d.classList.toggle('active',j===i));startProgress();});
     dotsEl.appendChild(dot);
   });
-  activeSlides[0].classList.add('active');
-  startProgress();
-
-  document.getElementById('reloadBtn').onclick=()=>{
-    document.getElementById('uploadScreen').classList.remove('hidden');
-    document.getElementById('dashboard').style.display='none';
-    clearInterval(slideInterval);
-  };
-}
-
-function createSlide(idx,title,heading){
-  const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+idx;
-  slide.innerHTML=`<div class="slide-title">${title}</div><div class="slide-heading">${heading}</div>`;
-  return slide;
+  activeSlides[0].classList.add('active');startProgress();
+  document.getElementById('reloadBtn').onclick=()=>{document.getElementById('uploadScreen').classList.remove('hidden');document.getElementById('dashboard').style.display='none';clearInterval(slideInterval);};
 }
 
 function startProgress(){
