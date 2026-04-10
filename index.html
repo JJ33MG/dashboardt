@@ -15,7 +15,7 @@ body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-
 .up-logo span{color:var(--text);font-weight:300;}
 .up-subtitle{font-size:.85rem;color:var(--muted);text-align:center;max-width:600px;line-height:1.6;}
 .upload-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;width:100%;max-width:1060px;}
-.upload-card{flex:1;min-width:290px;max-width:330px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;transition:border-color .3s;position:relative;}
+.upload-card{flex:1;min-width:290px;max-width:330px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:12px;transition:border-color .3s;}
 .upload-card.loaded{border-color:var(--green);}
 .optional-tag{font-size:.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:2px 8px;display:inline-block;}
 .card-header{display:flex;align-items:center;gap:12px;}
@@ -59,83 +59,88 @@ select.cfg-select.auto-filled{border-color:rgba(16,185,129,.5);}
 .start-btn.ready{opacity:1;pointer-events:all;box-shadow:0 0 28px rgba(245,158,11,.35);}
 .start-btn.ready:hover{transform:translateY(-1px);}
 
-/* DASHBOARD */
+/* ══ DASHBOARD ══ */
 #dashboard{display:none;}
-header{display:flex;justify-content:space-between;align-items:center;padding:18px 40px 14px;border-bottom:1px solid var(--border);background:var(--panel);z-index:10;position:relative;}
-.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.5rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 40px 12px;border-bottom:1px solid var(--border);background:var(--panel);z-index:10;position:relative;}
+.logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);}
 .logo span{color:var(--text);font-weight:300;}
-.header-right{display:flex;gap:24px;align-items:center;}
-.live-badge{display:flex;align-items:center;gap:8px;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
+.header-right{display:flex;gap:20px;align-items:center;}
+.live-badge{display:flex;align-items:center;gap:8px;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);}
 .live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.8s infinite;}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.8);}}
-#clock{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:600;color:var(--text);letter-spacing:2px;}
-.reload-btn{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:6px 14px;cursor:pointer;transition:all .2s;}
+#clock{font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:600;color:var(--text);letter-spacing:2px;}
+.reload-btn{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:5px 12px;cursor:pointer;transition:all .2s;}
 .reload-btn:hover{border-color:var(--accent);color:var(--accent);}
 .nav-dots{display:flex;gap:8px;align-items:center;}
 .nav-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s;cursor:pointer;}
 .nav-dot.active{background:var(--accent);width:24px;border-radius:4px;}
 .progress-bar{position:fixed;bottom:0;left:0;right:0;height:3px;background:var(--border);z-index:100;}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;}
-.slides-wrapper{height:calc(100vh - 68px);position:relative;overflow:hidden;}
-.slide{position:absolute;inset:0;padding:28px 40px;opacity:0;transform:translateX(60px);transition:all .6s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow-y:auto;}
+.slides-wrapper{height:calc(100vh - 62px);position:relative;overflow:hidden;}
+.slide{position:absolute;inset:0;padding:20px 32px 16px;opacity:0;transform:translateX(60px);transition:all .6s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow-y:auto;}
 .slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
 .slide.exit{opacity:0;transform:translateX(-60px);}
-.slide-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.slide-heading{font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:22px;}
+.slide-title{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.slide-heading{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:14px;}
 .slide-heading span{color:var(--accent);}
 
-/* ══ COLLECTOR GRID ══ */
-.collector-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;}
+/* ══ TEAM SUMMARY BAR ══ */
+.team-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
+.tb-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;}
+.tb-label{font-size:.58rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
+.tb-value{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;line-height:1;}
 
-.collector-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 22px;position:relative;overflow:hidden;}
-.collector-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px;}
-.collector-card.good::before{background:var(--green);}
-.collector-card.warn::before{background:var(--accent);}
-.collector-card.bad::before{background:var(--red);}
+/* ══ LEADERBOARD ══ */
+.leaderboard{display:flex;flex-direction:column;gap:8px;}
 
-/* Top row: naam + badge */
-.cc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
-.cc-name{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;letter-spacing:.5px;}
-.cc-badge{font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 12px;border-radius:20px;}
-.cc-badge.good{background:rgba(16,185,129,.15);color:var(--green);}
-.cc-badge.warn{background:rgba(245,158,11,.15);color:var(--accent);}
-.cc-badge.bad{background:rgba(239,68,68,.15);color:var(--red);}
+.lb-row{display:grid;grid-template-columns:48px 1fr 160px 160px 160px 200px 90px;align-items:center;gap:0;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .3s;}
+.lb-row.good{border-left:4px solid var(--green);}
+.lb-row.warn{border-left:4px solid var(--accent);}
+.lb-row.bad{border-left:4px solid var(--red);}
+.lb-row.total-row{background:var(--panel);border-color:var(--accent2);border-left:4px solid var(--accent2);}
 
-/* Stat rijen */
-.cc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;}
-.cc-stat{display:flex;flex-direction:column;gap:3px;}
-.cc-stat-label{font-size:.6rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
-.cc-stat-value{font-family:'Barlow Condensed',sans-serif;font-size:1.15rem;font-weight:700;line-height:1;}
-.cc-stat-value.portfolio{color:var(--text);}
-.cc-stat-value.recovered{color:var(--green);}
-.cc-stat-value.remaining{color:var(--red);}
-.cc-stat-value.remaining.done{color:var(--green);}
-.cc-stat-sub{font-size:.62rem;color:var(--muted);}
+/* Rank */
+.lb-rank{padding:16px 0 16px 14px;font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;color:var(--border);text-align:center;}
+.lb-row:nth-child(1) .lb-rank{color:var(--accent);}
+.lb-row:nth-child(2) .lb-rank{color:#94a3b8;}
+.lb-row:nth-child(3) .lb-rank{color:#92400e;}
+.lb-row.total-row .lb-rank{color:var(--accent2);font-size:1rem;letter-spacing:2px;}
 
-/* Progress sectie */
-.cc-progress-wrap{display:flex;flex-direction:column;gap:5px;}
-.cc-progress-labels{display:flex;justify-content:space-between;align-items:center;}
-.cc-progress-left{font-size:.65rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.cc-progress-pct{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;}
-.cc-bar-bg{height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
-.cc-bar-fill{height:100%;border-radius:4px;transition:width 1.2s ease;}
-.good .cc-bar-fill{background:var(--green);}
-.warn .cc-bar-fill{background:var(--accent);}
-.bad .cc-bar-fill{background:var(--red);}
+/* Naam */
+.lb-name{padding:16px 12px;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;}
+.lb-row.total-row .lb-name{color:var(--accent2);font-size:1rem;letter-spacing:2px;text-transform:uppercase;}
 
-/* Minimum target label */
-.cc-target-row{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
-.cc-target-label{font-size:.62rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.cc-target-val{font-family:'Barlow Condensed',sans-serif;font-size:.95rem;font-weight:700;color:var(--accent2);}
+/* Bedrag cellen */
+.lb-cell{padding:16px 12px;text-align:right;}
+.lb-cell-label{font-size:.55rem;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:2px;}
+.lb-cell-value{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;line-height:1;}
+.lb-cell-value.portfolio{color:var(--text);}
+.lb-cell-value.recovery{color:var(--green);}
+.lb-cell-value.newhit{color:var(--accent2);}
+.lb-cell-value.remaining{color:var(--red);}
+.lb-cell-value.remaining.done{color:var(--green);}
+.lb-cell-value.total-val{color:var(--accent2);}
 
-/* Teamtotaal balk bovenaan */
-.team-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.ts-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 18px;}
-.ts-label{font-size:.62rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
-.ts-value{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;line-height:1;}
+/* Progress kolom */
+.lb-progress{padding:12px 16px;}
+.lb-progress-labels{display:flex;justify-content:space-between;margin-bottom:5px;}
+.lb-progress-pct{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;}
+.lb-bar-bg{height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.lb-bar-fill{height:100%;border-radius:3px;}
+.good .lb-bar-fill{background:var(--green);}
+.warn .lb-bar-fill{background:var(--accent);}
+.bad  .lb-bar-fill{background:var(--red);}
+.total-row .lb-bar-fill{background:var(--accent2);}
+
+/* Badge */
+.lb-badge-cell{padding:16px 14px 16px 0;text-align:center;}
+.lb-badge{font-size:.6rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.lb-badge.good{background:rgba(16,185,129,.15);color:var(--green);}
+.lb-badge.warn{background:rgba(245,158,11,.15);color:var(--accent);}
+.lb-badge.bad{background:rgba(239,68,68,.15);color:var(--red);}
 
 /* Cases slide */
-.cases-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:calc(100% - 100px);}
+.cases-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:calc(100% - 90px);}
 .cases-left{display:flex;flex-direction:column;gap:10px;}
 .case-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:16px;}
 .case-rank{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:900;color:var(--border);width:32px;text-align:center;}
@@ -156,28 +161,28 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
 /* Budget slide */
-.budget-layout{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr;gap:16px;height:calc(100% - 100px);}
-.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 26px;position:relative;overflow:hidden;}
+.budget-layout{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr;gap:16px;height:calc(100% - 90px);}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;position:relative;overflow:hidden;}
 .kpi-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
 .kpi-card.k1::after{background:var(--accent2);}
 .kpi-card.k2::after{background:var(--accent);}
 .kpi-card.k3::after{background:var(--green);}
-.kpi-label{font-size:.68rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
-.kpi-value{font-family:'Barlow Condensed',sans-serif;font-size:2.6rem;font-weight:700;line-height:1;}
+.kpi-label{font-size:.65rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.kpi-value{font-family:'Barlow Condensed',sans-serif;font-size:2.4rem;font-weight:700;line-height:1;}
 .kpi-card.k1 .kpi-value{color:var(--accent2);}
 .kpi-card.k2 .kpi-value{color:var(--accent);}
 .kpi-card.k3 .kpi-value{color:var(--green);}
-.kpi-sub{font-size:.72rem;color:var(--muted);margin-top:6px;}
-.kpi-delta{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-top:6px;}
+.kpi-sub{font-size:.7rem;color:var(--muted);margin-top:5px;}
+.kpi-delta{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-top:5px;}
 .kpi-delta.up{background:rgba(16,185,129,.15);color:var(--green);}
 .kpi-delta.down{background:rgba(239,68,68,.15);color:var(--red);}
-.budget-chart-wrap{grid-column:span 2;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 26px;}
-.chart-title{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
-.target-breakdown{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px 26px;display:flex;flex-direction:column;gap:14px;}
-.target-item{display:flex;flex-direction:column;gap:5px;}
+.budget-chart-wrap{grid-column:span 2;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;}
+.chart-title{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.target-breakdown{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:12px;}
+.target-item{display:flex;flex-direction:column;gap:4px;}
 .target-item-header{display:flex;justify-content:space-between;align-items:center;}
-.target-item-label{font-size:.75rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.target-item-value{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;}
+.target-item-label{font-size:.72rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.target-item-value{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;}
 .target-mini-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
 .target-mini-fill{height:100%;border-radius:2px;}
 </style>
@@ -199,7 +204,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
         </div>
         <span class="optional-tag">Optioneel</span>
       </div>
-      <div class="card-desc">Recovery overzicht per collector.</div>
+      <div class="card-desc">Recovery leaderboard per collector.</div>
       <div class="drop-zone" id="dz1">
         <div class="drop-zone-text">Sleep je .xlsx bestand hier</div>
         <div class="drop-btn" id="dbtn1">Bestand kiezen</div>
@@ -209,10 +214,9 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
       <div class="card-config" id="cfg1">
         <div id="pillswrap1" style="display:none"><div class="cfg-label">Tabblad</div><div class="sheet-pills" id="pills1"></div></div>
         <div class="cfg-row"><div class="cfg-label">Kolom: Naam collector <span class="auto-tag" id="at1_naam"></span></div><select class="cfg-select" id="c1_naam"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Kolom: Portfolio begin maand <span class="auto-tag" id="at1_portfolio"></span></div><select class="cfg-select" id="c1_portfolio"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Kolom: Al gerecupereerd (total recovery) <span class="auto-tag" id="at1_recovery"></span></div><select class="cfg-select" id="c1_recovery"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Kolom: New Hit deze maand (minimum target) <span class="auto-tag" id="at1_newhit"></span></div><select class="cfg-select" id="c1_newhit"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Kolom: Recovery % (optioneel) <span class="auto-tag" id="at1_pct"></span></div><select class="cfg-select" id="c1_pct"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Kolom: Portfolio begin maand (TOTAL eerste datum) <span class="auto-tag" id="at1_portfolio"></span></div><select class="cfg-select" id="c1_portfolio"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Kolom: Total Recovery (al gerecupereerd) <span class="auto-tag" id="at1_recovery"></span></div><select class="cfg-select" id="c1_recovery"></select></div>
+        <div class="cfg-row"><div class="cfg-label">Kolom: New Hit (minimum target deze maand) <span class="auto-tag" id="at1_newhit"></span></div><select class="cfg-select" id="c1_newhit"></select></div>
       </div>
     </div>
 
@@ -302,48 +306,40 @@ header{display:flex;justify-content:space-between;align-items:center;padding:18p
 
 <script>
 const KLEUREN=['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ec4899','#14b8a6','#f97316','#06b6d4'];
-let wbs={1:null,3:null};
-let csvRows2=null;
-let selectedSheet={1:null,3:null};
-let slideInterval=null,currentSlide=0;
-let activeSlides=[];
+let wbs={1:null,3:null},csvRows2=null,selectedSheet={1:null,3:null};
+let slideInterval=null,currentSlide=0,activeSlides=[];
 
-function euro(n){
-  const num=Number(n)||0;
-  if(Math.abs(num)>=1000000)return'€'+( num/1000000).toFixed(1)+'M';
-  if(Math.abs(num)>=1000)return'€'+(num/1000).toFixed(1)+'K';
-  return'€'+num.toLocaleString('nl-NL');
+// ── Parse geld: verwijder €, spaties, punten als duizendtallen, vervang komma door punt ──
+function parseMoney(v){
+  if(v===null||v===undefined)return 0;
+  const s=String(v).replace(/[€\s]/g,'').replace(/\./g,'').replace(',','.');
+  return parseFloat(s)||0;
 }
-function euroFull(n){return'€'+Number(n).toLocaleString('nl-NL');}
+function fmt(n){
+  const num=Math.abs(Number(n)||0);
+  if(num>=1000000)return'€'+(Number(n)/1000000).toFixed(2)+'M';
+  if(num>=1000)return'€'+(Number(n)/1000).toFixed(1)+'K';
+  return'€'+Number(n).toLocaleString('nl-NL',{minimumFractionDigits:0,maximumFractionDigits:0});
+}
+function fmtFull(n){return'€'+Number(n).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function updateClock(){const n=new Date();document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
 updateClock();setInterval(updateClock,10000);
 
 function updateStartBtn(){
-  const anyLoaded=wbs[1]||csvRows2||wbs[3];
-  const btn=document.getElementById('startBtn');
-  const status=document.getElementById('readyStatus');
-  if(anyLoaded){
+  const any=wbs[1]||csvRows2||wbs[3];
+  const btn=document.getElementById('startBtn'),st=document.getElementById('readyStatus');
+  if(any){
     btn.classList.add('ready');
-    const parts=[];
-    if(wbs[1])parts.push('Commercial Loss');
-    if(csvRows2)parts.push('Cases');
-    if(wbs[3])parts.push('Budget');
-    status.innerHTML='<span class="ok">✓ Klaar!</span> — '+parts.join(' + ')+' geladen. Pas kolommen aan indien nodig.';
-  } else {
-    btn.classList.remove('ready');
-    status.textContent='Upload minimaal 1 bestand om te starten';
-  }
+    const p=[];if(wbs[1])p.push('Commercial Loss');if(csvRows2)p.push('Cases');if(wbs[3])p.push('Budget');
+    st.innerHTML='<span class="ok">✓ Klaar!</span> — '+p.join(' + ')+' geladen';
+  }else{btn.classList.remove('ready');st.textContent='Upload minimaal 1 bestand om te starten';}
 }
 
 function autoSelect(id,cols,hints,tagId){
   const sel=document.getElementById(id);if(!sel)return;
   const lc=cols.map(c=>c.toLowerCase());
-  for(const h of hints){
-    const f=lc.findIndex(c=>c.includes(h));
-    if(f>-1){sel.value=cols[f];sel.classList.add('auto-filled');if(tagId)document.getElementById(tagId).textContent='✓ auto';return;}
-  }
+  for(const h of hints){const f=lc.findIndex(c=>c.includes(h));if(f>-1){sel.value=cols[f];sel.classList.add('auto-filled');if(tagId)document.getElementById(tagId).textContent='✓ auto';return;}}
 }
-
 function fillSelect(id,cols,withNone=false){
   const sel=document.getElementById(id);if(!sel)return;
   sel.innerHTML='';
@@ -378,13 +374,11 @@ function readExcel(idx,file){
       document.getElementById('dfn'+idx).textContent='✓ '+file.name;
       document.getElementById('dfn'+idx).style.display='block';
       document.getElementById('card'+idx).classList.add('loaded');
-      const first=wb.SheetNames[0];
-      selectedSheet[idx]=first;
-      const rows=XLSX.utils.sheet_to_json(wb.Sheets[first],{defval:''});
+      const first=wb.SheetNames[0];selectedSheet[idx]=first;
+      const rows=XLSX.utils.sheet_to_json(wb.Sheets[first],{defval:'',raw:false});
       if(wb.SheetNames.length>1){document.getElementById('pillswrap'+idx).style.display='block';buildPills(idx,wb);}
-      autoFillCols(idx,rows);
-      updateStartBtn();
-    }catch(err){document.getElementById('card'+idx).classList.add('error');}
+      autoFillCols(idx,rows);updateStartBtn();
+    }catch(err){document.getElementById('card'+idx).classList.add('error');console.error(err);}
   };
   reader.readAsArrayBuffer(file);
 }
@@ -396,26 +390,46 @@ function buildPills(idx,wb){
     pill.addEventListener('click',()=>{
       cont.querySelectorAll('.sheet-pill').forEach(p=>p.classList.remove('selected'));
       pill.classList.add('selected');selectedSheet[idx]=name;
-      autoFillCols(idx,XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:''}));
+      autoFillCols(idx,XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:'',raw:false}));
     });
     cont.appendChild(pill);
   });
 }
 
 function autoFillCols(idx,rows){
+  // Filter rijen die een TOTAL rij zijn (naam = TOTAL of leeg)
+  const dataRows=rows.filter(r=>{
+    const first=String(Object.values(r)[0]||'').trim().toLowerCase();
+    return first&&first!=='total'&&first!=='totaal';
+  });
   const cols=Object.keys(rows[0]||{});
+
   if(idx===1){
     fillSelect('c1_naam',cols);
     fillSelect('c1_portfolio',cols);
     fillSelect('c1_recovery',cols);
     fillSelect('c1_newhit',cols);
-    fillSelect('c1_pct',cols,true);
-    autoSelect('c1_naam',cols,['naam','name','collector','medewerker','agent'],'at1_naam');
-    autoSelect('c1_portfolio',cols,['portfolio','start','begin','openstaand','te recov','totaal','balance'],'at1_portfolio');
-    autoSelect('c1_recovery',cols,['total recov','al recov','gerealiseerd','recovered','realisatie','betaald'],'at1_recovery');
-    autoSelect('c1_newhit',cols,['new hit','nieuw','april','target','minimum','hit'],'at1_newhit');
-    autoSelect('c1_pct',cols,['%','percent','pct','rate','ratio'],'at1_pct');
+
+    // Naam: eerste kolom is altijd de naam
+    const sel=document.getElementById('c1_naam');
+    sel.value=cols[0];sel.classList.add('auto-filled');
+    document.getElementById('at1_naam').textContent='✓ auto';
+
+    // Portfolio: zoek kolom die "TOTAL" + datum bevat (eerste TOTAL kolom)
+    const totalCols=cols.filter(c=>c.toUpperCase().includes('TOTAL'));
+    if(totalCols.length>=1){
+      document.getElementById('c1_portfolio').value=totalCols[0];
+      document.getElementById('c1_portfolio').classList.add('auto-filled');
+      document.getElementById('at1_portfolio').textContent='✓ auto';
+    }
+
+    // Recovery: zoek "TOTAL RECOVERY" of "RECOVERY"
+    autoSelect('c1_recovery',cols,['total recovery','recovery','gerecupereerd','realisatie','betaald'],'at1_recovery');
+
+    // New Hit: zoek "NEW HIT" of "HIT"
+    autoSelect('c1_newhit',cols,['new hit','newhit','hit','minimum','target'],'at1_newhit');
   }
+
   if(idx===3){
     fillSelect('c3_maand',cols);fillSelect('c3_res',cols);fillSelect('c3_tgt',cols);
     autoSelect('c3_maand',cols,['maand','month','periode','datum'],'at3_maand');
@@ -440,7 +454,7 @@ function readCasesFile(file){
       }catch(err){document.getElementById('card2').classList.add('error');}
     };
     reader.readAsText(file,'UTF-8');
-  } else {
+  }else{
     reader.onload=e=>{
       try{
         const wb=XLSX.read(e.target.result,{type:'array'});
@@ -486,104 +500,119 @@ function parseCSV(text){
   });
 }
 
-// ── Dashboard bouwen ──
+// ── DASHBOARD BOUWEN ──
 function launchDashboard(){
   const wrapper=document.getElementById('slidesWrapper');
-  wrapper.innerHTML='';activeSlides=[];
-  let si=0;
+  wrapper.innerHTML='';activeSlides=[];let si=0;
 
-  // SLIDE 1: Commercial Loss
+  // ── SLIDE 1: Commercial Loss Leaderboard ──
   if(wbs[1]&&selectedSheet[1]){
-    const rows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:''});
+    const rows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:'',raw:false});
     const nCol=document.getElementById('c1_naam').value;
     const pCol=document.getElementById('c1_portfolio').value;
     const rCol=document.getElementById('c1_recovery').value;
     const hCol=document.getElementById('c1_newhit').value;
-    const pctCol=document.getElementById('c1_pct').value;
 
+    // Filter weg: lege namen, TOTAL rijen
     const collectors=rows.map(r=>{
       const naam=String(r[nCol]||'').trim();
-      if(!naam)return null;
-      const portfolio=Number(String(r[pCol]||'').replace(/[^0-9.-]/g,''))||0;
-      const recovered=Number(String(r[rCol]||'').replace(/[^0-9.-]/g,''))||0;
-      const newHit=Number(String(r[hCol]||'').replace(/[^0-9.-]/g,''))||0;
-      const pctRaw=pctCol!=='__none'?Number(String(r[pctCol]||'').replace(/[^0-9.-]/g,''))||null:null;
-      // Nog te recupereren = max(0, newHit - recovered)
+      if(!naam||naam.toUpperCase()==='TOTAL'||naam.toUpperCase()==='TOTAAL')return null;
+      const portfolio=parseMoney(r[pCol]);
+      const recovered=parseMoney(r[rCol]);
+      const newHit=parseMoney(r[hCol]);
       const stillNeeded=Math.max(0,newHit-recovered);
-      // Status: als recovered >= newHit → goed; >= 80% van newHit → waarschuwing; anders slecht
-      const pctOfTarget=newHit>0?(recovered/newHit)*100:100;
+      const pctOfTarget=newHit>0?(recovered/newHit)*100:recovered>0?100:0;
       const status=pctOfTarget>=100?'good':pctOfTarget>=80?'warn':'bad';
-      const pctDisplay=pctRaw!==null?pctRaw:(newHit>0?Math.round(pctOfTarget):0);
-      return{naam,portfolio,recovered,newHit,stillNeeded,status,pct:pctDisplay};
+      return{naam,portfolio,recovered,newHit,stillNeeded,status,pct:Math.round(pctOfTarget)};
     }).filter(Boolean);
 
+    // Sorteer: eerst op % gehaald (hoogste eerst)
+    collectors.sort((a,b)=>b.pct-a.pct);
+
     if(collectors.length){
-      // Team totalen
       const totPortfolio=collectors.reduce((s,c)=>s+c.portfolio,0);
       const totRecovered=collectors.reduce((s,c)=>s+c.recovered,0);
       const totNewHit=collectors.reduce((s,c)=>s+c.newHit,0);
       const totStill=collectors.reduce((s,c)=>s+c.stillNeeded,0);
+      const totPct=totNewHit>0?Math.round((totRecovered/totNewHit)*100):0;
 
       const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+si;
-      slide.innerHTML=`<div class="slide-title">Commercial Recovery</div><div class="slide-heading">Recovery <span>Overzicht</span></div>`;
+      slide.innerHTML=`<div class="slide-title">Commercial Recovery</div><div class="slide-heading">Recovery <span>Leaderboard</span></div>`;
 
-      // Team summary
-      const summary=document.createElement('div');summary.className='team-summary';
-      const teamPct=totNewHit>0?Math.round((totRecovered/totNewHit)*100):0;
-      summary.innerHTML=`
-        <div class="ts-card"><div class="ts-label">Portfolio team</div><div class="ts-value" style="color:var(--text)">${euro(totPortfolio)}</div></div>
-        <div class="ts-card"><div class="ts-label">Al gerecupereerd</div><div class="ts-value" style="color:var(--green)">${euro(totRecovered)}</div></div>
-        <div class="ts-card"><div class="ts-label">Min. target (New Hit)</div><div class="ts-value" style="color:var(--accent2)">${euro(totNewHit)}</div></div>
-        <div class="ts-card"><div class="ts-label">Nog te recupereren</div><div class="ts-value" style="color:${totStill===0?'var(--green)':'var(--red)'}">${totStill===0?'✓ Gehaald':euro(totStill)}</div></div>`;
-      slide.appendChild(summary);
+      // Team summary bar
+      const bar=document.createElement('div');bar.className='team-bar';
+      bar.innerHTML=`
+        <div class="tb-card"><div class="tb-label">Portfolio team (start)</div><div class="tb-value" style="color:var(--text)">${fmt(totPortfolio)}</div></div>
+        <div class="tb-card"><div class="tb-label">Total Recovery</div><div class="tb-value" style="color:var(--green)">${fmtFull(totRecovered)}</div></div>
+        <div class="tb-card"><div class="tb-label">New Hit (team minimum)</div><div class="tb-value" style="color:var(--accent2)">${fmtFull(totNewHit)}</div></div>
+        <div class="tb-card"><div class="tb-label">Nog te recupereren</div><div class="tb-value" style="color:${totStill===0?'var(--green)':'var(--red)'}">${totStill===0?'✓ Gehaald':fmtFull(totStill)}</div></div>
+        <div class="tb-card"><div class="tb-label">Team voortgang</div><div class="tb-value" style="color:${totPct>=100?'var(--green)':totPct>=80?'var(--accent)':'var(--red)'}">${totPct}%</div></div>`;
+      slide.appendChild(bar);
 
-      // Collector cards
-      const grid=document.createElement('div');grid.className='collector-grid';
-      collectors.forEach(c=>{
-        const pctBar=Math.min(100,Math.round(c.newHit>0?(c.recovered/c.newHit)*100:100));
-        const badgeLabels={good:'In Recovery',warn:'Bijna',bad:'Achter'};
-        const card=document.createElement('div');card.className='collector-card '+c.status;
-        card.innerHTML=`
-          <div class="cc-top">
-            <div class="cc-name">${c.naam}</div>
-            <div class="cc-badge ${c.status}">${badgeLabels[c.status]}</div>
+      // Leaderboard
+      const lb=document.createElement('div');lb.className='leaderboard';
+      const badgeLabels={good:'✓ In Recovery',warn:'Bijna',bad:'Achter'};
+
+      collectors.forEach((c,i)=>{
+        const pctBar=Math.min(100,c.pct);
+        const pctColor=c.status==='good'?'var(--green)':c.status==='warn'?'var(--accent)':'var(--red)';
+        const row=document.createElement('div');row.className='lb-row '+c.status;
+        row.innerHTML=`
+          <div class="lb-rank">${i+1}</div>
+          <div class="lb-name">${c.naam}</div>
+          <div class="lb-cell">
+            <div class="lb-cell-label">Portfolio start</div>
+            <div class="lb-cell-value portfolio">${fmtFull(c.portfolio)}</div>
           </div>
-          <div class="cc-stats">
-            <div class="cc-stat">
-              <div class="cc-stat-label">Portfolio begin</div>
-              <div class="cc-stat-value portfolio">${euro(c.portfolio)}</div>
-              <div class="cc-stat-sub">start maand</div>
+          <div class="lb-cell">
+            <div class="lb-cell-label">Total Recovery</div>
+            <div class="lb-cell-value recovery">${fmtFull(c.recovered)}</div>
+          </div>
+          <div class="lb-cell">
+            <div class="lb-cell-label">New Hit (min.)</div>
+            <div class="lb-cell-value newhit">${fmtFull(c.newHit)}</div>
+          </div>
+          <div class="lb-progress">
+            <div class="lb-progress-labels">
+              <span style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Voortgang</span>
+              <span class="lb-progress-pct" style="color:${pctColor}">${pctBar}% ${c.stillNeeded===0?'✓':''}</span>
             </div>
-            <div class="cc-stat">
-              <div class="cc-stat-label">Al gerecupereerd</div>
-              <div class="cc-stat-value recovered">${euro(c.recovered)}</div>
-              <div class="cc-stat-sub">${c.pct}% van portfolio</div>
-            </div>
-            <div class="cc-stat">
-              <div class="cc-stat-label">Nog nodig</div>
-              <div class="cc-stat-value remaining ${c.stillNeeded===0?'done':''}">${c.stillNeeded===0?'✓ Gehaald':euro(c.stillNeeded)}</div>
-              <div class="cc-stat-sub">voor recovery</div>
+            <div class="lb-bar-bg"><div class="lb-bar-fill" style="width:${pctBar}%"></div></div>
+            <div style="font-size:.62rem;margin-top:4px;color:${c.stillNeeded===0?'var(--green)':'var(--red)'}">
+              ${c.stillNeeded===0?'✓ In recovery':'Nog '+fmtFull(c.stillNeeded)+' nodig'}
             </div>
           </div>
-          <div class="cc-progress-wrap">
-            <div class="cc-progress-labels">
-              <div class="cc-progress-left">Voortgang vs New Hit</div>
-              <div class="cc-progress-pct" style="color:${c.status==='good'?'var(--green)':c.status==='warn'?'var(--accent)':'var(--red)'}">${pctBar}%</div>
-            </div>
-            <div class="cc-bar-bg"><div class="cc-bar-fill" style="width:${pctBar}%"></div></div>
-          </div>
-          <div class="cc-target-row">
-            <div class="cc-target-label">New Hit (minimum target)</div>
-            <div class="cc-target-val">${euro(c.newHit)}</div>
-          </div>`;
-        grid.appendChild(card);
+          <div class="lb-badge-cell"><div class="lb-badge ${c.status}">${badgeLabels[c.status]}</div></div>`;
+        lb.appendChild(row);
       });
-      slide.appendChild(grid);
-      wrapper.appendChild(slide);activeSlides.push(slide);si++;
+
+      // TOTAL rij onderaan
+      const totalRow=document.createElement('div');totalRow.className='lb-row total-row';
+      const totPctBar=Math.min(100,totPct);
+      totalRow.innerHTML=`
+        <div class="lb-rank" style="font-size:.8rem;letter-spacing:1px">Σ</div>
+        <div class="lb-name">TEAM TOTAAL</div>
+        <div class="lb-cell"><div class="lb-cell-label">Portfolio start</div><div class="lb-cell-value total-val">${fmtFull(totPortfolio)}</div></div>
+        <div class="lb-cell"><div class="lb-cell-label">Total Recovery</div><div class="lb-cell-value total-val">${fmtFull(totRecovered)}</div></div>
+        <div class="lb-cell"><div class="lb-cell-label">New Hit team</div><div class="lb-cell-value total-val">${fmtFull(totNewHit)}</div></div>
+        <div class="lb-progress">
+          <div class="lb-progress-labels">
+            <span style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Team voortgang</span>
+            <span class="lb-progress-pct" style="color:var(--accent2)">${totPctBar}%</span>
+          </div>
+          <div class="lb-bar-bg"><div class="lb-bar-fill" style="width:${totPctBar}%;background:var(--accent2)"></div></div>
+          <div style="font-size:.62rem;margin-top:4px;color:${totStill===0?'var(--green)':'var(--red)'}">
+            ${totStill===0?'✓ Team in recovery':'Nog '+fmtFull(totStill)+' nodig'}
+          </div>
+        </div>
+        <div class="lb-badge-cell"><div class="lb-badge ${totPct>=100?'good':totPct>=80?'warn':'bad'}">${totPct>=100?'✓ In Recovery':totPct>=80?'Bijna':'Achter'}</div></div>`;
+      lb.appendChild(totalRow);
+
+      slide.appendChild(lb);wrapper.appendChild(slide);activeSlides.push(slide);si++;
     }
   }
 
-  // SLIDE 2: Cases
+  // ── SLIDE 2: Cases ──
   if(csvRows2){
     const autoCount=document.getElementById('autoCount').checked;
     const nCol=document.getElementById('c2_naam').value;
@@ -594,7 +623,7 @@ function launchDashboard(){
       const counts={};const rollen={};
       csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;if(rCol!=='__none'&&r[rCol])rollen[n]=String(r[rCol]);});
       cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c,rol:rollen[naam]||''})).sort((a,b)=>b.cases-a.cases);
-    } else {
+    }else{
       const seen={};
       csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n||seen[n])return;seen[n]=true;cases.push({naam:n,cases:Number(r[cCol])||0,rol:rCol!=='__none'?String(r[rCol]||''):''});});
       cases.sort((a,b)=>b.cases-a.cases);
@@ -629,7 +658,7 @@ function launchDashboard(){
     }
   }
 
-  // SLIDE 3: Budget
+  // ── SLIDE 3: Budget ──
   if(wbs[3]&&selectedSheet[3]){
     const bRows=XLSX.utils.sheet_to_json(wbs[3].Sheets[selectedSheet[3]],{defval:''});
     const maanden=bRows.map(r=>({naam:String(r[document.getElementById('c3_maand').value]||''),resultaat:Number(r[document.getElementById('c3_res').value])||0,target:Number(r[document.getElementById('c3_tgt').value])||0})).filter(x=>x.naam);
@@ -637,12 +666,12 @@ function launchDashboard(){
     const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+si;
     slide.innerHTML=`<div class="slide-title">Financial Overview</div><div class="slide-heading">Budget <span>Overzicht</span>${budget.maand?' — '+budget.maand:''}</div>`;
     const layout=document.createElement('div');layout.className='budget-layout';
-    layout.innerHTML=`<div class="kpi-card k1"><div class="kpi-label">Maand Target</div><div class="kpi-value" style="color:var(--accent2)">${euroFull(budget.mt)}</div><div class="kpi-sub">Nog ${euroFull(Math.max(0,budget.mt-budget.hm))} te gaan</div></div><div class="kpi-card k2"><div class="kpi-label">Huidig Resultaat</div><div class="kpi-value" style="color:var(--accent)">${euroFull(budget.hm)}</div><div class="kpi-delta ${budget.hm>=budget.vm?'up':'down'}">${budget.hm>=budget.vm?'▲ +':'▼ '}${euroFull(Math.abs(budget.hm-budget.vm))} vs vorige maand</div></div><div class="kpi-card k3"><div class="kpi-label">Jaar-to-Date</div><div class="kpi-value" style="color:var(--green)">${euroFull(budget.jtd)}</div><div class="kpi-sub">${budget.jt>0?Math.round((budget.jtd/budget.jt)*100):0}% van jaartarget (${euroFull(budget.jt)})</div></div><div class="budget-chart-wrap"><div class="chart-title">Maandresultaten vs Target</div><canvas id="barChart" height="160"></canvas></div><div class="target-breakdown"><div class="chart-title">Breakdown per categorie</div></div>`;
+    layout.innerHTML=`<div class="kpi-card k1"><div class="kpi-label">Maand Target</div><div class="kpi-value">${fmtFull(budget.mt)}</div><div class="kpi-sub">Nog ${fmtFull(Math.max(0,budget.mt-budget.hm))} te gaan</div></div><div class="kpi-card k2"><div class="kpi-label">Huidig Resultaat</div><div class="kpi-value">${fmtFull(budget.hm)}</div><div class="kpi-delta ${budget.hm>=budget.vm?'up':'down'}">${budget.hm>=budget.vm?'▲ +':'▼ '}${fmtFull(Math.abs(budget.hm-budget.vm))} vs vorige maand</div></div><div class="kpi-card k3"><div class="kpi-label">Jaar-to-Date</div><div class="kpi-value">${fmtFull(budget.jtd)}</div><div class="kpi-sub">${budget.jt>0?Math.round((budget.jtd/budget.jt)*100):0}% van jaartarget (${fmtFull(budget.jt)})</div></div><div class="budget-chart-wrap"><div class="chart-title">Maandresultaten vs Target</div><canvas id="barChart" height="140"></canvas></div><div class="target-breakdown"><div class="chart-title">Breakdown per categorie</div></div>`;
     slide.appendChild(layout);wrapper.appendChild(slide);activeSlides.push(slide);
     setTimeout(()=>{
       const bc=document.getElementById('barChart');if(!bc)return;
       const bx=bc.getContext('2d');const W=bc.offsetWidth||600;bc.width=W;
-      const H=160,pL=60,pR=20,pT=10,pB=30,cW=W-pL-pR,cH=H-pT-pB;
+      const H=140,pL=60,pR=20,pT=10,pB=30,cW=W-pL-pR,cH=H-pT-pB;
       const maxV=(Math.max(...maanden.map(m=>Math.max(m.target,m.resultaat)),budget.mt)*1.1)||1;
       bx.clearRect(0,0,W,H);bx.strokeStyle='#1e2230';bx.lineWidth=1;
       [.25,.5,.75,1].forEach(f=>{const y=pT+cH*(1-f);bx.beginPath();bx.moveTo(pL,y);bx.lineTo(pL+cW,y);bx.stroke();bx.fillStyle='#64748b';bx.font='11px Barlow';bx.textAlign='right';bx.fillText('€'+Math.round(maxV*f/1000)+'K',pL-8,y+4);});
@@ -660,7 +689,6 @@ function launchDashboard(){
   }
 
   if(!activeSlides.length)return;
-
   document.getElementById('uploadScreen').classList.add('hidden');
   document.getElementById('dashboard').style.display='block';
   const dotsEl=document.getElementById('navDots');
