@@ -46,12 +46,12 @@ select.cfg-select option{background:var(--panel);}
 select.cfg-select.auto-filled{border-color:rgba(16,185,129,.5);}
 .cfg-row{display:flex;flex-direction:column;gap:2px;}
 .auto-tag{font-size:.58rem;color:var(--green);letter-spacing:1px;margin-left:4px;}
-.toggle-wrap{display:flex;align-items:center;gap:7px;padding:3px 0;}
-.toggle-wrap label{font-size:.72rem;color:var(--muted);cursor:pointer;line-height:1.4;}
-.toggle-wrap input{accent-color:var(--accent);cursor:pointer;flex-shrink:0;}
 .kv-input{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:7px 10px;font-family:'Barlow',sans-serif;font-size:.8rem;}
 .kv-input:focus{outline:none;border-color:var(--accent);}
 .kv-label{font-size:.65rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.toggle-wrap{display:flex;align-items:center;gap:7px;padding:3px 0;}
+.toggle-wrap label{font-size:.72rem;color:var(--muted);cursor:pointer;}
+.toggle-wrap input{accent-color:var(--accent);cursor:pointer;}
 .start-section{display:flex;flex-direction:column;align-items:center;gap:10px;}
 .ready-status{font-size:.78rem;color:var(--muted);text-align:center;}
 .ready-status .ok{color:var(--green);font-weight:600;}
@@ -143,6 +143,11 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
 .budget-chart-wrap{grid-column:span 2;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;}
 .chart-title{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
 .target-breakdown{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;}
+/* Kolom-kiezer popup */
+.col-picker{display:none;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--accent);border-radius:10px;padding:12px;}
+.upload-card.loaded .col-picker{display:flex;}
+.col-picker-label{font-size:.65rem;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;}
+.col-picker-sub{font-size:.68rem;color:var(--muted);}
 </style>
 </head>
 <body>
@@ -152,6 +157,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
   <div class="up-subtitle">Upload één of meerdere bestanden. Elke sectie is optioneel.</div>
   <div class="upload-cards">
 
+    <!-- KAART 1: Commercial Loss -->
     <div class="upload-card" id="card1">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
         <div class="card-header"><div class="card-icon">📉</div><div><div class="card-title">Commercial Loss</div><div class="card-badge">Excel .xlsx</div></div></div>
@@ -168,20 +174,23 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
       </div>
     </div>
 
+    <!-- KAART 2: Cases — geen configuratie nodig -->
     <div class="upload-card" id="card2">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-        <div class="card-header"><div class="card-icon">☁️</div><div><div class="card-title">Cases</div><div class="card-badge sf">Salesforce CSV</div></div></div>
+        <div class="card-header"><div class="card-icon">☁️</div><div><div class="card-title">Cases</div><div class="card-badge sf">Excel / CSV</div></div></div>
         <span class="optional-tag">Optioneel</span>
       </div>
-      <div class="card-desc">Exporteer je rapport uit Salesforce als CSV.</div>
-      <div class="sf-info"><strong>📥 Exporteren uit Salesforce</strong>Rapport → pijltje naast "Uitvoeren" → Exporteren → CSV → Opslaan</div>
-      <div class="drop-zone" id="dz2"><div class="drop-zone-text">Sleep je Salesforce .csv bestand hier</div><div class="drop-btn" id="dbtn2">Bestand kiezen</div><div class="drop-file-name" id="dfn2"></div><input type="file" accept=".csv,.xlsx,.xls" style="display:none" id="fi2"></div>
-      <div class="card-config" id="cfg2">
-        <div class="cfg-row"><div class="cfg-label">Naam / Owner <span class="auto-tag" id="at2_naam"></span></div><select class="cfg-select" id="c2_naam"></select></div>
-        <div class="toggle-wrap"><input type="checkbox" id="autoCount" checked><label for="autoCount">Elke rij = 1 case (automatisch tellen per persoon)</label></div>
+      <div class="card-desc">Overzicht hoeveel cases per collector. Gewoon uploaden — werkt automatisch.</div>
+      <div class="drop-zone" id="dz2"><div class="drop-zone-text">Sleep je bestand hier (.xlsx of .csv)</div><div class="drop-btn" id="dbtn2">Bestand kiezen</div><div class="drop-file-name" id="dfn2"></div><input type="file" accept=".csv,.xlsx,.xls" style="display:none" id="fi2"></div>
+      <!-- Alleen tonen als auto-detect mislukt -->
+      <div id="cases-col-picker" style="display:none;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--accent);border-radius:10px;padding:12px;margin-top:4px;">
+        <div style="font-size:.65rem;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;">Welke kolom is de naam?</div>
+        <div style="font-size:.68rem;color:var(--muted);">Kies de kolom met de naam van de collector:</div>
+        <select class="cfg-select" id="c2_naam"></select>
       </div>
     </div>
 
+    <!-- KAART 3: Budget -->
     <div class="upload-card" id="card3">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
         <div class="card-header"><div class="card-icon">💰</div><div><div class="card-title">Budget</div><div class="card-badge">Excel .xlsx</div></div></div>
@@ -228,11 +237,10 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
 </div>
 
 <script>
-const KLEUREN=['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ec4899','#14b8a6','#f97316','#06b6d4'];
-let wbs={1:null,3:null},csvRows2=null,selectedSheet={1:null,3:null};
-let slideInterval=null,currentSlide=0,activeSlides=[];
+let wbs={1:null,3:null}, csvRows2=null, casesNaamCol=null, selectedSheet={1:null,3:null};
+let slideInterval=null, currentSlide=0, activeSlides=[];
 
-function parseMoney(v){if(v===null||v===undefined)return 0;const s=String(v).replace(/[€\s]/g,'').replace(/\./g,'').replace(',','.');return parseFloat(s)||0;}
+function parseMoney(v){if(!v&&v!==0)return 0;const s=String(v).replace(/[€\s]/g,'').replace(/\./g,'').replace(',','.');return parseFloat(s)||0;}
 function fmt(n){const num=Math.abs(Number(n)||0);if(num>=1000000)return'€'+(Number(n)/1000000).toFixed(2)+'M';if(num>=1000)return'€'+(Number(n)/1000).toFixed(1)+'K';return'€'+Number(n).toLocaleString('nl-NL',{minimumFractionDigits:0,maximumFractionDigits:0});}
 function fmtFull(n){return'€'+Number(n).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function updateClock(){const n=new Date();document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
@@ -244,6 +252,14 @@ function updateStartBtn(){
   if(any){btn.classList.add('ready');const p=[];if(wbs[1])p.push('Commercial Loss');if(csvRows2)p.push('Cases');if(wbs[3])p.push('Budget');st.innerHTML='<span class="ok">✓ Klaar!</span> — '+p.join(' + ')+' geladen';}
   else{btn.classList.remove('ready');st.textContent='Upload minimaal 1 bestand om te starten';}
 }
+
+function autoDetectNaamCol(cols){
+  const hints=['owner','naam','name','collector','agent','medewerker','eigenaar','user','assigned'];
+  const lc=cols.map(c=>c.toLowerCase());
+  for(const h of hints){const f=lc.findIndex(c=>c.includes(h));if(f>-1)return cols[f];}
+  return cols[0]; // fallback: gewoon eerste kolom
+}
+
 function autoSelect(id,cols,hints,tagId){
   const sel=document.getElementById(id);if(!sel)return;
   const lc=cols.map(c=>c.toLowerCase());
@@ -313,42 +329,47 @@ function autoFillCols(idx,rows){
     autoSelect('c3_tgt',cols,['target','doel','budget','norm'],'at3_tgt');
   }
 }
+
 function readCasesFile(file){
   const isCsv=file.name.toLowerCase().endsWith('.csv');
   const reader=new FileReader();
+  const onRows=rows=>{
+    if(!rows||!rows.length)return;
+    csvRows2=rows;
+    const cols=Object.keys(rows[0]);
+    // Auto-detect naam kolom — geen input nodig van gebruiker
+    casesNaamCol=autoDetectNaamCol(cols);
+    // Toon picker alleen als er meerdere tekst-kolommen zijn EN auto-detect onzeker is
+    const textCols=cols.filter(c=>{const v=String(rows[0][c]||'');return isNaN(parseFloat(v));});
+    const hints=['owner','naam','name','collector','agent','medewerker','eigenaar','user','assigned'];
+    const lc=cols.map(c=>c.toLowerCase());
+    const zeker=hints.some(h=>lc.some(c=>c.includes(h)));
+    if(!zeker && textCols.length>1){
+      // Toon keuzelijst als fallback
+      fillSelect('c2_naam',cols);
+      document.getElementById('c2_naam').value=casesNaamCol;
+      document.getElementById('c2_naam').onchange=e=>{casesNaamCol=e.target.value;};
+      document.getElementById('cases-col-picker').style.display='flex';
+    }
+    document.getElementById('dfn2').textContent='✓ '+file.name+' ('+rows.length+' rijen)';
+    document.getElementById('dfn2').style.display='block';
+    document.getElementById('card2').classList.add('loaded');
+    updateStartBtn();
+  };
   if(isCsv){
-    reader.onload=e=>{
-      try{
-        const rows=parseCSV(e.target.result.replace(/^\uFEFF/,''));
-        if(!rows.length)throw new Error('Leeg');
-        csvRows2=rows;
-        document.getElementById('dfn2').textContent='✓ '+file.name+' ('+rows.length+' rijen)';
-        document.getElementById('dfn2').style.display='block';
-        document.getElementById('card2').classList.add('loaded');
-        autoFillCasesCols(rows);updateStartBtn();
-      }catch(err){console.error(err);}
-    };
+    reader.onload=e=>{onRows(parseCSV(e.target.result.replace(/^\uFEFF,'/'')));};
     reader.readAsText(file,'UTF-8');
   }else{
     reader.onload=e=>{
       try{
         const wb=XLSX.read(e.target.result,{type:'array'});
-        const rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
-        csvRows2=rows;
-        document.getElementById('dfn2').textContent='✓ '+file.name;
-        document.getElementById('dfn2').style.display='block';
-        document.getElementById('card2').classList.add('loaded');
-        autoFillCasesCols(rows);updateStartBtn();
+        onRows(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''}));
       }catch(err){console.error(err);}
     };
     reader.readAsArrayBuffer(file);
   }
 }
-function autoFillCasesCols(rows){
-  const cols=Object.keys(rows[0]||{});
-  fillSelect('c2_naam',cols);
-  autoSelect('c2_naam',cols,['owner','eigenaar','medewerker','naam','name','agent','user'],'at2_naam');
-}
+
 function parseCSV(text){
   const lines=text.split(/\r?\n/).filter(l=>l.trim());
   if(lines.length<2)return[];
@@ -408,22 +429,21 @@ function launchDashboard(){
     }
   }
 
-  // SLIDE 2: Cases — alleen naam + aantal
-  if(csvRows2){
-    const nCol=document.getElementById('c2_naam').value;
+  // SLIDE 2: Cases — alleen naam + aantal, automatisch
+  if(csvRows2&&casesNaamCol){
     const counts={};
-    csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;});
+    csvRows2.forEach(r=>{const n=String(r[casesNaamCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;});
     const cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c})).sort((a,b)=>b.cases-a.cases);
     if(cases.length){
       const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+si;
       slide.innerHTML=`<div class="slide-title">Workload</div><div class="slide-heading">Cases per <span>Collector</span></div>`;
       const list=document.createElement('div');list.className='cases-list';
-      const rankColors=['var(--accent)','#94a3b8','#92400e'];
+      const rankColors={0:'var(--accent)',1:'#94a3b8',2:'#92400e'};
       cases.forEach((lid,i)=>{
         const item=document.createElement('div');item.className='case-item';
         item.innerHTML=`
           <div class="case-item-left">
-            <div class="case-item-rank" style="${i<3?'color:'+rankColors[i]:''}">${i+1}</div>
+            <div class="case-item-rank" style="color:${rankColors[i]||'var(--border)'}">${i+1}</div>
             <div class="case-item-name">${lid.naam}</div>
           </div>
           <div class="case-item-count">${lid.cases}</div>`;
