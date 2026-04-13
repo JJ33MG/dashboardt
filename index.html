@@ -449,70 +449,43 @@ function launchDashboard(){
   }
 
   // ── SLIDE 2: Cases ──
+// ── SLIDE 2: Cases ──
   if(csvRows2){
     const autoCount=document.getElementById('autoCount').checked;
-    const nCol=document.getElementById('c2_naam').value,cCol=document.getElementById('c2_cases').value,rCol=document.getElementById('c2_rol').value;
+    const nCol=document.getElementById('c2_naam').value;
+    const cCol=document.getElementById('c2_cases').value;
+    const rCol=document.getElementById('c2_rol').value;
     let cases=[];
     if(autoCount){
-      const counts={},rollen={};
-      csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;if(rCol!=='__none'&&r[rCol])rollen[n]=String(r[rCol]);});
-      cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c,rol:rollen[naam]||''})).sort((a,b)=>b.cases-a.cases);
+      const counts={};
+      csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;});
+      cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c})).sort((a,b)=>b.cases-a.cases);
     }else{
       const seen={};
-      csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n||seen[n])return;seen[n]=true;cases.push({naam:n,cases:Number(r[cCol])||0,rol:rCol!=='__none'?String(r[rCol]||''):''});});
+      csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n||seen[n])return;seen[n]=true;cases.push({naam:n,cases:Number(r[cCol])||0});});
       cases.sort((a,b)=>b.cases-a.cases);
     }
     if(cases.length){
-      const totalCases=cases.reduce((s,c)=>s+c.cases,0);
-      const avgCases=totalCases/cases.length;
-      const maxCases=cases[0].cases;
-      const minCases=cases[cases.length-1].cases;
       const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+si;
-      slide.innerHTML=`<div class="slide-title">Workload</div><div class="slide-heading">Cases per <span>Teamlid</span></div>`;
+      slide.innerHTML=`<div class="slide-title">Workload</div><div class="slide-heading">Cases per <span>Collector</span></div>`;
 
-      // Samenvatting balk
-      const sumBar=document.createElement('div');sumBar.className='cases-summary-bar';
-      sumBar.innerHTML=`
-        <div class="tb-card"><div class="tb-label">Totaal cases</div><div class="tb-value" style="color:var(--accent2)">${totalCases}</div></div>
-        <div class="tb-card"><div class="tb-label">Teamleden</div><div class="tb-value" style="color:var(--text)">${cases.length}</div></div>
-        <div class="tb-card"><div class="tb-label">Gemiddeld p/p</div><div class="tb-value" style="color:var(--accent)">${avgCases.toFixed(1)}</div></div>
-        <div class="tb-card"><div class="tb-label">Hoogste</div><div class="tb-value" style="color:var(--red)">${maxCases} <span style="font-size:.75rem;font-weight:400;color:var(--muted)">${cases[0].naam}</span></div></div>
-        <div class="tb-card"><div class="tb-label">Laagste</div><div class="tb-value" style="color:var(--green)">${minCases} <span style="font-size:.75rem;font-weight:400;color:var(--muted)">${cases[cases.length-1].naam}</span></div></div>`;
-      slide.appendChild(sumBar);
+      const table=document.createElement('div');
+      table.style.cssText='display:flex;flex-direction:column;gap:10px;max-width:600px;margin-top:10px;';
 
-      const layout=document.createElement('div');layout.className='cases-layout';
-      const cl=document.createElement('div');cl.className='cases-left';
-      const maxC=cases[0].cases||1;
       cases.forEach((lid,i)=>{
-        const pct=Math.round((lid.cases/maxC)*100);
-        const diff=lid.cases-avgCases;
-        const diffLabel=diff>0?'+'+Math.round(diff)+' vs gem.':diff<0?Math.round(diff)+' vs gem.':'= gem.';
-        const diffClass=diff>avgCases*0.3?'above':diff<-avgCases*0.3?'below':'equal';
-        const row=document.createElement('div');row.className='case-row';
-        row.innerHTML=`<div class="case-rank">${i+1}</div><div class="case-info"><div class="case-name">${lid.naam}</div><div class="case-type">${lid.rol||'&nbsp;'}</div></div><div class="case-bar-wrap"><div class="case-bar-bg"><div class="case-bar-fill" style="width:${pct}%"></div></div><div class="case-pct">${pct}% van maximum</div></div><div class="case-count-wrap"><div class="case-count">${lid.cases}</div><div class="case-count-label">cases</div><div class="case-vs-avg ${diffClass}">${diffLabel}</div></div>`;
-        cl.appendChild(row);
+        const row=document.createElement('div');
+        row.style.cssText='display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 28px;';
+        row.innerHTML=`
+          <div style="display:flex;align-items:center;gap:16px;">
+            <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:1.5rem;font-weight:900;color:var(--border);width:32px;text-align:center;${i===0?'color:var(--accent)':i===1?'color:#94a3b8':i===2?'color:#92400e':''}">${i+1}</div>
+            <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:1.4rem;font-weight:700;">${lid.naam}</div>
+          </div>
+          <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:2rem;font-weight:900;color:var(--accent2);">${lid.cases}</div>`;
+        table.appendChild(row);
       });
-      const cr=document.createElement('div');cr.className='cases-right';
-      const canvas=document.createElement('canvas');canvas.width=220;canvas.height=220;
-      const legend=document.createElement('div');legend.className='donut-legend';
-      cr.innerHTML='<div class="donut-label">Verdeling Cases</div>';
-      cr.appendChild(canvas);cr.appendChild(legend);
-      layout.appendChild(cl);layout.appendChild(cr);
-      slide.appendChild(layout);wrapper.appendChild(slide);activeSlides.push(slide);si++;
-      requestAnimationFrame(()=>{
-        const ctx=canvas.getContext('2d');
-        const total=cases.reduce((s,c)=>s+c.cases,0);let angle=-Math.PI/2;
-        cases.forEach((lid,i)=>{const sl=(lid.cases/total)*2*Math.PI;ctx.beginPath();ctx.moveTo(110,110);ctx.arc(110,110,85,angle,angle+sl);ctx.closePath();ctx.fillStyle=KLEUREN[i%KLEUREN.length];ctx.fill();angle+=sl;});
-        ctx.beginPath();ctx.arc(110,110,52,0,2*Math.PI);ctx.fillStyle='#161a24';ctx.fill();
-        ctx.fillStyle='#f1f5f9';ctx.font='bold 26px Barlow Condensed';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(total,110,102);
-        ctx.font='11px Barlow';ctx.fillStyle='#64748b';ctx.fillText('cases totaal',110,122);
-        cases.forEach((lid,i)=>{
-          const pctStr=Math.round((lid.cases/total)*100)+'%';
-          const it=document.createElement('div');it.className='legend-item';
-          it.innerHTML=`<div class="legend-dot" style="background:${KLEUREN[i%KLEUREN.length]}"></div><span style="flex:1">${lid.naam}</span><span style="color:var(--text);font-weight:600">${lid.cases} <span style="color:var(--muted);font-weight:400">(${pctStr})</span></span>`;
-          legend.appendChild(it);
-        });
-      });
+
+      slide.appendChild(table);
+      wrapper.appendChild(slide);activeSlides.push(slide);si++;
     }
   }
 
