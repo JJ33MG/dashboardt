@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -60,7 +59,7 @@ select.cfg-select.auto-filled{border-color:rgba(16,185,129,.5);}
 .start-btn.ready{opacity:1;pointer-events:all;box-shadow:0 0 28px rgba(245,158,11,.35);}
 .start-btn.ready:hover{transform:translateY(-1px);}
 #dashboard{display:none;}
-header{display:flex;justify-content:space-between;align-items:center;padding:16px 40px 12px;border-bottom:1px solid var(--border);background:var(--panel);z-index:10;position:relative;}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 40px 12px;border-bottom:1px solid var(--border);background:var(--panel);}
 .logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1.4rem;letter-spacing:3px;text-transform:uppercase;color:var(--accent);}
 .logo span{color:var(--text);font-weight:300;}
 .header-right{display:flex;gap:20px;align-items:center;}
@@ -80,14 +79,14 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
 .slide.active{opacity:1;transform:translateX(0);pointer-events:all;}
 .slide.exit{opacity:0;transform:translateX(-60px);}
 .slide-title{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:4px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
-.slide-heading{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:14px;}
+.slide-heading{font-family:'Barlow Condensed',sans-serif;font-size:1.8rem;font-weight:700;color:var(--text);line-height:1;margin-bottom:20px;}
 .slide-heading span{color:var(--accent);}
 .team-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
 .tb-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;}
 .tb-label{font-size:.58rem;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
 .tb-value{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;line-height:1;}
 .leaderboard{display:flex;flex-direction:column;gap:8px;}
-.lb-row{display:grid;grid-template-columns:48px 1fr 160px 160px 160px 200px 90px;align-items:center;gap:0;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .3s;}
+.lb-row{display:grid;grid-template-columns:48px 1fr 160px 160px 160px 200px 90px;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
 .lb-row.good{border-left:4px solid var(--green);}
 .lb-row.warn{border-left:4px solid var(--accent);}
 .lb-row.bad{border-left:4px solid var(--red);}
@@ -96,12 +95,12 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
 .lb-row:nth-child(1) .lb-rank{color:var(--accent);}
 .lb-row:nth-child(2) .lb-rank{color:#94a3b8;}
 .lb-row:nth-child(3) .lb-rank{color:#92400e;}
-.lb-row.total-row .lb-rank{color:var(--accent2);font-size:1rem;letter-spacing:2px;}
+.lb-row.total-row .lb-rank{color:var(--accent2);font-size:1rem;}
 .lb-name{padding:16px 12px;font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;}
 .lb-row.total-row .lb-name{color:var(--accent2);font-size:1rem;letter-spacing:2px;text-transform:uppercase;}
 .lb-cell{padding:16px 12px;text-align:right;}
 .lb-cell-label{font-size:.55rem;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:2px;}
-.lb-cell-value{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;line-height:1;}
+.lb-cell-value{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;}
 .lb-cell-value.portfolio{color:var(--text);}
 .lb-cell-value.recovery{color:var(--green);}
 .lb-cell-value.newhit{color:var(--accent2);}
@@ -120,36 +119,12 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
 .lb-badge.good{background:rgba(16,185,129,.15);color:var(--green);}
 .lb-badge.warn{background:rgba(245,158,11,.15);color:var(--accent);}
 .lb-badge.bad{background:rgba(239,68,68,.15);color:var(--red);}
-/* ══ CASES ══ */
-.cases-summary-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
-.cases-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px;height:calc(100% - 160px);}
-.cases-left{display:flex;flex-direction:column;gap:8px;overflow-y:auto;}
-.case-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 18px;display:flex;align-items:center;gap:14px;transition:border-color .2s;}
-.case-row:hover{border-color:var(--accent2);}
-.case-rank{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:900;color:var(--border);width:32px;text-align:center;flex-shrink:0;}
-.case-row:nth-child(1) .case-rank{color:var(--accent);}
-.case-row:nth-child(2) .case-rank{color:#94a3b8;}
-.case-row:nth-child(3) .case-rank{color:#92400e;}
-.case-info{min-width:130px;}
-.case-name{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:600;}
-.case-type{font-size:.65rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-top:1px;}
-.case-bar-wrap{flex:2;}
-.case-bar-bg{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
-.case-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent2),var(--accent));}
-.case-pct{font-size:.6rem;color:var(--muted);margin-top:3px;letter-spacing:.5px;}
-.case-count-wrap{display:flex;flex-direction:column;align-items:flex-end;min-width:54px;}
-.case-count{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;font-weight:700;color:var(--text);}
-.case-count-label{font-size:.55rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.case-vs-avg{font-size:.6rem;margin-top:1px;font-weight:600;}
-.case-vs-avg.above{color:var(--red);}
-.case-vs-avg.below{color:var(--green);}
-.case-vs-avg.equal{color:var(--muted);}
-.cases-right{background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;gap:4px;}
-.donut-label{font-family:'Barlow Condensed',sans-serif;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-.donut-legend{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:5px 16px;width:100%;}
-.legend-item{display:flex;align-items:center;gap:7px;font-size:.73rem;color:var(--muted);}
-.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-/* ══ BUDGET ══ */
+.cases-list{display:flex;flex-direction:column;gap:10px;max-width:560px;}
+.case-item{display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 28px;}
+.case-item-left{display:flex;align-items:center;gap:18px;}
+.case-item-rank{font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:900;color:var(--border);width:28px;text-align:center;}
+.case-item-name{font-family:'Barlow Condensed',sans-serif;font-size:1.5rem;font-weight:700;}
+.case-item-count{font-family:'Barlow Condensed',sans-serif;font-size:2.2rem;font-weight:900;color:var(--accent2);}
 .budget-layout{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto 1fr;gap:16px;height:calc(100% - 90px);}
 .kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;position:relative;overflow:hidden;}
 .kpi-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
@@ -167,7 +142,7 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
 .kpi-delta.down{background:rgba(239,68,68,.15);color:var(--red);}
 .budget-chart-wrap{grid-column:span 2;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;}
 .chart-title{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
-.target-breakdown{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;display:flex;flex-direction:column;gap:12px;}
+.target-breakdown{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;}
 </style>
 </head>
 <body>
@@ -203,8 +178,6 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
       <div class="drop-zone" id="dz2"><div class="drop-zone-text">Sleep je Salesforce .csv bestand hier</div><div class="drop-btn" id="dbtn2">Bestand kiezen</div><div class="drop-file-name" id="dfn2"></div><input type="file" accept=".csv,.xlsx,.xls" style="display:none" id="fi2"></div>
       <div class="card-config" id="cfg2">
         <div class="cfg-row"><div class="cfg-label">Naam / Owner <span class="auto-tag" id="at2_naam"></span></div><select class="cfg-select" id="c2_naam"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Aantal cases <span class="auto-tag" id="at2_cases"></span></div><select class="cfg-select" id="c2_cases"></select></div>
-        <div class="cfg-row"><div class="cfg-label">Functie / Rol (optioneel) <span class="auto-tag" id="at2_rol"></span></div><select class="cfg-select" id="c2_rol"></select></div>
         <div class="toggle-wrap"><input type="checkbox" id="autoCount" checked><label for="autoCount">Elke rij = 1 case (automatisch tellen per persoon)</label></div>
       </div>
     </div>
@@ -224,8 +197,8 @@ header{display:flex;justify-content:space-between;align-items:center;padding:16p
         <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;flex-direction:column;gap:7px;">
           <div class="kv-label">Vul ook in ↓</div>
           <div class="cfg-row"><div class="kv-label">Maandnaam</div><input class="kv-input" id="c3_maandnaam" placeholder="April 2026"></div>
-          <div class="cfg-row"><div class="kv-label">Maand Target (totaal team)</div><input class="kv-input" id="c3_maandtarget" type="number" placeholder="280000"></div>
-          <div class="cfg-row"><div class="kv-label">Huidig resultaat deze maand</div><input class="kv-input" id="c3_huidig" type="number" placeholder="215000"></div>
+          <div class="cfg-row"><div class="kv-label">Maand Target</div><input class="kv-input" id="c3_maandtarget" type="number" placeholder="280000"></div>
+          <div class="cfg-row"><div class="kv-label">Huidig resultaat</div><input class="kv-input" id="c3_huidig" type="number" placeholder="215000"></div>
           <div class="cfg-row"><div class="kv-label">Resultaat vorige maand</div><input class="kv-input" id="c3_vorig" type="number" placeholder="198000"></div>
           <div class="cfg-row"><div class="kv-label">Jaarlijks target</div><input class="kv-input" id="c3_jaartarget" type="number" placeholder="3360000"></div>
           <div class="cfg-row"><div class="kv-label">Jaar-to-date resultaat</div><input class="kv-input" id="c3_jtd" type="number" placeholder="820000"></div>
@@ -259,17 +232,8 @@ const KLEUREN=['#f59e0b','#3b82f6','#10b981','#8b5cf6','#ec4899','#14b8a6','#f97
 let wbs={1:null,3:null},csvRows2=null,selectedSheet={1:null,3:null};
 let slideInterval=null,currentSlide=0,activeSlides=[];
 
-function parseMoney(v){
-  if(v===null||v===undefined)return 0;
-  const s=String(v).replace(/[€\s]/g,'').replace(/\./g,'').replace(',','.');
-  return parseFloat(s)||0;
-}
-function fmt(n){
-  const num=Math.abs(Number(n)||0);
-  if(num>=1000000)return'€'+(Number(n)/1000000).toFixed(2)+'M';
-  if(num>=1000)return'€'+(Number(n)/1000).toFixed(1)+'K';
-  return'€'+Number(n).toLocaleString('nl-NL',{minimumFractionDigits:0,maximumFractionDigits:0});
-}
+function parseMoney(v){if(v===null||v===undefined)return 0;const s=String(v).replace(/[€\s]/g,'').replace(/\./g,'').replace(',','.');return parseFloat(s)||0;}
+function fmt(n){const num=Math.abs(Number(n)||0);if(num>=1000000)return'€'+(Number(n)/1000000).toFixed(2)+'M';if(num>=1000)return'€'+(Number(n)/1000).toFixed(1)+'K';return'€'+Number(n).toLocaleString('nl-NL',{minimumFractionDigits:0,maximumFractionDigits:0});}
 function fmtFull(n){return'€'+Number(n).toLocaleString('nl-NL',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function updateClock(){const n=new Date();document.getElementById('clock').textContent=String(n.getHours()).padStart(2,'0')+':'+String(n.getMinutes()).padStart(2,'0');}
 updateClock();setInterval(updateClock,10000);
@@ -285,9 +249,8 @@ function autoSelect(id,cols,hints,tagId){
   const lc=cols.map(c=>c.toLowerCase());
   for(const h of hints){const f=lc.findIndex(c=>c.includes(h));if(f>-1){sel.value=cols[f];sel.classList.add('auto-filled');if(tagId)document.getElementById(tagId).textContent='✓ auto';return;}}
 }
-function fillSelect(id,cols,withNone=false){
+function fillSelect(id,cols){
   const sel=document.getElementById(id);if(!sel)return;sel.innerHTML='';
-  if(withNone){const o=document.createElement('option');o.value='__none';o.textContent='— Niet van toepassing —';sel.appendChild(o);}
   cols.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
 }
 
@@ -363,7 +326,7 @@ function readCasesFile(file){
         document.getElementById('dfn2').style.display='block';
         document.getElementById('card2').classList.add('loaded');
         autoFillCasesCols(rows);updateStartBtn();
-      }catch(err){document.getElementById('card2').classList.add('error');}
+      }catch(err){console.error(err);}
     };
     reader.readAsText(file,'UTF-8');
   }else{
@@ -376,17 +339,15 @@ function readCasesFile(file){
         document.getElementById('dfn2').style.display='block';
         document.getElementById('card2').classList.add('loaded');
         autoFillCasesCols(rows);updateStartBtn();
-      }catch(err){document.getElementById('card2').classList.add('error');}
+      }catch(err){console.error(err);}
     };
     reader.readAsArrayBuffer(file);
   }
 }
 function autoFillCasesCols(rows){
   const cols=Object.keys(rows[0]||{});
-  fillSelect('c2_naam',cols);fillSelect('c2_cases',cols,true);fillSelect('c2_rol',cols,true);
+  fillSelect('c2_naam',cols);
   autoSelect('c2_naam',cols,['owner','eigenaar','medewerker','naam','name','agent','user'],'at2_naam');
-  autoSelect('c2_cases',cols,['count','aantal','cases','total','totaal','number'],'at2_cases');
-  autoSelect('c2_rol',cols,['rol','functie','role','title','profile'],'at2_rol');
 }
 function parseCSV(text){
   const lines=text.split(/\r?\n/).filter(l=>l.trim());
@@ -411,7 +372,7 @@ function launchDashboard(){
   const wrapper=document.getElementById('slidesWrapper');
   wrapper.innerHTML='';activeSlides=[];let si=0;
 
-  // ── SLIDE 1: Leaderboard ──
+  // SLIDE 1: Leaderboard
   if(wbs[1]&&selectedSheet[1]){
     const rows=XLSX.utils.sheet_to_json(wbs[1].Sheets[selectedSheet[1]],{defval:'',raw:false});
     const nCol=document.getElementById('c1_naam').value,pCol=document.getElementById('c1_portfolio').value,rCol=document.getElementById('c1_recovery').value,hCol=document.getElementById('c1_newhit').value;
@@ -433,63 +394,46 @@ function launchDashboard(){
       bar.innerHTML=`<div class="tb-card"><div class="tb-label">Portfolio team</div><div class="tb-value" style="color:var(--text)">${fmt(totPortfolio)}</div></div><div class="tb-card"><div class="tb-label">Total Recovery</div><div class="tb-value" style="color:var(--green)">${fmtFull(totRecovered)}</div></div><div class="tb-card"><div class="tb-label">New Hit minimum</div><div class="tb-value" style="color:var(--accent2)">${fmtFull(totNewHit)}</div></div><div class="tb-card"><div class="tb-label">Nog te recupereren</div><div class="tb-value" style="color:${totStill===0?'var(--green)':'var(--red)'}">${totStill===0?'✓ Gehaald':fmtFull(totStill)}</div></div><div class="tb-card"><div class="tb-label">Team voortgang</div><div class="tb-value" style="color:${totPct>=100?'var(--green)':totPct>=80?'var(--accent)':'var(--red)'}">${totPct}%</div></div>`;
       slide.appendChild(bar);
       const lb=document.createElement('div');lb.className='leaderboard';
-      const badgeLabels={good:'✓ In Recovery',warn:'Bijna',bad:'Achter'};
       collectors.forEach((c,i)=>{
         const pctBar=Math.min(100,c.pct),pctColor=c.status==='good'?'var(--green)':c.status==='warn'?'var(--accent)':'var(--red)';
         const row=document.createElement('div');row.className='lb-row '+c.status;
-        row.innerHTML=`<div class="lb-rank">${i+1}</div><div class="lb-name">${c.naam}</div><div class="lb-cell"><div class="lb-cell-label">Portfolio start</div><div class="lb-cell-value portfolio">${fmtFull(c.portfolio)}</div></div><div class="lb-cell"><div class="lb-cell-label">Total Recovery</div><div class="lb-cell-value recovery">${fmtFull(c.recovered)}</div></div><div class="lb-cell"><div class="lb-cell-label">New Hit</div><div class="lb-cell-value newhit">${fmtFull(c.newHit)}</div></div><div class="lb-progress"><div class="lb-progress-labels"><span style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Voortgang</span><span class="lb-progress-pct" style="color:${pctColor}">${pctBar}% ${c.stillNeeded===0?'✓':''}</span></div><div class="lb-bar-bg"><div class="lb-bar-fill" style="width:${pctBar}%"></div></div><div style="font-size:.62rem;margin-top:4px;color:${c.stillNeeded===0?'var(--green)':'var(--red)'}">${c.stillNeeded===0?'✓ In recovery':'Nog '+fmtFull(c.stillNeeded)+' nodig'}</div></div><div class="lb-badge-cell"><div class="lb-badge ${c.status}">${badgeLabels[c.status]}</div></div>`;
+        row.innerHTML=`<div class="lb-rank">${i+1}</div><div class="lb-name">${c.naam}</div><div class="lb-cell"><div class="lb-cell-label">Portfolio</div><div class="lb-cell-value portfolio">${fmtFull(c.portfolio)}</div></div><div class="lb-cell"><div class="lb-cell-label">Recovery</div><div class="lb-cell-value recovery">${fmtFull(c.recovered)}</div></div><div class="lb-cell"><div class="lb-cell-label">New Hit</div><div class="lb-cell-value newhit">${fmtFull(c.newHit)}</div></div><div class="lb-progress"><div class="lb-progress-labels"><span style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Voortgang</span><span class="lb-progress-pct" style="color:${pctColor}">${pctBar}%</span></div><div class="lb-bar-bg"><div class="lb-bar-fill" style="width:${pctBar}%"></div></div><div style="font-size:.62rem;margin-top:4px;color:${c.stillNeeded===0?'var(--green)':'var(--red)'}">${c.stillNeeded===0?'✓ In recovery':'Nog '+fmtFull(c.stillNeeded)+' nodig'}</div></div><div class="lb-badge-cell"><div class="lb-badge ${c.status}">${c.status==='good'?'✓ In Recovery':c.status==='warn'?'Bijna':'Achter'}</div></div>`;
         lb.appendChild(row);
       });
       const totPctBar=Math.min(100,totPct);
       const totalRow=document.createElement('div');totalRow.className='lb-row total-row';
-      totalRow.innerHTML=`<div class="lb-rank" style="font-size:.8rem">Σ</div><div class="lb-name">TEAM TOTAAL</div><div class="lb-cell"><div class="lb-cell-label">Portfolio</div><div class="lb-cell-value total-val">${fmtFull(totPortfolio)}</div></div><div class="lb-cell"><div class="lb-cell-label">Recovery</div><div class="lb-cell-value total-val">${fmtFull(totRecovered)}</div></div><div class="lb-cell"><div class="lb-cell-label">New Hit</div><div class="lb-cell-value total-val">${fmtFull(totNewHit)}</div></div><div class="lb-progress"><div class="lb-progress-labels"><span style="font-size:.6rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;">Team voortgang</span><span class="lb-progress-pct" style="color:var(--accent2)">${totPctBar}%</span></div><div class="lb-bar-bg"><div class="lb-bar-fill" style="width:${totPctBar}%;background:var(--accent2)"></div></div><div style="font-size:.62rem;margin-top:4px;color:${totStill===0?'var(--green)':'var(--red)'}">${totStill===0?'✓ Team in recovery':'Nog '+fmtFull(totStill)+' nodig'}</div></div><div class="lb-badge-cell"><div class="lb-badge ${totPct>=100?'good':totPct>=80?'warn':'bad'}">${totPct>=100?'✓ In Recovery':totPct>=80?'Bijna':'Achter'}</div></div>`;
+      totalRow.innerHTML=`<div class="lb-rank" style="font-size:.8rem">Σ</div><div class="lb-name">TEAM TOTAAL</div><div class="lb-cell"><div class="lb-cell-label">Portfolio</div><div class="lb-cell-value total-val">${fmtFull(totPortfolio)}</div></div><div class="lb-cell"><div class="lb-cell-label">Recovery</div><div class="lb-cell-value total-val">${fmtFull(totRecovered)}</div></div><div class="lb-cell"><div class="lb-cell-label">New Hit</div><div class="lb-cell-value total-val">${fmtFull(totNewHit)}</div></div><div class="lb-progress"><div class="lb-progress-labels"><span style="font-size:.6rem;color:var(--muted);text-transform:uppercase;">Team</span><span class="lb-progress-pct" style="color:var(--accent2)">${totPctBar}%</span></div><div class="lb-bar-bg"><div class="lb-bar-fill" style="width:${totPctBar}%;background:var(--accent2)"></div></div><div style="font-size:.62rem;margin-top:4px;color:${totStill===0?'var(--green)':'var(--red)'}">${totStill===0?'✓ Team in recovery':'Nog '+fmtFull(totStill)+' nodig'}</div></div><div class="lb-badge-cell"><div class="lb-badge ${totPct>=100?'good':totPct>=80?'warn':'bad'}">${totPct>=100?'✓ In Recovery':totPct>=80?'Bijna':'Achter'}</div></div>`;
       lb.appendChild(totalRow);
       slide.appendChild(lb);wrapper.appendChild(slide);activeSlides.push(slide);si++;
     }
   }
 
-  // ── SLIDE 2: Cases ──
-// ── SLIDE 2: Cases ──
+  // SLIDE 2: Cases — alleen naam + aantal
   if(csvRows2){
-    const autoCount=document.getElementById('autoCount').checked;
     const nCol=document.getElementById('c2_naam').value;
-    const cCol=document.getElementById('c2_cases').value;
-    const rCol=document.getElementById('c2_rol').value;
-    let cases=[];
-    if(autoCount){
-      const counts={};
-      csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;});
-      cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c})).sort((a,b)=>b.cases-a.cases);
-    }else{
-      const seen={};
-      csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n||seen[n])return;seen[n]=true;cases.push({naam:n,cases:Number(r[cCol])||0});});
-      cases.sort((a,b)=>b.cases-a.cases);
-    }
+    const counts={};
+    csvRows2.forEach(r=>{const n=String(r[nCol]||'').trim();if(!n)return;counts[n]=(counts[n]||0)+1;});
+    const cases=Object.entries(counts).map(([naam,c])=>({naam,cases:c})).sort((a,b)=>b.cases-a.cases);
     if(cases.length){
       const slide=document.createElement('div');slide.className='slide';slide.id='slide-'+si;
       slide.innerHTML=`<div class="slide-title">Workload</div><div class="slide-heading">Cases per <span>Collector</span></div>`;
-
-      const table=document.createElement('div');
-      table.style.cssText='display:flex;flex-direction:column;gap:10px;max-width:600px;margin-top:10px;';
-
+      const list=document.createElement('div');list.className='cases-list';
+      const rankColors=['var(--accent)','#94a3b8','#92400e'];
       cases.forEach((lid,i)=>{
-        const row=document.createElement('div');
-        row.style.cssText='display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 28px;';
-        row.innerHTML=`
-          <div style="display:flex;align-items:center;gap:16px;">
-            <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:1.5rem;font-weight:900;color:var(--border);width:32px;text-align:center;${i===0?'color:var(--accent)':i===1?'color:#94a3b8':i===2?'color:#92400e':''}">${i+1}</div>
-            <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:1.4rem;font-weight:700;">${lid.naam}</div>
+        const item=document.createElement('div');item.className='case-item';
+        item.innerHTML=`
+          <div class="case-item-left">
+            <div class="case-item-rank" style="${i<3?'color:'+rankColors[i]:''}">${i+1}</div>
+            <div class="case-item-name">${lid.naam}</div>
           </div>
-          <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:2rem;font-weight:900;color:var(--accent2);">${lid.cases}</div>`;
-        table.appendChild(row);
+          <div class="case-item-count">${lid.cases}</div>`;
+        list.appendChild(item);
       });
-
-      slide.appendChild(table);
-      wrapper.appendChild(slide);activeSlides.push(slide);si++;
+      slide.appendChild(list);wrapper.appendChild(slide);activeSlides.push(slide);si++;
     }
   }
 
-  // ── SLIDE 3: Budget ──
+  // SLIDE 3: Budget
   if(wbs[3]&&selectedSheet[3]){
     const bRows=XLSX.utils.sheet_to_json(wbs[3].Sheets[selectedSheet[3]],{defval:''});
     const maanden=bRows.map(r=>({naam:String(r[document.getElementById('c3_maand').value]||''),resultaat:Number(r[document.getElementById('c3_res').value])||0,target:Number(r[document.getElementById('c3_tgt').value])||0})).filter(x=>x.naam);
